@@ -470,6 +470,7 @@ FUNCTION {initialize.status.constants}
   #1 'cap.yes :=
   #0 'nline.no :=
   #1 'nline.newblock :=
+  #0 'japanese.flag :=
 }
 
 FUNCTION {std.status.using.comma}
