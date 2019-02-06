@@ -149,31 +149,15 @@ FUNCTION {article}
 
 これを全ての処理に適用します。
 
-### 一括置換したときのメモ（古いverなので鵜呑みにしないこと！）
-たくさんあったので以下の正規表現置換を使用しました。
-ただし，変換後に\nが素の文書で出たり，エスケープを書き忘れたり等ミスが多いので結局人力でコピペしてもいいかもしれない…
-そして置換内容が古いのでただのlogと思ってくださいorz
 
-置換前
+# Pythonを用いたbibファイル自動整形
+
+.bibに`isjapanese`flagを勝手に追加してくれるPythonスクリプトを`bibFileGenerator_python`直下に置きました。
 
 ```
-start.entry\n  if.url
+python addJPflag.py <元ファイル>.bib
 ```
+とうつと
 
-置換後
-
-```
-start.entry\n  %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる\n  isjapanese empty$ \n   {skip$} \n   {#1 'japanese.flag :=} \n if$ \n  %%変更箇所1ここまで\n  if.url
-```
-
-置換前
-
-```
-if.url.std.interword.spacing\n}
-```
-
-置換後
-
-```
-if.url.std.interword.spacing\n  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)\n  #0 'japanese.flag :=\n  %%変更箇所2ここまで\n}
-```
+`<元ファイル>_withJPflag.bib`
+という名前でフラグ付きのファイルを作成するようになってます。
