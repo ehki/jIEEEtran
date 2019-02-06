@@ -625,31 +625,75 @@ numnames
 
 FUNCTION {output.nonnull}
 { swap$
-  prev.status.punct punct.comma =
-     { "," * }
-     { skip$ }
-   if$
+  %%追加箇所1：日本語文献なら，"のあとにカンマ
+  japanese.flag #1 =
+    {
+      prev.status.quote quote.close =
+        { "''" * }
+        { skip$ }
+      if$
+    }
+    { skip$ }
+  if$
+  %%追加箇所1ここまで
+  %%変更箇所2：日本語文献なら全角カンマに
+  japanese.flag #0 =
+    { 
+      prev.status.punct punct.comma =
+        { "," * }
+        {skip$}
+      if$
+    }
+    {
+      prev.status.punct punct.comma =
+        { "，" * }
+        {skip$}
+      if$
+    }
+  if$ 
+  %%変更箇所2ここまで
+  %%変更箇所3：日本語の場合は全角ピリオド
   prev.status.punct punct.period =
-     { add.period$ }
-     { skip$ }
-   if$ 
-  prev.status.quote quote.close =
-     { "''" * }
-     { skip$ }
-   if$
+    { 
+      japanese.flag #0 =
+        { add.period$ }
+        { "．" * }
+      if$
+    }
+    { skip$ }
+  if$ 
+  %%変更箇所3ここまで
+  %%変更箇所4：英語の場合は"の前にカンマ
+  japanese.flag #0 =
+    {
+      prev.status.quote quote.close =
+        { "''" * }
+        { skip$ }
+      if$
+    }
+    { skip$ }
+  if$
+  %%変更箇所4ここまで
+  %%変更箇所5：日本語の場合の謎スペースの抑制（全角カンマの後ろの空白で十分）
   prev.status.space space.normal =
-     { " " * }
-     { skip$ }
-   if$
+    { 
+      japanese.flag #0 =
+        { " " * }
+        { skip$ }
+      if$
+    }
+    { skip$ }
+  if$
+  %%変更箇所5ここまで
   prev.status.space space.large =
-     { large.space * }
-     { skip$ }
-   if$
+    { large.space * }
+    { skip$ }
+  if$
   write$
   prev.status.nline nline.newblock =
-     { newline$ "\newblock " write$ }
-     { skip$ }
-   if$
+    { newline$ "\newblock " write$ }
+    { skip$ }
+  if$
 }
 
 FUNCTION {output}
@@ -672,15 +716,21 @@ FUNCTION {output.warn}
 
 FUNCTION {fin.entry}
 { this.status.punct punct.no =
-     { skip$ }
-     { add.period$ }
-   if$
-   this.status.quote quote.close =
-     { "''" * }
-     { skip$ }
-   if$
-write$
-newline$
+    { skip$ }
+    { 
+      %%変更箇所：日本語文献の場合，全角ピリオドに
+      japanese.flag #0 =
+        { add.period$ }
+        { "．" * }
+      if$
+    }
+  if$
+  this.status.quote quote.close =
+    { "''" * }
+    { skip$ }
+  if$
+  write$
+  newline$
 }
 
 
