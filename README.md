@@ -1,3 +1,5 @@
+# はじめに
+こちらの[参考文献](https://qiita.com/HexagramNM/items/3ad757a9f5ee5d15e363#_reference-2be0cc9a71381591bb17)を大いに参考にしました。この場を借りてお礼申し上げます。
 
 # 使い方
 
@@ -8,6 +10,45 @@
 \bibliography{ref.bib}
 ```
 
+## サンプルTexファイル
+サンプルのファイルがtestフォルダ以下にあります。
+
+もとにするbibファイルは以下のように `isjapanese = {true}`という行を追加しています。
+
+
+```bib
+@article{japaneseTest1,
+ author = {山田 一郎 and 山田 次郎 and 山田 三郎 and 山田 四郎},
+ year = {2019},
+ journal = {日本語学会},
+ title = {文献1},
+ isjapanese = {true}
+}
+@article{japaneseTest2,
+ author = {山田 五郎 and 山田 六郎},
+ year = {2019},
+ journal = {日本語学会},
+ title = {文献2},
+ isjapanese = {true}
+}
+@article{englishTest1,
+ author = {Ichiro Yamada and Jiro Yamada and Saburo Yamada and Shiro Yamada},
+ year = {2019},
+ journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+ title = {Title1}
+}
+@article{englishTest2,
+ author = {Goro Yamada and Rokuro Yamada},
+ year = {2019},
+ journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+ title = {Title2}
+}
+```
+
+
+出力されるtexはこんな感じになります。
+
+![](images/results.png)
 
 
 # 変更箇所
@@ -70,8 +111,10 @@ FUNCTION {default.name.format.string.forJP}{ "{ff~}{vv~}{ll}{, jj}" } %%追加�
 bibにisjapaneseが{true}で入っていた場合に`japanese.flag`を立てる処理をします。
 また，先程述べた日本語と英語での書式の変更もここでやってしまいます。
 
+
 `isjapanese`を探して`japanese.flag`を立てる他，日本語用の名前フォーマット`default.name.format.string.forJP`
 へと`name.format.string`を切り替えます。
+そして最後に`japanese.flag`を0に戻して，名前のフォーマットを英語用に戻します。
 
 ```
 FUNCTION {article}
@@ -106,7 +149,7 @@ FUNCTION {article}
 
 これを全ての処理に適用します。
 
-### 一括置換したときのメモ
+### 一括置換したときのメモ（古いverなので鵜呑みにしないこと！）
 たくさんあったので以下の正規表現置換を使用しました。
 ただし，変換後に\nが素の文書で出たり，エスケープを書き忘れたり等ミスが多いので結局人力でコピペしてもいいかもしれない…
 そして置換内容が古いのでただのlogと思ってくださいorz
