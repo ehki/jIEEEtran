@@ -1283,13 +1283,25 @@ FUNCTION {format.names}
         { nameptr num.names.shown.with.forced.et.al #1 + =
           numnames max.num.names.before.forced.et.al >
           is.forced.et.al and and
-            { "others" 't :=
+            { 
+              "others" 't :=
               #1 'namesleft :=
             }
             { skip$ }
           if$
           namesleft #1 >
-            { ", " * t do.name.latex.cmd * }
+            { 
+            %%変更箇所1：日本語の場合にカンマを全角に変更．
+              japanese.flag #0 =
+                {
+                  ", " * t do.name.latex.cmd * 
+                }
+                {
+                  "，" * t do.name.latex.cmd * 
+                }
+              if$
+            %%変更箇所1ここまで
+            }
             { s nameptr "{ll}" format.name$ duplicate$ "others" =
                 { 't := }
                 { pop$ }
@@ -1297,11 +1309,36 @@ FUNCTION {format.names}
               t "others" =
                 { " " * bbl.etal emphasize * }
                 { numnames #2 >
-                    { "," * }
+                    { 
+                      %%変更箇所2：日本語の場合にカンマを全角に変更．
+                      japanese.flag #0 =
+                        {
+                          "," * 
+                        }
+                        {
+                          "，" *
+                        }
+                      if$
+                      %%変更箇所2ここまで
+                    }
                     { skip$ }
                   if$
-                  bbl.and
-                  space.word * t do.name.latex.cmd *
+                  %%変更箇所3：日本語の場合で著者が2人の場合はandの代わりに全角カンマを入れる．
+                  %%bbl.andはandをくっつける処理と推測
+                  japanese.flag #0 =
+                    {
+                      bbl.and
+                      space.word * t do.name.latex.cmd *
+                    }
+                    {
+                      numnames #2 =
+                        { "，" * }
+                        { skip$ }
+                      if$
+                      t do.name.latex.cmd *
+                    }
+                  if$
+                  %%変更箇所3ここまで
                 }
               if$
             }
@@ -1316,8 +1353,6 @@ FUNCTION {format.names}
   cap.status.std
   } if$
 }
-
-
 
 
 %% Higher Level Formats
