@@ -267,7 +267,8 @@ MACRO {dec} {"Dec."}
 %%%%%%%%%%%%%%%%%%
 
 ENTRY
-  { address
+  { isjapanese
+    address
     assignee
     author
     booktitle
@@ -332,7 +333,8 @@ INTEGERS { prev.status.punct this.status.punct punct.std
            prev.status.nline this.status.nline nline.std
            nline.no nline.newblock 
            status.cap cap.std
-           cap.no cap.yes}
+           cap.no cap.yes
+           japanese.flag}
 
 INTEGERS { longest.label.width multiresult nameptr namesleft number.label numnames }
 
