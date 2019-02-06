@@ -1,5 +1,8 @@
-# Object file
-*.o
+# Tex files
+*.aux
+*.blg
+*.log
+*.synctex
+*.dvi
+*.bbl
 
-# Ada Library Information
-*.ali
