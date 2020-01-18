@@ -599,6 +599,39 @@ FUNCTION {format.incoll.inproc.crossref}
   " \cite{" * crossref * "}" *
 }
 
+FUNCTION {jsbook}
+{ output.bibitem
+%%�ύX�ӏ�1�F���{��G���g���ɉ�������Γ��{�ꉻ����t���O�𗧂Ă�
+isjapanese empty$
+{skip$}
+{#1 'japanese.flag :=}
+if$
+%%�ύX�ӏ�1�����܂�
+  format.authors "author" output.check
+  format.title "title" output.check
+  blank.sep
+  crossref missing$
+    { journal emphasize "journal" output.check
+      format.volume output
+      month empty$
+        { format.number output }
+        'skip$
+      if$
+      format.pages output
+      format.date "year" output.check
+    }
+    { format.article.crossref output.nonnull
+      format.pages output
+    }
+  if$
+  new.block
+  note output
+  fin.entry
+  %%�ύX�ӏ�2�F���̕����̂��߂ɓ��{�ꉻ�t���O�̉���(0�ɖ߂��Ă���)
+  #0 'japanese.flag :=
+  %%�ύX�ӏ�2�����܂�
+}
+
 FUNCTION {article}
 { output.bibitem
 %%�ύX�ӏ�1�F���{��G���g���ɉ�������Γ��{�ꉻ����t���O�𗧂Ă�
