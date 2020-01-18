@@ -53,6 +53,7 @@ FUNCTION {init.state.consts}
   #3 'after.sentence :=
   #4 'after.quoted.block :=
   #5 'after.block :=
+  #0 'japanese.flag :=
 }
 
 STRINGS { s t }
@@ -212,26 +213,48 @@ FUNCTION {format.names}
   s num.names$ 'numnames :=
   numnames 'namesleft :=
     { namesleft #0 > }
-    { s nameptr "{f.~}{vv~}{ll}{, jj}" format.name$ 't :=
-      nameptr #1 >
-        { namesleft #1 >
-            { ", " * t * }
-            { numnames #2 >
-                { "," * }
-                'skip$
-              if$
-              t "others" =
-                { " {\em et~al.}" * }
-                { " and " * t * }
-              if$
-            }
-          if$
-        }
-        't
-      if$
-      nameptr #1 + 'nameptr :=
-      namesleft #1 - 'namesleft :=
-    }
+    #1 japanese.flag =
+      { s nameptr "{ff~ }{vv~}{ll}{, jj}" format.name$ 't :=
+        nameptr #1 >
+          { namesleft #1 >
+              { ", " * t * }
+              { numnames #2 >
+                  { "," * }
+                  'skip$
+                if$
+                t "others" =
+                  { " {\em et~al.}" * }
+                  { " and " * t * }
+                if$
+              }
+            if$
+          }
+          't
+        if$
+        nameptr #1 + 'nameptr :=
+        namesleft #1 - 'namesleft :=
+      }
+      { s nameptr "{f.~}{vv~}{ll}{, jj}" format.name$ 't :=
+        nameptr #1 >
+          { namesleft #1 >
+              { ", " * t * }
+              { numnames #2 >
+                  { "," * }
+                  'skip$
+                if$
+                t "others" =
+                  { " {\em et~al.}" * }
+                  { " and " * t * }
+                if$
+              }
+            if$
+          }
+          't
+        if$
+        nameptr #1 + 'nameptr :=
+        namesleft #1 - 'namesleft :=
+      }
+    if$
   while$
 }
 
@@ -578,6 +601,12 @@ FUNCTION {format.incoll.inproc.crossref}
 
 FUNCTION {article}
 { output.bibitem
+%%�ύX�ӏ�1�F���{��G���g���ɉ�������Γ��{�ꉻ����t���O�𗧂Ă�
+isjapanese empty$
+{skip$}
+{#1 'japanese.flag :=}
+if$
+%%�ύX�ӏ�1�����܂�
   format.authors "author" output.check
   format.title "title" output.check
   blank.sep
@@ -598,6 +627,9 @@ FUNCTION {article}
   new.block
   note output
   fin.entry
+  %%�ύX�ӏ�2�F���̕����̂��߂ɓ��{�ꉻ�t���O�̉���(0�ɖ߂��Ă���)
+  #0 'japanese.flag :=
+  %%�ύX�ӏ�2�����܂�
 }
 
 FUNCTION {book}
