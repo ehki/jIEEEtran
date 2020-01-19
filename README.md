@@ -1,4 +1,4 @@
-# Bst file for English and Japanese users
+# bibtex style (.bst) file for English and Japanese users
 bibtexで使えるIEEEtranの引用形式を保ったまま，日本語と英語の双方に対応できるように変更を加えたbstファイルです。
 
 - IEEEtran_withJP：通常のIEEEtranの2言語版
@@ -72,41 +72,48 @@ python addJPflag.py *.bib
 [参考文献](https://qiita.com/HexagramNM/items/3ad757a9f5ee5d15e363#_reference-2be0cc9a71381591bb17)の記述をもとに[元ファイルIEEEtranS.bst](http://tug.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/bibtex/IEEEtranS.bst)を変更しました。
 この場を借りてお礼申し上げます。
 
-詳しい説明などは当該Qiita記事で随時変更します。
+詳しい説明などは[当該Qiita記事](https://qiita.com/ossyaritoori/items/7574ab2f3f9b9e8e1836)で随時変更します。
 
 ## 日本語のみフルネーム表記へと変更する下準備
+- 処理内容
 
-`FUNCTION {default.name.format.string}{ "{f.~}{vv~}{ll}{, jj}" }`のうち，`{f.~}`がデフォルトの名前の表記を名字1文字+カンマに設定しています。これを以下のように`{ff~}`と変更すれば，名字をフルネームで書けるようになります。
-`FUNCTION {default.name.format.string}{ "{ff~}{vv~}{ll}{, jj}" } }`
-
-
-しかし，これはデフォルトの設定を変えてしまうので英語のフォーマットを崩してしまいます。後の行を見ると実はinitializeの過程で`name.format.string`にこれを代入しているに過ぎません。ということで，後に追加する`japanese.flag`に応じてこれを変更するように書けばよいわけです。
-
-
-```
-FUNCTION {initialize.controls}
-{ default.is.use.number.for.article 'is.use.number.for.article :=
-  default.is.use.paper 'is.use.paper :=
-  default.is.use.url 'is.use.url :=
-  default.is.forced.et.al 'is.forced.et.al :=
-  default.max.num.names.before.forced.et.al 'max.num.names.before.forced.et.al :=
-  default.num.names.shown.with.forced.et.al 'num.names.shown.with.forced.et.al :=
-  default.is.use.alt.interword.spacing 'is.use.alt.interword.spacing :=
-  default.is.dash.repeated.names 'is.dash.repeated.names :=
-  default.ALTinterwordstretchfactor 'ALTinterwordstretchfactor :=
-  default.name.format.string 'name.format.string :=
-  default.name.latex.cmd 'name.latex.cmd :=
-  default.name.url.prefix 'name.url.prefix :=
-}
-```
-
-従って私の手法では，とりあえず次のように別の変数を立てるようにします。
+`FUNCTION {default.name.format.string}{ "{f.~}{vv~}{ll}{, jj}" }`のしたに，日本語用の表記を追記します。
 
 ```
 % The default name format control string. %change based on japanese
 FUNCTION {default.name.format.string}{ "{f.~}{vv~}{ll}{, jj}" }
 FUNCTION {default.name.format.string.forJP}{ "{ff~}{vv~}{ll}{, jj}" } %%追加箇所
 ```
+
+- 意図解説
+
+`FUNCTION {default.name.format.string}{ "{f.~}{vv~}{ll}{, jj}" }`のうち，`{f.~}`がデフォルトの名前の表記を名字1文字+カンマに設定しています。これを以下のように`{ff~}`と変更すれば，名字をフルネームで書けるようになります。
+（2020/1/12追記）なお`{ff ~}`としないと名字と名前の間をうまく開けてくれないことがあるらしいです。
+`FUNCTION {default.name.format.string}{ "{ff ~}{vv~}{ll}{, jj}" } }`
+
+
+しかし，これはデフォルトの設定を変えてしまうので英語のフォーマットを崩してしまいます。後の行を見ると実はinitializeの過程で`name.format.string`にこれを代入しているに過ぎません。ということで，後に追加する`japanese.flag`に応じてこれを変更するように書けばよいわけです。
+
+- `name.format.string`への代入箇所
+
+```bst
+FUNCTION {initialize.controls}
+{ default.is.use.number.for.article 'is.use.number.for.article :=
+default.is.use.paper 'is.use.paper :=
+default.is.use.url 'is.use.url :=
+default.is.forced.et.al 'is.forced.et.al :=
+default.max.num.names.before.forced.et.al 'max.num.names.before.forced.et.al :=
+default.num.names.shown.with.forced.et.al 'num.names.shown.with.forced.et.al :=
+default.is.use.alt.interword.spacing 'is.use.alt.interword.spacing :=
+default.is.dash.repeated.names 'is.dash.repeated.names :=
+default.ALTinterwordstretchfactor 'ALTinterwordstretchfactor :=
+default.name.format.string 'name.format.string := %%ここで代入されている
+default.name.latex.cmd 'name.latex.cmd :=
+default.name.url.prefix 'name.url.prefix :=
+}
+```
+
+
 
 
 
@@ -130,52 +137,39 @@ bibにisjapaneseが{true}で入っていた場合に`japanese.flag`を立てる�
 また，先程述べた日本語と英語での書式の変更もここでやってしまいます。
 
 
-`isjapanese`を探して`japanese.flag`を立てる他，日本語用の名前フォーマット`default.name.format.string.forJP`
-へと`name.format.string`を切り替えます。
-そして最後に`japanese.flag`を0に戻して，名前のフォーマットを英語用に戻します。
+- `isjapanese`を探して`japanese.flag`を立てる。
+- flagが1の時，日本語用の名前フォーマット`default.name.format.string.forJP`へと`name.format.string`を切り替える。
+- 最後に`japanese.flag`を0に戻して，名前のフォーマットを英語用に戻す。
 
 ```
 FUNCTION {article}
 { std.status.using.comma
-  start.entry
-  %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-  isjapanese empty$ 
-   {skip$} 
-   {#1 'japanese.flag :=
-   default.name.format.string.forJP 'name.format.string :=} 
- if$ 
-  %%変更箇所1ここまで
-  if.url.alt.interword.spacing
-  format.authors "author" output.warn
-  name.or.dash
-  format.article.title "title" output.warn
-  format.journal "journal" bibinfo.check "journal" output.warn
-  format.volume output
-  format.number.if.use.for.article output
-  format.pages output
-  format.date "year" output.warn
-  format.note output
-  format.url output
-  fin.entry
-  if.url.std.interword.spacing
-  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-  #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
-  %%変更箇所2ここまで
+start.entry
+%%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
+isjapanese empty$ 
+{skip$} 
+{#1 'japanese.flag :=
+default.name.format.string.forJP 'name.format.string :=} 
+if$ 
+%%変更箇所1ここまで
+if.url.alt.interword.spacing
+format.authors "author" output.warn
+name.or.dash
+format.article.title "title" output.warn
+format.journal "journal" bibinfo.check "journal" output.warn
+format.volume output
+format.number.if.use.for.article output
+format.pages output
+format.date "year" output.warn
+format.note output
+format.url output
+fin.entry
+if.url.std.interword.spacing
+%%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
+#0 'japanese.flag :=
+default.name.format.string 'name.format.string :=
+%%変更箇所2ここまで
 }
 ```
 
-これを全ての処理に適用します。
-
-
-# Pythonを用いたbibファイル自動整形
-
-.bibに`isjapanese`flagを勝手に追加してくれるPythonスクリプトを`bibFileGenerator_python`直下に置きました。
-
-```
-python addJPflag.py <元ファイル>.bib
-```
-とうつと
-
-`<元ファイル>_withJPflag.bib`
-という名前でフラグ付きのファイルを作成するようになってます。
+これを`article`だけでなく全ての文章タイプに対して適用した。
