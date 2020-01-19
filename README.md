@@ -1,9 +1,13 @@
-# はじめに
-こちらの[参考文献](https://qiita.com/HexagramNM/items/3ad757a9f5ee5d15e363#_reference-2be0cc9a71381591bb17)を大いに参考にしました。この場を借りてお礼申し上げます。
+# Bst file for English and Japanese users
+bibtexで使えるIEEEtranの引用形式を保ったまま，日本語と英語の双方に対応できるように変更を加えたbstファイルです。
 
-# 使い方
+- IEEEtran_withJP：通常のIEEEtranの2言語版
+- IEEEtranS_withJP：著者のアルファベット順で並び替えたIEEEtranSの2言語版
+- ieeetr_withJP：調整中
 
-`IEEEtranS_withJP.bst`というファイルをPathの通った箇所かtexファイルと同じフォルダに入れて，以下のように文章内で記述する。（`ref.bib`は自分で作ったbibファイルを参照するように。）
+# 使い方（IEEEtranS_withJPの例）
+
+`IEEEtranS_withJP.bst`というファイルをPathの通った箇所かtexファイルと同じフォルダに入れて，以下のように文章内で記述します。（`ref.bib`は自分で作ったbibファイルを参照するように。）
 
 ```tex
 \bibliographystyle{IEEEtranS_withJP}
@@ -50,11 +54,25 @@
 
 ![](images/results.png)
 
+## bib fileの自動編集
+`isjapanese = {true}`のフラグを自動でたてるpythonプログラムを`bibFileGenerator_python`直下に作成しました。
 
-# 変更箇所
+大まかには2バイト文字の混ざっている参考文献に上記のフラグを追記するという動作をします。
+
+使い方は
+
+```
+python addJPflag.py *.bib
+```
+
+で`*_withJP/bib`というファイルが生成されます。
+
+
+# 変更箇所・参考文献
 [参考文献](https://qiita.com/HexagramNM/items/3ad757a9f5ee5d15e363#_reference-2be0cc9a71381591bb17)の記述をもとに[元ファイルIEEEtranS.bst](http://tug.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/bibtex/IEEEtranS.bst)を変更しました。
+この場を借りてお礼申し上げます。
 
-詳しく書いてないところは参考文献の丸写しということなのでそちらを参照あれ。
+詳しい説明などは当該Qiita記事で随時変更します。
 
 ## 日本語のみフルネーム表記へと変更する下準備
 
