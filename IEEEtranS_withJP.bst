@@ -728,6 +728,9 @@ FUNCTION {fin.entry}
   if$
   write$
   newline$
+  %% for JP setting
+  #0 'japanese.flag :=
+  default.name.format.string 'name.format.string :=
 }
 
 
@@ -1077,6 +1080,19 @@ FUNCTION {convert.edition}
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%
+%% JAPANESE CHECKER %%
+%%%%%%%%%%%%%%%%%%%%%%
+
+FUNCTION {chk.jp.entry} {
+  isjapanese empty$ 
+    {skip$} 
+    {#1 'japanese.flag :=
+    default.name.format.string.forJP 'name.format.string :=} 
+  if$
+}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% LATEX BIBLIOGRAPHY CODE %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1089,6 +1105,7 @@ FUNCTION {start.entry}
   newline$
   ""
   initialize.prev.this.status
+  chk.jp.entry
 }
 
 % Here we write out all the LaTeX code that we will need. The most involved
@@ -2037,13 +2054,6 @@ FUNCTION {format.url}
 FUNCTION {article}
 { std.status.using.comma
   start.entry
-  %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-  isjapanese empty$ 
-   {skip$} 
-   {#1 'japanese.flag :=
-   default.name.format.string.forJP 'name.format.string :=} 
- if$ 
-  %%変更箇所1ここまで
   if.url.alt.interword.spacing
   format.authors "author" output.warn
   name.or.dash
@@ -2057,22 +2067,11 @@ FUNCTION {article}
   format.url output
   fin.entry
   if.url.std.interword.spacing
-  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-  #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
-  %%変更箇所2ここまで
 }
 
 FUNCTION {book}
 { std.status.using.comma
   start.entry
-  %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-  isjapanese empty$ 
-   {skip$} 
-   {#1 'japanese.flag :=
-   default.name.format.string.forJP 'name.format.string :=}
- if$ 
-  %%変更箇所1ここまで
   if.url.alt.interword.spacing
   author empty$
     { format.editors "author and editor" output.warn }
@@ -2092,22 +2091,11 @@ FUNCTION {book}
   format.url output
   fin.entry
   if.url.std.interword.spacing
-  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-  #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
-  %%変更箇所2ここまで
 }
 
 FUNCTION {booklet}
 { std.status.using.comma
   start.entry
-  %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-  isjapanese empty$ 
-   {skip$} 
-   {#1 'japanese.flag :=
-   default.name.format.string.forJP 'name.format.string :=}
- if$ 
-  %%変更箇所1ここまで
   if.url.alt.interword.spacing
   format.authors output
   name.or.dash
@@ -2120,22 +2108,11 @@ FUNCTION {booklet}
   format.url output
   fin.entry
   if.url.std.interword.spacing
-  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-  #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
-  %%変更箇所2ここまで
 }
 
 FUNCTION {electronic}
 { std.status.using.period
   start.entry
-  %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-  isjapanese empty$ 
-   {skip$} 
-   {#1 'japanese.flag :=
-   default.name.format.string.forJP 'name.format.string :=}
- if$ 
-  %%変更箇所1ここまで
   if.url.alt.interword.spacing
   format.authors output
   name.or.dash
@@ -2149,22 +2126,11 @@ FUNCTION {electronic}
   fin.entry
   empty.entry.warn
   if.url.std.interword.spacing
-  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-  #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
-  %%変更箇所2ここまで
 }
 
 FUNCTION {inbook}
 { std.status.using.comma
   start.entry
-  %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-  isjapanese empty$ 
-   {skip$} 
-   {#1 'japanese.flag :=
-   default.name.format.string.forJP 'name.format.string :=}
- if$ 
-  %%変更箇所1ここまで
   if.url.alt.interword.spacing
   author empty$
     { format.editors "author and editor" output.warn }
@@ -2182,22 +2148,11 @@ FUNCTION {inbook}
   format.url output
   fin.entry
   if.url.std.interword.spacing
-  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-  #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
-  %%変更箇所2ここまで
 }
 
 FUNCTION {incollection}
 { std.status.using.comma
   start.entry
-  %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-  isjapanese empty$ 
-   {skip$} 
-   {#1 'japanese.flag :=
-   default.name.format.string.forJP 'name.format.string :=}
- if$ 
-  %%変更箇所1ここまで
   if.url.alt.interword.spacing
   format.authors "author" output.warn
   name.or.dash
@@ -2214,22 +2169,11 @@ FUNCTION {incollection}
   format.url output
   fin.entry
   if.url.std.interword.spacing
-  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-  #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
-  %%変更箇所2ここまで
 }
 
 FUNCTION {inproceedings}
 { std.status.using.comma
   start.entry
-  %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-  isjapanese empty$ 
-   {skip$} 
-   {#1 'japanese.flag :=
-   default.name.format.string.forJP 'name.format.string :=}
- if$ 
-  %%変更箇所1ここまで
   if.url.alt.interword.spacing
   format.authors "author" output.warn
   name.or.dash
@@ -2251,22 +2195,11 @@ FUNCTION {inproceedings}
   format.url output
   fin.entry
   if.url.std.interword.spacing
-  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-  #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
-  %%変更箇所2ここまで
 }
 
 FUNCTION {manual}
 { std.status.using.comma
   start.entry
-  %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-  isjapanese empty$ 
-   {skip$} 
-   {#1 'japanese.flag :=
-   default.name.format.string.forJP 'name.format.string :=}
- if$ 
-  %%変更箇所1ここまで
   if.url.alt.interword.spacing
   format.authors output
   name.or.dash
@@ -2279,21 +2212,11 @@ FUNCTION {manual}
   format.url output
   fin.entry
   if.url.std.interword.spacing
-  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-  #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
-  %%変更箇所2ここまで
 }
 
 FUNCTION {mastersthesis}
 { std.status.using.comma
   start.entry
-    %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-  isjapanese empty$
-    {skip$}
-    {#1 'japanese.flag :=}
-  if$
-  %%変更箇所1ここまで
   if.url.alt.interword.spacing
   format.authors "author" output.warn
   name.or.dash
@@ -2306,22 +2229,12 @@ FUNCTION {mastersthesis}
   format.url output
   fin.entry
   if.url.std.interword.spacing
-  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-  #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
-  %%変更箇所2ここまで
 }
 
 FUNCTION {misc}
 { 
   std.status.using.comma
   start.entry
-  %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-  isjapanese empty$
-    {skip$}
-    {#1 'japanese.flag :=}
-  if$
-  %%変更箇所1ここまで
   if.url.alt.interword.spacing
   format.authors output
   name.or.dash
@@ -2336,21 +2249,11 @@ FUNCTION {misc}
   fin.entry
   empty.entry.warn
   if.url.std.interword.spacing
-  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-  #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
-  %%変更箇所2ここまで
 }
 
 FUNCTION {patent}
 { std.status.using.comma
   start.entry
-  %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-  isjapanese empty$
-    {skip$}
-    {#1 'japanese.flag :=}
-  if$
-  %%変更箇所1ここまで
   if.url.alt.interword.spacing
   format.authors output
   name.or.dash
@@ -2362,21 +2265,11 @@ FUNCTION {patent}
   fin.entry
   empty.entry.warn
   if.url.std.interword.spacing
-  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-  #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
-  %%変更箇所2ここまで
 }
 
 FUNCTION {periodical}
 { std.status.using.comma
   start.entry
-  %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-  isjapanese empty$
-    {skip$}
-    {#1 'japanese.flag :=}
-  if$
-  %%変更箇所1ここまで
   if.url.alt.interword.spacing
   format.editors output
   name.or.dash
@@ -2390,22 +2283,11 @@ FUNCTION {periodical}
   format.url output
   fin.entry
   if.url.std.interword.spacing
-  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-  #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
-  %%変更箇所2ここまで
 }
 
 FUNCTION {phdthesis}
 { std.status.using.comma
   start.entry
-  %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-  isjapanese empty$
-    {skip$}
-    {#1 'japanese.flag :=
-    default.name.format.string.forJP 'name.format.string :=}
-  if$
-  %%変更箇所1ここまで
   if.url.alt.interword.spacing
   format.authors "author" output.warn
   name.or.dash
@@ -2418,22 +2300,11 @@ FUNCTION {phdthesis}
   format.url output
   fin.entry
   if.url.std.interword.spacing
-  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-  #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
-  %%変更箇所2ここまで
 }
 
 FUNCTION {proceedings}
 { std.status.using.comma
   start.entry
-  %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-  isjapanese empty$ 
-   {skip$} 
-   {#1 'japanese.flag :=
-   default.name.format.string.forJP 'name.format.string :=}
- if$ 
-  %%変更箇所1ここまで
   if.url.alt.interword.spacing
   format.editors output
   name.or.dash
@@ -2451,22 +2322,11 @@ FUNCTION {proceedings}
   format.url output
   fin.entry
   if.url.std.interword.spacing
-  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-  #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
-  %%変更箇所2ここまで
 }
 
 FUNCTION {standard}
 { std.status.using.comma
   start.entry
-  %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-  isjapanese empty$ 
-   {skip$} 
-   {#1 'japanese.flag :=
-   default.name.format.string.forJP 'name.format.string :=}
- if$ 
-  %%変更箇所1ここまで
   if.url.alt.interword.spacing
   format.authors output
   name.or.dash
@@ -2479,22 +2339,11 @@ FUNCTION {standard}
   format.url output
   fin.entry
   if.url.std.interword.spacing
-  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-  #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
-  %%変更箇所2ここまで
 }
 
 FUNCTION {techreport}
 { std.status.using.comma
   start.entry
-  %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-  isjapanese empty$ 
-   {skip$} 
-   {#1 'japanese.flag :=
-   default.name.format.string.forJP 'name.format.string :=}
- if$ 
-  %%変更箇所1ここまで
   if.url.alt.interword.spacing
   format.authors "author" output.warn
   name.or.dash
@@ -2508,22 +2357,11 @@ FUNCTION {techreport}
   format.url output
   fin.entry
   if.url.std.interword.spacing
-  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-  #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
-  %%変更箇所2ここまで
 }
 
 FUNCTION {unpublished}
 { std.status.using.comma
   start.entry
-  %%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-  isjapanese empty$ 
-   {skip$} 
-   {#1 'japanese.flag :=
-   default.name.format.string.forJP 'name.format.string :=}
- if$ 
-  %%変更箇所1ここまで
   if.url.alt.interword.spacing
   format.authors "author" output.warn
   name.or.dash
@@ -2533,10 +2371,6 @@ FUNCTION {unpublished}
   format.url output
   fin.entry
   if.url.std.interword.spacing
-  %%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-  #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
-  %%変更箇所2ここまで
 }
 
 

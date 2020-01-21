@@ -99,17 +99,17 @@ FUNCTION {default.name.format.string.forJP}{ "{ff~}{vv~}{ll}{, jj}" } %%追加�
 ```bst
 FUNCTION {initialize.controls}
 { default.is.use.number.for.article 'is.use.number.for.article :=
-default.is.use.paper 'is.use.paper :=
-default.is.use.url 'is.use.url :=
-default.is.forced.et.al 'is.forced.et.al :=
-default.max.num.names.before.forced.et.al 'max.num.names.before.forced.et.al :=
-default.num.names.shown.with.forced.et.al 'num.names.shown.with.forced.et.al :=
-default.is.use.alt.interword.spacing 'is.use.alt.interword.spacing :=
-default.is.dash.repeated.names 'is.dash.repeated.names :=
-default.ALTinterwordstretchfactor 'ALTinterwordstretchfactor :=
-default.name.format.string 'name.format.string := %%ここで代入されている
-default.name.latex.cmd 'name.latex.cmd :=
-default.name.url.prefix 'name.url.prefix :=
+  default.is.use.paper 'is.use.paper :=
+  default.is.use.url 'is.use.url :=
+  default.is.forced.et.al 'is.forced.et.al :=
+  default.max.num.names.before.forced.et.al 'max.num.names.before.forced.et.al :=
+  default.num.names.shown.with.forced.et.al 'num.names.shown.with.forced.et.al :=
+  default.is.use.alt.interword.spacing 'is.use.alt.interword.spacing :=
+  default.is.dash.repeated.names 'is.dash.repeated.names :=
+  default.ALTinterwordstretchfactor 'ALTinterwordstretchfactor :=
+  default.name.format.string 'name.format.string := %%ここで代入されている
+  default.name.latex.cmd 'name.latex.cmd :=
+  default.name.url.prefix 'name.url.prefix :=
 }
 ```
 
@@ -132,44 +132,12 @@ default.name.url.prefix 'name.url.prefix :=
 ## 日本語文献の複数著者の場合に出てきてしまうandの抑制
 `FUNCTION{format.names}`の変更。
 
-## 全ての文献形式にフラグを管理する処理を追加 + 日本語
+## start.entry及びfin.entryに日本語フラグを管理する処理を追加
 bibにisjapaneseが{true}で入っていた場合に`japanese.flag`を立てる処理をします。
 また，先程述べた日本語と英語での書式の変更もここでやってしまいます。
 
 
-- `isjapanese`を探して`japanese.flag`を立てる。
+- `start.entry`内にて`isjapanese`を探して`japanese.flag`を立てる。
 - flagが1の時，日本語用の名前フォーマット`default.name.format.string.forJP`へと`name.format.string`を切り替える。
-- 最後に`japanese.flag`を0に戻して，名前のフォーマットを英語用に戻す。
+- 最後に`fin.entry`内で`japanese.flag`を0に戻して，名前のフォーマットを英語用に戻す。
 
-```
-FUNCTION {article}
-{ std.status.using.comma
-start.entry
-%%変更箇所1：日本語エントリに何かあれば日本語化するフラグを立てる
-isjapanese empty$ 
-{skip$} 
-{#1 'japanese.flag :=
-default.name.format.string.forJP 'name.format.string :=} 
-if$ 
-%%変更箇所1ここまで
-if.url.alt.interword.spacing
-format.authors "author" output.warn
-name.or.dash
-format.article.title "title" output.warn
-format.journal "journal" bibinfo.check "journal" output.warn
-format.volume output
-format.number.if.use.for.article output
-format.pages output
-format.date "year" output.warn
-format.note output
-format.url output
-fin.entry
-if.url.std.interword.spacing
-%%変更箇所2：次の文献のために日本語化フラグの解除(0に戻しておく)
-#0 'japanese.flag :=
-default.name.format.string 'name.format.string :=
-%%変更箇所2ここまで
-}
-```
-
-これを`article`だけでなく全ての文章タイプに対して適用した。
