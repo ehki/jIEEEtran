@@ -10,6 +10,20 @@ def is_japanese(string):
             return True
     return False
 
+def is_japanese_excludefilepath(string):
+    stringtoken = string.split(' ') # separate token with space 
+    for chs in stringtoken:
+        if '\\' in chs or ' / ' in chs:
+            continue # exclude file path
+        else:
+            for ch in chs:
+                name = unicodedata.name(ch,'Undefined') 
+                if "CJK UNIFIED" in name \
+                or "HIRAGANA" in name \
+                or "KATAKANA" in name:
+                    return True
+    return False
+
 
 if __name__ == "__main__":
     argv = sys.argv
@@ -27,13 +41,13 @@ if __name__ == "__main__":
     # 3. add string
     output = ''
     for strings in sdata:
-        if is_japanese(strings):
+        if is_japanese_excludefilepath(strings):
             output = output +'@' + strings[:-3] + ',\n isjapanese = {true}\n}\n'
         else:
             output = output +'@'+ strings
     output_bib = output[1:]
     # 4. save as new files
-    fname_o = fname.replace('.bib','_withJPflag.bib')
+    fname_o = fname.replace('.bib','_withJP.bib')
     with open(fname_o,'w',encoding='utf-8') as fo:
         fo.write(output_bib)
 
