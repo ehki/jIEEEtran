@@ -1,13 +1,9 @@
-import bibtexparser
 import unicodedata
 import sys
+import re
 
 
-CHK_KEY = ("title", "publisher", "journal", "author")
-COMMENT = """
------
-This file is converted by addJPflag.py
-in order to add isjapanese flag."""
+CHK_KEY = r"\s*author|\s*journal|\s*title|\s*publisher"
 
 
 def is_japanese(string):
@@ -29,16 +25,15 @@ def is_japanese_entry(entry, keys):
         return False
 
 
-def format_jp_authors(entry):
-    try:
-        atx = " and "
-        aut = []
-        for d in entry["author"].split(atx):
-            ret = d.replace(" ", "~") if d[0] == "{" else d
-            aut.append(ret)
-        entry["author"] = atx.join(aut)
-    except:
-        pass
+def format_jp_authors(t):
+    rp, lp = t.find("{"), t.rfind("}")
+    if rp == -1 or lp == -1:
+        raise ValueError("No bracket found in the text.")
+    atx = " and "
+    ret = t[: rp + 1]
+    ret += atx.join([s.replace(" ", "~") for s in t[rp + 1 : lp].split(atx)])
+    ret += t[lp:]
+    return ret
 
 
 if __name__ == "__main__":
@@ -48,19 +43,27 @@ if __name__ == "__main__":
         print("Please parse .bib file name!")
         exit(-1)
 
+    # 1. read file
     fname = argv[1]
-    with open(fname, "r") as f:
-        bibdat = bibtexparser.loads(f.read())
-
-    bibdat.comments[0] += str(COMMENT)
-
-    for ent in bibdat.entries:
-        format_jp_authors(ent)
-        if is_japanese_entry(ent, CHK_KEY):
-            ent["isjapanese"] = "true"
-
-    fname_o = fname.replace(".bib", "_withJPflag.bib")
-    writer = bibtexparser.bwriter.BibTexWriter()
-    with open(fname_o, "w") as f:
-        f.write(writer.write(bibdat))
+    f = open(fname, encoding="utf-8")
+    data = f.read()
+    # 2. split file
+    sdata = data.split("@")
+    # 3. add string
+    output = ""
+    for entry in sdata:
+        jpflag = False
+        output += "@"
+        for line in entry.split("\n"):
+            if re.search(CHK_KEY, line) and is_japanese(line):
+                jpflag = True
+                if re.match(r"\s*author", line):
+                    line = format_jp_authors(line)
+                line += "\nisjapanese = {true},"
+            output += line + "\n"
+    output_bib = output[1:]
+    # 4. save as new files
+    fname_o = fname.replace(".bib", "_withJP.bib")
+    with open(fname_o, "w", encoding="utf-8") as fo:
+        fo.write(output_bib)
 
