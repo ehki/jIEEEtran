@@ -1,12 +1,15 @@
 import unicodedata
 import sys
+import re
+
+
+CHK_KEY = r'\s*author|\s*journal|\s*title|\s*publisher'
+
 
 def is_japanese(string):
     for ch in string:
-        name = unicodedata.name(ch,'Undefined') 
-        if "CJK UNIFIED" in name \
-        or "HIRAGANA" in name \
-        or "KATAKANA" in name:
+        name = unicodedata.name(ch, 'Undefined')
+        if 'CJK UNIFIED' in name or 'HIRAGANA' in name or 'KATAKANA' in name:
             return True
     return False
 
@@ -25,29 +28,58 @@ def is_japanese_excludefilepath(string):
     return False
 
 
-if __name__ == "__main__":
+def is_japanese_entry(entry, keys):
+    for k in keys:
+        try:
+            if is_japanese(entry[k]):
+                return True
+        except:
+            continue
+    else:
+        return False
+
+
+def format_jp_authors(t):
+    rp, lp = t.find('{'), t.rfind('}')
+    if rp == -1 or lp == -1:
+        raise ValueError('No bracket found in the text.')
+    atx = ' and '
+    ret = t[: rp + 1]
+    ret += atx.join([s.replace(' ', '~') for s in t[rp + 1 : lp].split(atx)])
+    ret += t[lp:]
+    return ret
+
+
+if __name__ == '__main__':
     argv = sys.argv
 
-    if len(sys.argv)==1:
+    if len(sys.argv) == 1:
         print('Please parse .bib file name!')
         exit(-1)
 
     # 1. read file
     fname = argv[1]
-    f = open(fname,encoding="utf-8")
+    f = open(fname, encoding='utf-8')
     data = f.read()
     # 2. split file
     sdata = data.split('@')
     # 3. add string
     output = ''
-    for strings in sdata:
-        if is_japanese_excludefilepath(strings):
-            output = output +'@' + strings[:-3] + ',\n isjapanese = {true}\n}\n'
-        else:
-            output = output +'@'+ strings
+    for entry in sdata:
+        jpflag = False
+        output += '@'
+        for line in entry.split('\n'):
+            if re.search(CHK_KEY, line) and is_japanese(line):
+                nspace = re.match(r'\s*', line).end()
+                if re.match(r'\s*author', line):
+                    line = format_jp_authors(line)                    
+                if not jpflag:
+                    line += '\n' + ' '*nspace + 'isjapanese = {true},'
+                    jpflag = True
+            output += line + '\n'
     output_bib = output[1:]
     # 4. save as new files
-    fname_o = fname.replace('.bib','_withJP.bib')
-    with open(fname_o,'w',encoding='utf-8') as fo:
+    fname_o = fname.replace('.bib', '_withJP.bib')
+    with open(fname_o, 'w', encoding='utf-8') as fo:
         fo.write(output_bib)
 
