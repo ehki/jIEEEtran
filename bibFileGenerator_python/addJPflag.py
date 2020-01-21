@@ -13,6 +13,20 @@ def is_japanese(string):
             return True
     return False
 
+def is_japanese_excludefilepath(string):
+    stringtoken = string.split(' ') # separate token with space 
+    for chs in stringtoken:
+        if '\\' in chs or ' / ' in chs:
+            continue # exclude file path
+        else:
+            for ch in chs:
+                name = unicodedata.name(ch,'Undefined') 
+                if "CJK UNIFIED" in name \
+                or "HIRAGANA" in name \
+                or "KATAKANA" in name:
+                    return True
+    return False
+
 
 def is_japanese_entry(entry, keys):
     for k in keys:
