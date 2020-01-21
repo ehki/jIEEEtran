@@ -70,10 +70,12 @@ if __name__ == '__main__':
         output += '@'
         for line in entry.split('\n'):
             if re.search(CHK_KEY, line) and is_japanese(line):
-                jpflag = True
+                nspace = re.match(r'\s*', line).end()
                 if re.match(r'\s*author', line):
-                    line = format_jp_authors(line)
-                line += '\nisjapanese = {true},'
+                    line = format_jp_authors(line)                    
+                if not jpflag:
+                    line += '\n' + ' '*nspace + 'isjapanese = {true},'
+                    jpflag = True
             output += line + '\n'
     output_bib = output[1:]
     # 4. save as new files
