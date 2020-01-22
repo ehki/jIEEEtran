@@ -74,6 +74,8 @@ if __name__ == '__main__':
                 if re.match(r'\s*author', line):
                     line = format_jp_authors(line)                    
                 if not jpflag:
+                    if line[-1] != ',':
+                        line += ','
                     line += '\n' + ' '*nspace + 'isjapanese = {true},'
                     jpflag = True
             output += line + '\n'
