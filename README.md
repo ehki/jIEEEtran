@@ -141,3 +141,24 @@ bibにisjapaneseが{true}で入っていた場合に`japanese.flag`を立てる�
 - flagが1の時，日本語用の名前フォーマット`default.name.format.string.forJP`へと`name.format.string`を切り替える。
 - 最後に`fin.entry`内で`japanese.flag`を0に戻して，名前のフォーマットを英語用に戻す。
 
+## 目標
+
+- 日本語の不自然な処理のみを解決させた `jIEEEtran.bst` 及び `jIEEEtranS.bst`
+- 日本語も英語も電気学会形式で引用するbstファイル  `jIEEJtran.bst`
+
+を作成する。
+
+なお、電気学会のフォーマットは[電気学会論文誌への投稿手引詳細 5.5 文献](https://www.iee.jp/pub/contribution_guide/detail/#2-5-5)に指定されている通り。ただし、このページでは日本語文献末尾の発行年両端カッコは半角だが、公開されている[LaTeXスタイルzipファイル](https://www.iee.jp/pub/post/)に内包される `readme.pdf` では全角カッコとなっており、表記ユレがある。そのため、 `jIEEJtran.bst` 作成者間で議論を要する。なお、電気学会形式での英語/日本語併記は現状のbibtexでは困難であると考えられるため省略する。
+
+
+> 1.	日本語論文などの場合  
+> T. Denki, M. Hanai, and G. Misaki: “Future Technology for Power System Analysis”, IEEJ Trans.PE, Vol.130, No.1, pp.130-136 (2010) (in Japanese)  
+> 電気太郎・花井桃子・岬 五郎：「電力系統解析技術の将来」，電学論B，Vol.130, No.1, pp.130-136(2010)
+>
+> 1.	国際会議などの論文集の場合  
+> B. Yamada: “Experimental studies of new micromechanical vibration systems”, Proc. IEEE Conf. on Micro-mechanical Component, No.21, pp.123-145, Paris, France (1999)
+>
+> 1.	単行本などの場合  
+>Y. Sankar: Management of Technological Change, p.10, John Wiley, New York (1991)
+>
+> 注：日本語単行本の表記は，上記(a)のような取り扱いとする。
