@@ -110,6 +110,24 @@ FUNCTION {ieej.setting.punct.year.aft} { #0 }
 FUNCTION {ieej.setting.emph.title} { #0 }
 
 
+% 電気学会形式において、タイトル前後の文字を指定
+% default: {bbl.ieej.jp.title.pre} { "「" }
+%          {bbl.ieej.jp.title.aft} { "」" }
+%          {bbl.ieej.en.title.pre} { "``" }
+%          {bbl.ieej.en.title.aft} { "''" }
+FUNCTION {bbl.ieej.jp.title.pre} { "「" }
+FUNCTION {bbl.ieej.jp.title.aft} { "」" }
+FUNCTION {bbl.ieej.en.title.pre} { "``" }
+FUNCTION {bbl.ieej.en.title.aft} { "''" }
+
+
+% 電気学会形式形式において、著者とタイトルの間の文字の指定
+% default: {bbl.ieej.jp.author.title.sep} { "：" }
+%          {bbl.ieej.en.author.title.sep} { ": " }
+FUNCTION {bbl.ieej.jp.author.title.sep} { "：" }
+FUNCTION {bbl.ieej.en.author.title.sep} { ":" }
+
+
 % #0 turns off the display of the number for articles.
 % #1 enables
 FUNCTION {default.is.use.number.for.article} { #1 }
@@ -357,6 +375,8 @@ INTEGERS { prev.status.punct this.status.punct punct.std
            space.no space.normal space.large
            prev.status.quote this.status.quote quote.std
            quote.no quote.close
+           prev.status.autho this.status.autho autho.std
+           autho.no autho.close
            prev.status.nline this.status.nline nline.std
            nline.no nline.newblock 
            status.cap cap.std
@@ -493,6 +513,8 @@ FUNCTION {initialize.status.constants}
   #2 'space.large :=
   #0 'quote.no :=
   #1 'quote.close :=
+  #0 'autho.no :=
+  #1 'autho.close :=
   #0 'cap.no :=
   #1 'cap.yes :=
   #0 'nline.no :=
@@ -504,6 +526,7 @@ FUNCTION {std.status.using.comma}
 { punct.comma 'punct.std :=
   space.normal 'space.std :=
   quote.no 'quote.std :=
+  autho.no 'autho.std :=
   nline.no 'nline.std :=
   cap.no 'cap.std :=
 }
@@ -512,6 +535,7 @@ FUNCTION {std.status.using.period}
 { punct.period 'punct.std :=
   space.normal 'space.std :=
   quote.no 'quote.std :=
+  autho.no 'autho.std :=
   nline.no 'nline.std :=
   cap.yes 'cap.std :=
 }
@@ -520,10 +544,12 @@ FUNCTION {initialize.prev.this.status}
 { punct.no 'prev.status.punct :=
   space.no 'prev.status.space :=
   quote.no 'prev.status.quote :=
+  autho.no 'prev.status.autho :=
   nline.no 'prev.status.nline :=
   punct.no 'this.status.punct :=
   space.no 'this.status.space :=
   quote.no 'this.status.quote :=
+  autho.no 'this.status.autho :=
   nline.no 'this.status.nline :=
   cap.yes 'status.cap :=
 }
@@ -532,6 +558,7 @@ FUNCTION {this.status.std}
 { punct.std 'this.status.punct :=
   space.std 'this.status.space :=
   quote.std 'this.status.quote :=
+  autho.std 'this.status.autho :=
   nline.std 'this.status.nline :=
 }
 
@@ -541,6 +568,7 @@ FUNCTION {this.to.prev.status}
 { this.status.punct 'prev.status.punct :=
   this.status.space 'prev.status.space :=
   this.status.quote 'prev.status.quote :=
+  this.status.autho 'prev.status.autho :=
   this.status.nline 'prev.status.nline :=
 }
 
@@ -632,6 +660,34 @@ numnames
 }
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% JAPANESE WORD TOGGLER %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+FUNCTION {bbl.ieej.year.pre}
+{
+  japanese.flag #1 = { bbl.ieej.jp.year.pre } { bbl.ieej.en.year.pre } if$
+}
+FUNCTION {bbl.ieej.year.aft}
+{
+  japanese.flag #1 = { bbl.ieej.jp.year.aft } { bbl.ieej.en.year.aft } if$
+}
+FUNCTION {bbl.ieej.title.pre}
+{
+  japanese.flag #1 = { bbl.ieej.jp.title.pre } { bbl.ieej.en.title.pre } if$
+}
+FUNCTION {bbl.ieej.title.aft}
+{
+  japanese.flag #1 = { bbl.ieej.jp.title.aft } { bbl.ieej.en.title.aft } if$
+}
+FUNCTION {bbl.ieej.author.title.sep}
+{
+  japanese.flag #1 =
+    { bbl.ieej.jp.author.title.sep }
+    { bbl.ieej.en.author.title.sep }
+  if$
+}
 
 
 % The output routines write out the *next* to the top (previous) item on the
@@ -652,11 +708,20 @@ numnames
 
 FUNCTION {output.nonnull}
 { swap$
+  use.ieej.setting #1 =
+    {
+      prev.status.autho autho.close =
+        { bbl.ieej.author.title.sep * }
+        { skip$}
+      if$
+    }
+    { skip$ }
+  if$
   %%追加箇所1：日本語文献なら，"のあとにカンマ
   japanese.flag #1 =
     {
       prev.status.quote quote.close =
-        { "''" * }
+        { bbl.ieej.title.aft * }
         { skip$ }
       if$
     }
@@ -1121,21 +1186,6 @@ FUNCTION {chk.jp.entry} {
 }
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% JAPANESE WORD TOGGLER %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-FUNCTION {bbl.ieej.year.pre}
-{
-  japanese.flag #1 = { bbl.ieej.jp.year.pre } { bbl.ieej.en.year.pre } if$
-}
-FUNCTION {bbl.ieej.year.aft}
-{
-  japanese.flag #1 = { bbl.ieej.jp.year.aft } { bbl.ieej.en.year.aft } if$
-}
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% LATEX BIBLIOGRAPHY CODE %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1449,7 +1499,15 @@ FUNCTION {format.address}
 
 %% author/editor names
 
-FUNCTION {format.authors}{ author "author" format.names }
+FUNCTION {format.authors}
+{
+  author "author" format.names
+  use.ieej.setting #1 = 
+    { autho.close 'this.status.autho :=
+      punct.no 'this.status.punct := }
+    { skip$ }
+  if$
+}
 
 FUNCTION {format.editors}
 { editor "editor" format.names duplicate$ empty$ 'skip$
@@ -1624,7 +1682,10 @@ FUNCTION {format.article.title}
         { punct.no 'this.status.punct := }
       if$
       select.language
-      "``" swap$ *
+      japanese.flag #1 =
+        { bbl.ieej.title.pre swap$ * }
+        { "``" swap$ * }
+      if$
       cap.status.std
     }
   if$
@@ -1652,6 +1713,15 @@ FUNCTION {format.book.title.edition}
     { this.to.prev.status
       this.status.std
       select.language
+      use.ieej.setting #1 =
+        {
+          japanese.flag #1 = 
+            { bbl.ieej.title.pre swap$ * bbl.ieej.title.aft * }
+            { skip$ }
+          if$
+        }
+        { skip$ }
+      if$
       use.ieej.setting #0 =
         { emphasize }
         { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
@@ -1680,6 +1750,15 @@ FUNCTION {format.book.title}
       this.status.std
       cap.status.std
       select.language
+      use.ieej.setting #1 =
+        {
+          japanese.flag #1 = 
+            { bbl.ieej.title.pre swap$ * bbl.ieej.title.aft * }
+            { skip$ }
+          if$
+        }
+        { skip$ }
+      if$
       use.ieej.setting #0 =
         { emphasize }
         { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
