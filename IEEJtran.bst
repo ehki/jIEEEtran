@@ -71,6 +71,37 @@
 % IEEEtran.cls V1.6 and later does provide this command.
 
 
+% 電気学会形式の引用フォーマットを使用するかの設定
+% #0 : isjapanese が True の場合、IEEEフォーマットでの日本語の不自然な扱いを解消
+% #1 : isjapanese に関係なく、全ての文献に電気学会形式を使用
+% default: { #1 }
+FUNCTION {use.ieej.setting} { #1 }
+
+
+% 電気学会形式の発行年の指定
+% default: {bbl.ieej.jp.year.pre} { "（" }
+%          {bbl.ieej.jp.year.aft} { "）" }
+%          {bbl.ieej.en.year.pre} { "(" }
+%          {bbl.ieej.en.year.aft} { ")" }
+FUNCTION {bbl.ieej.jp.year.pre} { "（" }
+FUNCTION {bbl.ieej.jp.year.aft} { "）" }
+FUNCTION {bbl.ieej.en.year.pre} { "(" }
+FUNCTION {bbl.ieej.en.year.aft} { ")" }
+
+
+% 電気学会形式において、発行年の前にカンマを打つかの指定
+% #0 : 打たない
+% #1 : 打つ
+% default: { #0 }
+FUNCTION {ieej.setting.comma.year.pre} { #0 }
+
+
+% 電気学会形式において、発行年の後にピリオドを打つかの指定
+% #0 : 打たない
+% #1 : 打つ
+% default: { #0 }
+FUNCTION {ieej.setting.punct.year.aft} { #0 }
+
 
 % #0 turns off the display of the number for articles.
 % #1 enables
@@ -1083,6 +1114,21 @@ FUNCTION {chk.jp.entry} {
 }
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% JAPANESE WORD TOGGLER %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+FUNCTION {bbl.ieej.year.pre}
+{
+  japanese.flag #1 = { bbl.ieej.jp.year.pre } { bbl.ieej.en.year.pre } if$
+}
+FUNCTION {bbl.ieej.year.aft}
+{
+  japanese.flag #1 = { bbl.ieej.jp.year.aft } { bbl.ieej.en.year.aft } if$
+}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% LATEX BIBLIOGRAPHY CODE %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1244,12 +1290,18 @@ FUNCTION {format.address.org.or.pub.date}
         { skip$ }
         { t empty$ address empty$ and
             { skip$ }
-            { ", " * }
+            { japanese.flag #1 = { skip$ } { ", " * } if$ }
           if$
           month empty$
             { year empty$
                 { skip$ }
-                { year "year" bibinfo.check * }
+                { use.ieej.setting #1 = 
+                    { year "year" bibinfo.check
+                      bbl.ieej.year.aft *
+                      bbl.ieej.year.pre swap$ * * }
+                    { year "year" bibinfo.check * }
+                    if$
+                }
               if$
             }
             { month "month" bibinfo.check *
@@ -1262,6 +1314,19 @@ FUNCTION {format.address.org.or.pub.date}
         }
       if$
     }
+  if$
+  use.ieej.setting #1 =
+    {
+      ieej.setting.punct.year.aft #0 = 
+        { punct.no 'this.status.punct := }
+        { skip$ }
+      if$
+      ieej.setting.comma.year.pre #0 = 
+        { punct.no 'prev.status.punct := }
+        { skip$ }
+      if$
+    }
+    { skip$ }
   if$
 }
 
@@ -1415,6 +1480,20 @@ FUNCTION {format.date}
         }
       if$
       *
+      use.ieej.setting #1 =
+        {
+          bbl.ieej.year.aft * bbl.ieej.year.pre swap$ *
+          ieej.setting.punct.year.aft #0 = 
+            { punct.no 'this.status.punct := }
+            { skip$ }
+          if$
+          ieej.setting.comma.year.pre #0 = 
+            { punct.no 'prev.status.punct := }
+            { skip$ }
+          if$
+        }
+        { skip$ }
+      if$
     }
   if$
 }
