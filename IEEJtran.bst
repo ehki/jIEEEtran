@@ -103,6 +103,13 @@ FUNCTION {ieej.setting.comma.year.pre} { #0 }
 FUNCTION {ieej.setting.punct.year.aft} { #0 }
 
 
+% 電気学会形式において、書籍名と雑誌名をemphasizeするかの指定
+% #0 : emphasize しない
+% #1 : emphasize する
+% default: { #0 }
+FUNCTION {ieej.setting.emph.title} { #0 }
+
+
 % #0 turns off the display of the number for articles.
 % #1 enables
 FUNCTION {default.is.use.number.for.article} { #1 }
@@ -1562,7 +1569,11 @@ FUNCTION {format.in.booktitle}
       this.status.std
       select.language
       intype missing$
-        { emphasize
+        { 
+          use.ieej.setting #0 =
+            { emphasize }
+            { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
+          if$
           bbl.in " " *
         }
         { intype " " * }
@@ -1580,7 +1591,10 @@ FUNCTION {format.in.booktitle.edition}
     { this.to.prev.status
       this.status.std
       select.language
-      emphasize
+      use.ieej.setting #0 =
+        { emphasize }
+        { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
+      if$
       edition empty$ 'skip$
         { ", " *
           edition
@@ -1638,7 +1652,10 @@ FUNCTION {format.book.title.edition}
     { this.to.prev.status
       this.status.std
       select.language
-      emphasize
+      use.ieej.setting #0 =
+        { emphasize }
+        { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
+      if$
       edition empty$ 'skip$
         { ", " *
           edition
@@ -1663,7 +1680,10 @@ FUNCTION {format.book.title}
       this.status.std
       cap.status.std
       select.language
-      emphasize
+      use.ieej.setting #0 =
+        { emphasize }
+        { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
+      if$
     }
   if$
 }
@@ -1678,7 +1698,10 @@ FUNCTION {format.journal}
       this.status.std
       cap.status.std
       select.language
-      emphasize
+      use.ieej.setting #0 =
+        { emphasize }
+        { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
+      if$
     }
   if$
 }
