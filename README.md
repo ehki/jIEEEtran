@@ -1,20 +1,23 @@
-# bibtex style (.bst) file for English and Japanese users
-bibtexで使えるIEEEtranの引用形式を保ったまま，日本語と英語の双方に対応できるように変更を加えたbstファイルです。
+# 日英両対応bibtexスタイルファイル（電気学会，IEEE）
+日本語と英語文献を同時に扱えるように調整を加えたbstファイルです。
+IEEEtranとIEEJtranの2形式を扱うようにしています。
 
-- IEEEtran_withJP：通常のIEEEtranの2言語版
-- IEEEtranS_withJP：著者のアルファベット順で並び替えたIEEEtranSの2言語版
-- ieeetr_withJP：調整中
+- IEEJtran：電気学会の日英両対応フォーマット
+- jIEEEtran：通常のIEEEtranの日本語対応版
+- jIEEEtranS：著者のアルファベット順で並び替えたIEEEtranSの日本語対応版
 
-# 使い方（IEEEtranS_withJPの例）
+# 使い方（IEEJtranの例）
 
-`IEEEtranS_withJP.bst`というファイルをPathの通った箇所かtexファイルと同じフォルダに入れて，以下のように文章内で記述します。（`ref.bib`は自分で作ったbibファイルを参照するように。）
+`IEEJtran.bst`というファイルをPathの通った箇所かtexファイルと同じフォルダに入れて，以下のように文章内で記述します。（`ref.bib`はMendeleyなどでbibファイル名を適宜参照。）
 
 ```tex
-\bibliographystyle{IEEEtranS_withJP}
+\bibliographystyle{IEEJtran}
 \bibliography{ref.bib}
 ```
 
-## サンプルTexファイル
+その他のスタイルでも`IEEJtran`の箇所を書き換えてください。
+
+## サンプルTexファイル 
 サンプルのファイルがtestフォルダ以下にあります。
 
 もとにするbibファイルは以下のように `isjapanese = {true}`という行を追加しています。
@@ -26,33 +29,28 @@ bibtexで使えるIEEEtranの引用形式を保ったまま，日本語と英語
  year = {2019},
  journal = {日本語学会},
  title = {文献1},
- isjapanese = {true}
+ isjapanese = {true},
+ number = {10},
+ pages = {20--30},
+ volume = {15},
 }
 @article{japaneseTest2,
  author = {山田 五郎 and 山田 六郎},
  year = {2019},
  journal = {日本語学会},
  title = {文献2},
- isjapanese = {true}
+ isjapanese = {true},
+ number = {10},
+ pages = {21},
+ volume = {15},
 }
-@article{englishTest1,
- author = {Ichiro Yamada and Jiro Yamada and Saburo Yamada and Shiro Yamada},
- year = {2019},
- journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
- title = {Title1}
-}
-@article{englishTest2,
- author = {Goro Yamada and Rokuro Yamada},
- year = {2019},
- journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
- title = {Title2}
-}
+...
 ```
 
 
-出力されるtexはこんな感じになります。
+`IEEJtran.bst`で出力されるtexは以下のようになります。
 
-![](images/results.png)
+![](images/results_IEEJtran.png)
 
 ## bib fileの自動編集
 `isjapanese = {true}`のフラグを自動でたてるpythonプログラムを`bibFileGenerator_python`直下に作成しました。
