@@ -160,7 +160,7 @@ FUNCTION {default.is.use.paper} { #1 }
 
 % #0 turns off the display of urls
 % #1 enables
-FUNCTION {default.is.use.url} { #1 }
+FUNCTION {default.is.use.url} { #0 }
 
 
 % #0 turns off the forced use of "et al."
