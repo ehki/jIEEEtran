@@ -5,4 +5,7 @@
 *.synctex
 *.dvi
 *.bbl
-
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.vscode
