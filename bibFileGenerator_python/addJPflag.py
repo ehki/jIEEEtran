@@ -1,53 +1,76 @@
-import unicodedata
-import sys
+import os
 import re
+import sys
+import unicodedata
 
 
 CHK_KEY = r'\s*author|\s*journal|\s*title|\s*publisher'
+CHK_JPC = r'CJK UNIFIED|HIRAGANA|KATAKANA'
 
 
-def is_japanese(string):
+def chk_jp_char(string):
     for ch in string:
-        name = unicodedata.name(ch, 'Undefined')
-        if 'CJK UNIFIED' in name or 'HIRAGANA' in name or 'KATAKANA' in name:
+        if re.search(CHK_JPC, unicodedata.name(ch, 'Undefined')):
             return True
-    return False
-
-def is_japanese_excludefilepath(string):
-    stringtoken = string.split(' ') # separate token with space 
-    for chs in stringtoken:
-        if '\\' in chs or ' / ' in chs:
-            continue # exclude file path
-        else:
-            for ch in chs:
-                name = unicodedata.name(ch,'Undefined') 
-                if "CJK UNIFIED" in name \
-                or "HIRAGANA" in name \
-                or "KATAKANA" in name:
-                    return True
-    return False
-
-
-def is_japanese_entry(entry, keys):
-    for k in keys:
-        try:
-            if is_japanese(entry[k]):
-                return True
-        except:
-            continue
     else:
         return False
 
 
-def format_jp_authors(t):
+def format_authors(t):
+    if not re.match(r'\s*author', t):
+        return t
     rp, lp = t.find('{'), t.rfind('}')
     if rp == -1 or lp == -1:
         raise ValueError('No bracket found in the text.')
-    atx = ' and '
-    ret = t[: rp + 1]
-    ret += atx.join([s.replace(' ', '~') for s in t[rp + 1 : lp].split(atx)])
-    ret += t[lp:]
-    return ret
+    keysplit = ' and '
+    preauth = t[: rp + 1]
+    authors = t[rp + 1 : lp]
+    aftauth = t[lp:]
+    convert = [s.replace(' ', '~') for s in authors.split(keysplit)]
+    authors = keysplit.join(convert)
+    return preauth + authors + aftauth
+
+
+def chk_last_comma(line):
+    b = True if line[-1] == ',' else False
+    return b
+
+
+def format_jp_keys(line, skip=False):
+    line = format_authors(line)
+    if not skip:
+        nspace = re.match(r'\s*', line).end()
+        prefix = '\n' if chk_last_comma(line) else ',\n'
+        indent = ' '*nspace
+        jp_key = 'isjapanese = {true},'
+        line += prefix + indent + jp_key
+    return line
+
+
+def format_entry(e, jpflag=False, ret=''):
+    keyvals = []
+    for line in e.split('\n'):
+        if re.search(CHK_KEY, line) and chk_jp_char(line):
+            ret = format_jp_keys(line, skip=jpflag)
+            jpflag = True
+        else:
+            ret = line
+        keyvals.append(ret)
+    return '\n'.join(keyvals)
+
+
+def convert_bib(fname_i, fname_o):
+    # 1. read file
+    with open(fname_i, 'r', encoding='utf-8') as fi:
+        data = fi.read()
+    # 2. split file
+    sdata = data.split('@')
+    # 3. format each entry
+    entries = [ format_entry(entry) for entry in sdata ]
+    # 4. save as new files
+    output_bib = '@'.join(entries)
+    with open(fname_o, 'w', encoding='utf-8') as fo:
+        fo.write(output_bib)
 
 
 if __name__ == '__main__':
@@ -57,31 +80,8 @@ if __name__ == '__main__':
         print('Please parse .bib file name!')
         exit(-1)
 
-    # 1. read file
-    fname = argv[1]
-    f = open(fname, encoding='utf-8')
-    data = f.read()
-    # 2. split file
-    sdata = data.split('@')
-    # 3. add string
-    output = ''
-    for entry in sdata:
-        jpflag = False
-        output += '@'
-        for line in entry.split('\n'):
-            if re.search(CHK_KEY, line) and is_japanese(line):
-                nspace = re.match(r'\s*', line).end()
-                if re.match(r'\s*author', line):
-                    line = format_jp_authors(line)                    
-                if not jpflag:
-                    if line[-1] != ',':
-                        line += ','
-                    line += '\n' + ' '*nspace + 'isjapanese = {true},'
-                    jpflag = True
-            output += line + '\n'
-    output_bib = output[1:]
-    # 4. save as new files
-    fname_o = fname.replace('.bib', '_withJP.bib')
-    with open(fname_o, 'w', encoding='utf-8') as fo:
-        fo.write(output_bib)
-
+    fname_i = argv[1]
+    dirn, fn = os.path.split(fname_i)
+    rt, ext = os.path.splitext(fn)
+    fname_o = os.path.join(dirn, rt+'_withJP'+ext)
+    convert_bib(fname_i, fname_o)
