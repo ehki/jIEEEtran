@@ -740,13 +740,8 @@ FUNCTION {output.nonnull}
     { skip$ }
   if$
   %%追加箇所1：日本語文献なら，"のあとにカンマ
-  japanese.flag #1 =
-    {
-      prev.status.quote quote.close =
-        { bbl.ieej.title.aft * }
-        { skip$ }
-      if$
-    }
+  use.ieej.setting #1 =
+    { prev.status.quote quote.close = { bbl.ieej.title.aft * } { skip$ } if$ }
     { skip$ }
   if$
   %%追加箇所1ここまで
@@ -778,7 +773,7 @@ FUNCTION {output.nonnull}
   if$ 
   %%変更箇所3ここまで
   %%変更箇所4：英語の場合は"の前にカンマ
-  japanese.flag #0 =
+  use.ieej.setting #0 =
     {
       prev.status.quote quote.close =
         { "''" * }
@@ -1742,7 +1737,7 @@ FUNCTION {format.article.title}
         { punct.no 'this.status.punct := }
       if$
       select.language
-      japanese.flag #1 =
+      use.ieej.setting #1 =
         { bbl.ieej.title.pre swap$ * }
         { "``" swap$ * }
       if$
