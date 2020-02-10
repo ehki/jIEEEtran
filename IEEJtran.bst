@@ -1774,12 +1774,8 @@ FUNCTION {format.book.title.edition}
       this.status.std
       select.language
       use.ieej.setting #1 =
-        {
-          japanese.flag #1 = 
-            { bbl.ieej.title.pre swap$ * bbl.ieej.title.aft * }
-            { skip$ }
-          if$
-        }
+        { bbl.ieej.title.pre swap$ * bbl.ieej.title.aft *
+          punct.no 'prev.status.punct := }
         { skip$ }
       if$
       use.ieej.setting #0 =
@@ -1808,13 +1804,13 @@ FUNCTION {format.book.title.edition}
           if$
         }
       if$
-      japanese.flag #1 = 
+      use.ieej.setting #1 = 
         { space.normal 'prev.status.space := }
         { bbl.in " " * swap$ *}
       if$
       cap.status.std
       punct.comma 'this.status.punct :=
-      japanese.flag #1 =
+      use.ieej.setting #1 =
         { skip$ }
         { punct.comma 'prev.status.punct := }
       if$
