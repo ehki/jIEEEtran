@@ -148,6 +148,13 @@ FUNCTION {bbl.ieej.pages} { "pp." }
 FUNCTION {bbl.ieej.page} { "p." }
 
 
+% 日本語文献において、著者間の仕切り文字の設定
+% default: {bbl.ieej.jp.author.sep} { "・" }
+%          {bbl.ieej.en.author.sep} { ", " }
+FUNCTION {bbl.ieej.jp.author.sep} { "・" }
+FUNCTION {bbl.ieej.en.author.sep} { ", " }
+
+
 % #0 turns off the display of the number for articles.
 % #1 enables
 FUNCTION {default.is.use.number.for.article} { #1 }
@@ -1460,16 +1467,15 @@ FUNCTION {format.names}
           if$
           namesleft #1 >
             { 
-            %%変更箇所1：日本語の場合にカンマを全角に変更．
-              japanese.flag #0 =
+              use.ieej.setting #0 = 
+                { ", " * t do.name.latex.cmd * }
                 {
-                  ", " * t do.name.latex.cmd * 
-                }
-                {
-                  "，" * t do.name.latex.cmd * 
+                  japanese.flag #1 = 
+                    { bbl.ieej.jp.author.sep * t do.name.latex.cmd * }
+                    { bbl.ieej.en.author.sep * t do.name.latex.cmd * }
+                  if$
                 }
               if$
-            %%変更箇所1ここまで
             }
             { s nameptr "{ll}" format.name$ duplicate$ "others" =
                 { 't := }
@@ -1479,35 +1485,33 @@ FUNCTION {format.names}
                 { " " * bbl.etal emphasize * }
                 { numnames #2 >
                     { 
-                      %%変更箇所2：日本語の場合にカンマを全角に変更．
-                      japanese.flag #0 =
+                      use.ieej.setting #0 = 
+                        { "," * }
                         {
-                          "," * 
-                        }
-                        {
-                          "，" *
+                          japanese.flag #1 = 
+                            { bbl.ieej.jp.author.sep * }
+                            { bbl.ieej.en.author.sep * }
+                          if$
                         }
                       if$
-                      %%変更箇所2ここまで
                     }
                     { skip$ }
                   if$
-                  %%変更箇所3：日本語の場合で著者が2人の場合はandの代わりに全角カンマを入れる．
-                  %%bbl.andはandをくっつける処理と推測
-                  japanese.flag #0 =
+                  use.ieej.setting #0 = 
+                    { bbl.and space.word * t do.name.latex.cmd * }
                     {
-                      bbl.and
-                      space.word * t do.name.latex.cmd *
-                    }
-                    {
-                      numnames #2 =
-                        { "，" * }
+                      numnames #2 = 
+                        {
+                          japanese.flag #0 =
+                            { bbl.ieej.en.author.sep * }
+                            { bbl.ieej.jp.author.sep * }
+                          if$
+                        }
                         { skip$ }
                       if$
                       t do.name.latex.cmd *
                     }
                   if$
-                  %%変更箇所3ここまで
                 }
               if$
             }
