@@ -1355,9 +1355,12 @@ FUNCTION {format.address.org.or.pub.date}
       if$
       t empty$
         { skip$ }
-        { japanese.flag #1 =
+        { use.ieej.setting #1 =
             % space.largeからspace.normalに変更しスペースを抑制する
-            { space.normal 'prev.status.space := }
+            { 
+              space.normal 'prev.status.space := 
+              japanese.flag #1 = 'skip$ { ": " * } if$
+            }
             { punct.period 'prev.status.punct :=
               space.large 'prev.status.space :=
               address empty$
