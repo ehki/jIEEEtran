@@ -82,6 +82,5 @@ if __name__ == '__main__':
 
     fname_i = argv[1]
     dirn, fn = os.path.split(fname_i)
-    rt, ext = os.path.splitext(fn)
-    fname_o = os.path.join(dirn, rt+'_withJP'+ext)
+    fname_o = os.path.join(dirn, 'j'+fn)
     convert_bib(fname_i, fname_o)
