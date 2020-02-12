@@ -2,68 +2,33 @@
 日本語と英語文献を同時に扱えるように調整を加えたbstファイルです。
 IEEEtranとIEEJtranの2形式を扱うようにしています。
 
-- IEEJtran：電気学会の日英両対応フォーマット
-- jIEEEtran：通常のIEEEtranの日本語対応版
-- jIEEEtranS：著者のアルファベット順で並び替えたIEEEtranSの日本語対応版
+- IEEJtran.bst：電気学会の日英両対応フォーマット
+- jIEEEtran.bst：通常のIEEEtranの日本語対応版
+- jIEEEtranS.bst：著者のアルファベット順で並び替えたIEEEtranSの日本語対応版
+- addjp.py：上記3つのbstファイルを正しく動作させる日本語フラグを追加するスクリプト
 
 # 使い方（IEEJtranの例）
 
-`IEEJtran.bst`というファイルをPathの通った箇所かtexファイルと同じフォルダに入れて，以下のように文章内で記述します。（`ref.bib`はMendeleyなどでbibファイル名を適宜参照。）
+## 日本語フラグを含む bib ファイルの生成
+
+```
+python addjp.py FILENAME.bib
+```
+上記のコマンドで、`FILENAME`と同一のディレクトリに`jFILENAME.bib`というファイルが生成されます。ただし、`FILENAME`は使用するbibファイルの名前に置き換えてください。`addjp.py`では、各エントリの要素内に2バイト文字が混ざっている場合、そのエントリに`isjapanese = {true}` のフラグを追記します。ただし、2バイト文字の探索は`author`、`journal`、`title`、`publisher` の4つのタグに限定しています。また、半角スペースを挿入しつつ改行しない`~`記号を姓名間に挿入しています。
+
+## Texファイル中での記述
+
+`IEEJtran.bst`というファイルをPathの通った箇所かtexファイルと同じフォルダに入れて，以下のように文章内で記述します。
 
 ```tex
 \bibliographystyle{IEEJtran}
-\bibliography{ref.bib}
-```
-
-その他のスタイルでも`IEEJtran`の箇所を書き換えてください。
-
-## サンプルTexファイル 
-サンプルのファイルがtestフォルダ以下にあります。
-
-もとにするbibファイルは以下のように `isjapanese = {true}`という行を追加しています。
-
-
-```bib
-@article{japaneseTest1,
- author = {山田 一郎 and 山田 次郎 and 山田 三郎 and 山田 四郎},
- year = {2019},
- journal = {日本語学会},
- title = {文献1},
- isjapanese = {true},
- number = {10},
- pages = {20--30},
- volume = {15},
-}
-@article{japaneseTest2,
- author = {山田 五郎 and 山田 六郎},
- year = {2019},
- journal = {日本語学会},
- title = {文献2},
- isjapanese = {true},
- number = {10},
- pages = {21},
- volume = {15},
-}
-...
+\bibliography{jFILENAME.bib}
 ```
 
 
 `IEEJtran.bst`で出力されるtexは以下のようになります。
 
 ![](images/results_IEEJtran.png)
-
-## bib fileの自動編集
-`isjapanese = {true}`のフラグを自動でたてるpythonプログラムを`bibFileGenerator_python`直下に作成しました。
-
-大まかには2バイト文字の混ざっている参考文献に上記のフラグを追記するという動作をします。
-
-使い方は
-
-```
-python addJPflag.py *.bib
-```
-
-で`*_withJP/bib`というファイルが生成されます。
 
 
 # 変更箇所・参考文献
