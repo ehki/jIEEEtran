@@ -1469,14 +1469,10 @@ FUNCTION {format.names}
           namesleft #1 >
             { 
               use.ieej.setting #0 = 
-                { ", " * t do.name.latex.cmd * }
-                {
-                  japanese.flag #1 = 
-                    { bbl.ieej.jp.author.sep * t do.name.latex.cmd * }
-                    { bbl.ieej.en.author.sep * t do.name.latex.cmd * }
-                  if$
-                }
+                { japanese.flag #1 = { "，" } { ", " } if$ }
+                { japanese.flag #1 = { bbl.ieej.jp.author.sep } { bbl.ieej.en.author.sep } if$ }
               if$
+              * t do.name.latex.cmd * 
             }
             { s nameptr "{ll}" format.name$ duplicate$ "others" =
                 { 't := }
@@ -1484,35 +1480,12 @@ FUNCTION {format.names}
               if$
               t "others" =
                 { " " * bbl.etal emphasize * }
-                { numnames #2 >
-                    { 
-                      use.ieej.setting #0 = 
-                        { "," * }
-                        {
-                          japanese.flag #1 = 
-                            { bbl.ieej.jp.author.sep * }
-                            { bbl.ieej.en.author.sep * }
-                          if$
-                        }
-                      if$
-                    }
-                    { skip$ }
-                  if$
+                {
                   use.ieej.setting #0 = 
-                    { bbl.and space.word * t do.name.latex.cmd * }
-                    {
-                      numnames #2 = 
-                        {
-                          japanese.flag #0 =
-                            { bbl.ieej.en.author.sep * }
-                            { bbl.ieej.jp.author.sep * }
-                          if$
-                        }
-                        { skip$ }
-                      if$
-                      t do.name.latex.cmd *
-                    }
+                    { japanese.flag #1 = { "，" * } { ", " * bbl.and space.word * } if$ }
+                    { japanese.flag #1 = { bbl.ieej.jp.author.sep * } { bbl.ieej.en.author.sep * } if$ }
                   if$
+                t do.name.latex.cmd *
                 }
               if$
             }
