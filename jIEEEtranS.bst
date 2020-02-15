@@ -75,6 +75,89 @@
 % IEEEtran.cls V1.6 and later does provide this command.
 
 
+% 電気学会形式の引用フォーマットを使用するかの設定
+% #0 : isjapanese が True の場合、IEEEフォーマットでの日本語の不自然な扱いを解消
+% #1 : isjapanese に関係なく、全ての文献に電気学会形式を使用
+% default: { #1 }
+FUNCTION {use.ieej.setting} { #0 }
+
+
+% 電気学会形式の発行年の指定
+% default: {bbl.ieej.jp.year.pre} { "（" }
+%          {bbl.ieej.jp.year.aft} { "）" }
+%          {bbl.ieej.en.year.pre} { "(" }
+%          {bbl.ieej.en.year.aft} { ")" }
+FUNCTION {bbl.ieej.jp.year.pre} { "（" }
+FUNCTION {bbl.ieej.jp.year.aft} { "）" }
+FUNCTION {bbl.ieej.en.year.pre} { "(" }
+FUNCTION {bbl.ieej.en.year.aft} { ")" }
+
+
+% 電気学会形式において、発行年の前にカンマを打つかの指定
+% #0 : 打たない
+% #1 : 打つ
+% default: { #0 }
+FUNCTION {ieej.setting.comma.year.pre} { #0 }
+
+
+% 電気学会形式において、発行年の後にピリオドを打つかの指定
+% #0 : 打たない
+% #1 : 打つ
+% default: { #0 }
+FUNCTION {ieej.setting.punct.year.aft} { #0 }
+
+
+% 電気学会形式において、書籍名と雑誌名をemphasizeするかの指定
+% #0 : emphasize しない
+% #1 : emphasize する
+% default: { #0 }
+FUNCTION {ieej.setting.emph.title} { #0 }
+
+
+% 電気学会形式において、タイトル前後の文字を指定
+% default: {bbl.ieej.jp.title.pre} { "「" }
+%          {bbl.ieej.jp.title.aft} { "」" }
+%          {bbl.ieej.en.title.pre} { "``" }
+%          {bbl.ieej.en.title.aft} { "''" }
+FUNCTION {bbl.ieej.jp.title.pre} { "「" }
+FUNCTION {bbl.ieej.jp.title.aft} { "」" }
+FUNCTION {bbl.ieej.en.title.pre} { "``" }
+FUNCTION {bbl.ieej.en.title.aft} { "''" }
+
+
+% 電気学会形式形式において、著者とタイトルの間の文字の指定
+% default: {bbl.ieej.jp.author.title.sep} { "：" }
+%          {bbl.ieej.en.author.title.sep} { ": " }
+FUNCTION {bbl.ieej.jp.author.title.sep} { "：" }
+FUNCTION {bbl.ieej.en.author.title.sep} { ":" }
+
+
+% 日本語文献において、vol. の表記法の設定
+% default: { "Vol." }
+FUNCTION {bbl.ieej.vol} { "Vol." }
+
+
+% 日本語文献において、no. の表記法の設定
+% default: { "no." }
+FUNCTION {bbl.ieej.no} { "No." }
+
+
+% 日本語文献において、pp. の表記法の設定
+% default: { "pp." }
+FUNCTION {bbl.ieej.pages} { "pp." }
+
+
+% 日本語文献において、pp. の表記法の設定
+% default: { "p." }
+FUNCTION {bbl.ieej.page} { "p." }
+
+
+% 日本語文献において、著者間の仕切り文字の設定
+% default: {bbl.ieej.jp.author.sep} { "・" }
+%          {bbl.ieej.en.author.sep} { ", " }
+FUNCTION {bbl.ieej.jp.author.sep} { "・" }
+FUNCTION {bbl.ieej.en.author.sep} { ", " }
+
 
 % #0 turns off the display of the number for articles.
 % #1 enables
@@ -327,11 +410,14 @@ INTEGERS { prev.status.punct this.status.punct punct.std
            space.no space.normal space.large
            prev.status.quote this.status.quote quote.std
            quote.no quote.close
+           prev.status.autho this.status.autho autho.std
+           autho.no autho.close
            prev.status.nline this.status.nline nline.std
            nline.no nline.newblock 
            status.cap cap.std
            cap.no cap.yes
-           japanese.flag}
+           japanese.flag
+           incollection.flag}
 
 INTEGERS { longest.label.width multiresult nameptr namesleft number.label numnames }
 
@@ -463,17 +549,21 @@ FUNCTION {initialize.status.constants}
   #2 'space.large :=
   #0 'quote.no :=
   #1 'quote.close :=
+  #0 'autho.no :=
+  #1 'autho.close :=
   #0 'cap.no :=
   #1 'cap.yes :=
   #0 'nline.no :=
   #1 'nline.newblock :=
   #0 'japanese.flag :=
+  #0 'incollection.flag :=
 }
 
 FUNCTION {std.status.using.comma}
 { punct.comma 'punct.std :=
   space.normal 'space.std :=
   quote.no 'quote.std :=
+  autho.no 'autho.std :=
   nline.no 'nline.std :=
   cap.no 'cap.std :=
 }
@@ -482,6 +572,7 @@ FUNCTION {std.status.using.period}
 { punct.period 'punct.std :=
   space.normal 'space.std :=
   quote.no 'quote.std :=
+  autho.no 'autho.std :=
   nline.no 'nline.std :=
   cap.yes 'cap.std :=
 }
@@ -490,10 +581,12 @@ FUNCTION {initialize.prev.this.status}
 { punct.no 'prev.status.punct :=
   space.no 'prev.status.space :=
   quote.no 'prev.status.quote :=
+  autho.no 'prev.status.autho :=
   nline.no 'prev.status.nline :=
   punct.no 'this.status.punct :=
   space.no 'this.status.space :=
   quote.no 'this.status.quote :=
+  autho.no 'this.status.autho :=
   nline.no 'this.status.nline :=
   cap.yes 'status.cap :=
 }
@@ -502,6 +595,7 @@ FUNCTION {this.status.std}
 { punct.std 'this.status.punct :=
   space.std 'this.status.space :=
   quote.std 'this.status.quote :=
+  autho.std 'this.status.autho :=
   nline.std 'this.status.nline :=
 }
 
@@ -511,6 +605,7 @@ FUNCTION {this.to.prev.status}
 { this.status.punct 'prev.status.punct :=
   this.status.space 'prev.status.space :=
   this.status.quote 'prev.status.quote :=
+  this.status.autho 'prev.status.autho :=
   this.status.nline 'prev.status.nline :=
 }
 
