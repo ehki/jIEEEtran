@@ -1526,6 +1526,20 @@ FUNCTION {format.date}
         }
       if$
       *
+      use.ieej.setting #1 =
+        {
+          bbl.ieej.year.aft * bbl.ieej.year.pre swap$ *
+          ieej.setting.punct.year.aft #0 = 
+            { punct.no 'this.status.punct := }
+            { skip$ }
+          if$
+          ieej.setting.comma.year.pre #0 = 
+            { punct.no 'prev.status.punct := }
+            { skip$ }
+          if$
+        }
+        { skip$ }
+      if$
     }
   if$
 }
