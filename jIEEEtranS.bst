@@ -1288,9 +1288,10 @@ FUNCTION {format.names}
   s num.names$ 'numnames :=
   numnames 'namesleft :=
     { namesleft #0 > }
-    { s nameptr
-      name.format.string
-      format.name$
+    { japanese.flag #1 =
+        { s nameptr "{ff}" format.name$ "~" * s nameptr "{ll}" format.name$ * }
+        { s nameptr name.format.string format.name$ }
+      if$
       bibinfo bibinfo.check
       't :=
       nameptr #1 >
