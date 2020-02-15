@@ -75,7 +75,7 @@
 % #0 : isjapanese が True の場合、IEEEフォーマットでの日本語の不自然な扱いを解消
 % #1 : isjapanese に関係なく、全ての文献に電気学会形式を使用
 % default: { #1 }
-FUNCTION {use.ieej.setting} { #1 }
+FUNCTION {use.ieej.setting} { #0 }
 
 
 % 電気学会形式の発行年の指定
@@ -689,6 +689,34 @@ numnames
 }
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% JAPANESE WORD TOGGLER %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+FUNCTION {bbl.ieej.year.pre}
+{
+  japanese.flag #1 = { bbl.ieej.jp.year.pre } { bbl.ieej.en.year.pre } if$
+}
+FUNCTION {bbl.ieej.year.aft}
+{
+  japanese.flag #1 = { bbl.ieej.jp.year.aft } { bbl.ieej.en.year.aft } if$
+}
+FUNCTION {bbl.ieej.title.pre}
+{
+  japanese.flag #1 = { bbl.ieej.jp.title.pre } { bbl.ieej.en.title.pre } if$
+}
+FUNCTION {bbl.ieej.title.aft}
+{
+  japanese.flag #1 = { bbl.ieej.jp.title.aft } { bbl.ieej.en.title.aft } if$
+}
+FUNCTION {bbl.ieej.author.title.sep}
+{
+  japanese.flag #1 =
+    { bbl.ieej.jp.author.title.sep }
+    { bbl.ieej.en.author.title.sep }
+  if$
+}
 
 
 % The output routines write out the *next* to the top (previous) item on the
@@ -1390,16 +1418,11 @@ FUNCTION {format.names}
           if$
           namesleft #1 >
             { 
-            %%変更箇所1：日本語の場合にカンマを全角に変更．
-              japanese.flag #0 =
-                {
-                  ", " * t do.name.latex.cmd * 
-                }
-                {
-                  "，" * t do.name.latex.cmd * 
-                }
+              use.ieej.setting #0 = 
+                { japanese.flag #1 = { "，" } { ", " } if$ }
+                { japanese.flag #1 = { bbl.ieej.jp.author.sep } { bbl.ieej.en.author.sep } if$ }
               if$
-            %%変更箇所1ここまで
+              * t do.name.latex.cmd * 
             }
             { s nameptr "{ll}" format.name$ duplicate$ "others" =
                 { 't := }
@@ -1407,37 +1430,12 @@ FUNCTION {format.names}
               if$
               t "others" =
                 { " " * bbl.etal emphasize * }
-                { numnames #2 >
-                    { 
-                      %%変更箇所2：日本語の場合にカンマを全角に変更．
-                      japanese.flag #0 =
-                        {
-                          "," * 
-                        }
-                        {
-                          "，" *
-                        }
-                      if$
-                      %%変更箇所2ここまで
-                    }
-                    { skip$ }
+                {
+                  use.ieej.setting #0 = 
+                    { japanese.flag #1 = { "，" * } { ", " * bbl.and space.word * } if$ }
+                    { japanese.flag #1 = { bbl.ieej.jp.author.sep * } { bbl.ieej.en.author.sep * } if$ }
                   if$
-                  %%変更箇所3：日本語の場合で著者が2人の場合はandの代わりに全角カンマを入れる．
-                  %%bbl.andはandをくっつける処理と推測
-                  japanese.flag #0 =
-                    {
-                      bbl.and
-                      space.word * t do.name.latex.cmd *
-                    }
-                    {
-                      numnames #2 =
-                        { "，" * }
-                        { skip$ }
-                      if$
-                      t do.name.latex.cmd *
-                    }
-                  if$
-                  %%変更箇所3ここまで
+                t do.name.latex.cmd *
                 }
               if$
             }
@@ -1473,7 +1471,15 @@ FUNCTION {format.address}
 
 %% author/editor names
 
-FUNCTION {format.authors}{ author "author" format.names }
+FUNCTION {format.authors}
+{
+  author "author" format.names
+  use.ieej.setting #1 = 
+    { autho.close 'this.status.autho :=
+      punct.no 'this.status.punct := }
+    { skip$ }
+  if$
+}
 
 FUNCTION {format.editors}
 { editor "editor" format.names duplicate$ empty$ 'skip$
