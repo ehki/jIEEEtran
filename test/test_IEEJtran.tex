@@ -4,10 +4,157 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{listings, jlisting}
 \author{JPandENbst}
+\lstset{
+  basicstyle={\scriptsize\ttfamily},
+  identifierstyle={\small},
+  commentstyle={\smallitshape},
+  keywordstyle={\small\bfseries},
+  ndkeywordstyle={\small},
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},
+  numbers=left,
+  xrightmargin=0zw,
+  xleftmargin=0zw,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  numbersep=0.5zw,
+  lineskip=0.5ex
+}
 \begin{document}
 
-English references\cite{englishTest2}, \cite{englishTest1}, \cite{englishBook1}, \cite{englishBook2} and 日本語文献\cite{japaneseTest2},\cite{japaneseTest1}, \cite{japaneseBook1}, \cite{japaneseBook2}, \cite{japaneseBook3}。
+
+\section{日本語文献}
+\subsection{article\\}
+japaneseTest1 \cite{japaneseTest1}, 
+japaneseTest2 \cite{japaneseTest2}
+
+\begin{lstlisting}
+@article{japaneseTest1,
+ author = {山田~一郎 and 山田~次郎 and 山田~三郎 and 山田~四郎},
+ isjapanese = {true},
+ year = {2019},
+ journal = {日本語学会},
+ title = {文献1},
+ number = {10},
+ pages = {20--30},
+ volume = {15}
+}
+@article{japaneseTest2,
+ author = {山田~五郎 and 山田~六郎},
+ isjapanese = {true},
+ year = {2019},
+ journal = {日本語学会},
+ title = {文献2},
+ number = {10},
+ pages = {21},
+ volume = {15}
+}
+\end{lstlisting}
+
+\subsection{book\\}
+japaneseBook1 \cite{japaneseBook1}, 
+japaneseBook2 \cite{japaneseBook2}
+
+\begin{lstlisting}
+@book{japaneseBook1,
+ author = {佐藤~一郎},
+ isjapanese = {true},
+ year = {2010},
+ publisher = {日本語出版},
+ address = {東京},
+ title = {日本語本},
+ edition = {1},
+ pages = {100--200}
+}
+@book{japaneseBook2,
+ author = {佐藤~二郎 and 佐藤~三郎},
+ isjapanese = {true},
+ year = {2012},
+ publisher = {日本語出版},
+ address = {東京},
+ title = {日本語本2},
+ edition = {2},
+ pages = {100--200}
+}
+\end{lstlisting}
+
+\subsection{incollection\\}
+japaneseBook3 \cite{japaneseBook3}
+
+\begin{lstlisting}
+@incollection{japaneseBook3,
+ author = {佐藤~二郎 and 佐藤~三郎},
+ isjapanese = {true},
+ year = {2012},
+ publisher = {日本語出版},
+ address = {東京},
+ title = {日本語本2の中の抜粋},
+ booktitle = {日本語本2},
+ edition = {2},
+ pages = {100--200}
+}
+\end{lstlisting}
+
+
+\section{英語}
+\subsection{article}
+
+englishTest1 \cite{englishTest1}, 
+englishTest2 \cite{englishTest2}
+
+\begin{lstlisting}
+@article{englishTest1,
+ author = {Ichiro Yamada and Jiro Yamada and Saburo Yamada and Shiro Yamada},
+ year = {2019},
+ journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+ title = {Title1},
+ number = {10},
+ pages = {20--30},
+ volume = {15},
+}
+@article{englishTest2,
+ author = {Goro Yamada and Rokuro Yamada},
+ year = {2019},
+ journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+ title = {Title2}
+}
+\end{lstlisting}
+
+\subsection{book}
+englishBook1 \cite{englishBook1}
+
+\begin{lstlisting}
+@book{englishBook1,
+ address = {City, Country},
+ publisher = {Publisher},
+ author = {Engligh Author and German Author and Japanese Author},
+ year = {2000},
+ title = {Title, not booktitle},
+ edition = {3},
+ pages = {1-10},
+}
+\end{lstlisting}
+
+\subsection{incollection}
+englishBook2 \cite{englishBook2}
+
+\begin{lstlisting}
+@incollection{englishBook2,
+ address = {City, Country},
+ publisher = {Publisher},
+ author = {Engligh Author and German Author and Japanese Author},
+ booktitle = {Booktitle},
+ chapter = {4},
+ pages = {200--220},
+ title = {Title},
+ edition = {2},
+ year = {2000},
+}
+\end{lstlisting}
 
 % \bibliographystyle{../jIEEEtran}
 % \bibliographystyle{../jIEEEtranS}
