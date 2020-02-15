@@ -717,6 +717,27 @@ FUNCTION {bbl.ieej.author.title.sep}
     { bbl.ieej.en.author.title.sep }
   if$
 }
+FUNCTION {bbl.ieej.author.sep}
+{
+  japanese.flag #1 =  
+    { bbl.ieej.jp.author.sep }
+    { bbl.ieej.en.author.sep }
+  if$
+}
+FUNCTION {bbl.author.sep}
+{
+  use.ieej.setting #0 = 
+    { "," }
+    { bbl.ieej.author.sep }
+  if$
+}
+FUNCTION {bbl.last.name.pre}
+{
+  use.ieej.setting #1 =
+    { bbl.ieej.author.sep }
+    { " " * bbl.and * " " }
+  if$
+}
 
 
 % The output routines write out the *next* to the top (previous) item on the
@@ -1467,17 +1488,7 @@ FUNCTION {format.names}
             { skip$ }
           if$
           namesleft #1 >
-            { 
-              use.ieej.setting #0 = 
-                { ", " * t do.name.latex.cmd * }
-                {
-                  japanese.flag #1 = 
-                    { bbl.ieej.jp.author.sep * t do.name.latex.cmd * }
-                    { bbl.ieej.en.author.sep * t do.name.latex.cmd * }
-                  if$
-                }
-              if$
-            }
+            { bbl.author.sep * t do.name.latex.cmd * }
             { s nameptr "{ll}" format.name$ duplicate$ "others" =
                 { 't := }
                 { pop$ }
@@ -1485,33 +1496,12 @@ FUNCTION {format.names}
               t "others" =
                 { " " * bbl.etal emphasize * }
                 { numnames #2 >
-                    { 
-                      use.ieej.setting #0 = 
-                        { "," * }
-                        {
-                          japanese.flag #1 = 
-                            { bbl.ieej.jp.author.sep * }
-                            { bbl.ieej.en.author.sep * }
-                          if$
-                        }
-                      if$
-                    }
+                    { bbl.author.sep * t do.name.latex.cmd * }
                     { skip$ }
                   if$
-                  use.ieej.setting #0 = 
-                    { bbl.and space.word * t do.name.latex.cmd * }
-                    {
-                      numnames #2 = 
-                        {
-                          japanese.flag #0 =
-                            { bbl.ieej.en.author.sep * }
-                            { bbl.ieej.jp.author.sep * }
-                          if$
-                        }
-                        { skip$ }
-                      if$
-                      t do.name.latex.cmd *
-                    }
+                  numnames #2 = 
+                    { bbl.last.name.pre * t do.name.latex.cmd * }
+                    { skip$ }
                   if$
                 }
               if$
