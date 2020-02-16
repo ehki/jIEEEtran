@@ -1599,7 +1599,11 @@ FUNCTION {format.in.booktitle}
       this.status.std
       select.language
       intype missing$
-        { emphasize
+        {
+          use.ieej.setting #0 =
+            { emphasize }
+            { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
+          if$
           bbl.in " " *
         }
         { intype " " * }
@@ -1617,7 +1621,10 @@ FUNCTION {format.in.booktitle.edition}
     { this.to.prev.status
       this.status.std
       select.language
-      emphasize
+      use.ieej.setting #0 =
+        { emphasize }
+        { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
+      if$
       edition empty$ 'skip$
         { ", " *
           edition
@@ -1647,7 +1654,10 @@ FUNCTION {format.article.title}
         { punct.no 'this.status.punct := }
       if$
       select.language
-      "``" swap$ *
+      use.ieej.setting #1 =
+        { bbl.ieej.title.pre swap$ * }
+        { "``" swap$ * }
+      if$
       cap.status.std
     }
   if$
@@ -1675,7 +1685,15 @@ FUNCTION {format.book.title.edition}
     { this.to.prev.status
       this.status.std
       select.language
-      emphasize
+      use.ieej.setting #1 =
+        { bbl.ieej.title.pre swap$ * bbl.ieej.title.aft *
+          punct.no 'prev.status.punct := }
+        { skip$ }
+      if$
+      use.ieej.setting #0 =
+        { emphasize }
+        { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
+      if$
       edition empty$ 'skip$
         { ", " *
           edition
@@ -1700,7 +1718,19 @@ FUNCTION {format.book.title}
       this.status.std
       cap.status.std
       select.language
-      emphasize
+      use.ieej.setting #1 =
+        {
+          japanese.flag #1 = 
+            { bbl.ieej.title.pre swap$ * bbl.ieej.title.aft * }
+            { skip$ }
+          if$
+        }
+        { skip$ }
+      if$
+      use.ieej.setting #0 =
+        { emphasize }
+        { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
+      if$
     }
   if$
 }
@@ -1715,7 +1745,10 @@ FUNCTION {format.journal}
       this.status.std
       cap.status.std
       select.language
-      emphasize
+      use.ieej.setting #0 =
+        { emphasize }
+        { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
+      if$
     }
   if$
 }
@@ -2258,7 +2291,9 @@ FUNCTION {inbook}
 }
 
 FUNCTION {incollection}
-{ std.status.using.comma
+{ 
+  #1 'incollection.flag :=
+  std.status.using.comma
   start.entry
   if.url.alt.interword.spacing
   format.authors "author" output.warn
@@ -2273,9 +2308,11 @@ FUNCTION {incollection}
   format.chapter output
   format.pages output
   format.note output
+  use.ieej.setting #1 = { format.date output } { skip$ } if$
   format.url output
   fin.entry
   if.url.std.interword.spacing
+  #0 'incollection.flag :=
 }
 
 FUNCTION {inproceedings}

@@ -2407,7 +2407,7 @@ FUNCTION {incollection}
   format.chapter output
   format.pages output
   format.note output
-  format.date output
+  use.ieej.setting #1 = { format.date output } { skip$ } if$
   format.url output
   fin.entry
   if.url.std.interword.spacing
