@@ -1356,7 +1356,7 @@ FUNCTION {format.address.org.or.pub.date}
       this.status.std
       cap.status.std
       % 日本語では出版社の場所は記載しない。
-      japanese.flag #1 =
+      use.ieej.setting #1 = japanese.flag #1 = and
         { skip$ }
         { address "address" bibinfo.check * }
       if$
@@ -1379,17 +1379,16 @@ FUNCTION {format.address.org.or.pub.date}
           t *
         }
       if$
-      incollection.flag #1 = 
+      use.ieej.setting #1 = incollection.flag #1 = and
         { skip$ }
         {
           year empty$ month empty$ and
             { skip$ }
             { t empty$ address empty$ and
                 { skip$ }
-                { japanese.flag #1 =
-                    { skip$ }
-                    { " " * }
-                    %{ ", " * }
+                { use.ieej.setting #1 = 
+                  { japanese.flag #1 = { skip$ } { " " * } if$ }
+                  { japanese.flag #1 = { "，" * } { ", " * } if$ }
                   if$
                 }
               if$
@@ -1682,13 +1681,15 @@ FUNCTION {format.in.booktitle.edition}
       edition empty$ 'skip$
         { japanese.flag #1 = { "，" * } { ", " * } if$
           edition
-          japanese.flag #1 = 
-            { duplicate$ "1" =
+          use.ieej.setting #1 = japanese.flag #1 = and
+            {
+              duplicate$ "1" =
                 { pop$ "初版" * }
                 { "第" swap$ * * "版" * }
               if$
             }
-            { convert.edition
+            {
+              convert.edition
               "l" change.case$
               * "~" * bbl.edition *
             }
@@ -1699,6 +1700,7 @@ FUNCTION {format.in.booktitle.edition}
         { space.normal 'prev.status.space := }
         { bbl.in " " * swap$ *}
       if$
+      cap.status.std
     }
   if$
 }
@@ -1761,7 +1763,7 @@ FUNCTION {format.book.title.edition}
       edition empty$ 'skip$
         { japanese.flag #1 = { "，" * } { ", " * } if$
           edition
-          japanese.flag #1 = 
+          use.ieej.setting #1 = japanese.flag #1 = and
             {
               duplicate$ "1" =
                 { pop$ "初版" * }
@@ -1770,10 +1772,7 @@ FUNCTION {format.book.title.edition}
             }
             {
               convert.edition
-              status.cap
-                { "t" }
-                { "l" }
-              if$
+              status.cap { "t" } { "l" } if$
               change.case$
               * "~" * bbl.edition *
             }
@@ -1782,7 +1781,7 @@ FUNCTION {format.book.title.edition}
       if$
       use.ieej.setting #1 = 
         { space.normal 'prev.status.space := }
-        { bbl.in " " * swap$ *}
+        { skip$ }
       if$
       cap.status.std
       punct.comma 'this.status.punct :=
