@@ -1769,7 +1769,6 @@ FUNCTION {format.book.title.edition}
         { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
       if$
       edition empty$ 'skip$
-
         { japanese.flag #1 = { "，" * } { ", " * } if$
           edition
           use.ieej.setting #1 = japanese.flag #1 = and
@@ -1906,15 +1905,20 @@ FUNCTION {format.volume}
   duplicate$ empty$ 'skip$
     { this.to.prev.status
       this.status.std
-      bbl.volume 
-      status.cap
-        { capitalize }
-        { skip$ }
+      use.ieej.setting #1 =
+        { bbl.ieej.vol swap$ "volume" bibinfo.check *}
+        {
+          bbl.volume 
+          status.cap
+            { capitalize }
+            { skip$ }
+          if$
+          swap$ tie.or.space.prefix
+          "volume" bibinfo.check
+          * *
+          cap.status.std
+        }
       if$
-      swap$ tie.or.space.prefix
-      "volume" bibinfo.check
-      * *
-      cap.status.std
     }
   if$
 }
@@ -1924,14 +1928,19 @@ FUNCTION {format.number}
   duplicate$ empty$ 'skip$
     { this.to.prev.status
       this.status.std
-      status.cap
-         { bbl.number capitalize }
-         { bbl.number }
-       if$
-      swap$ tie.or.space.prefix
-      "number" bibinfo.check
-      * *
-      cap.status.std
+      use.ieej.setting #1 =
+        { bbl.ieej.no swap$ "number" bibinfo.check * }
+        {
+          status.cap
+            { bbl.number capitalize }
+            { bbl.number }
+          if$
+          swap$ tie.or.space.prefix
+          "number" bibinfo.check
+          * *
+          cap.status.std
+        }
+      if$
     }
   if$
 }
@@ -2019,14 +2028,20 @@ FUNCTION {format.pages}
       this.status.std
       duplicate$ is.multiple.pages
         {
-          bbl.pages swap$
+          use.ieej.setting #1 = 
+            { bbl.ieej.pages swap$ }
+            { bbl.pages swap$ }
+          if$
           n.dashify
         }
         {
-          bbl.page swap$
+          use.ieej.setting #1 = 
+            { bbl.ieej.page swap$ }
+            { bbl.page swap$ }
+          if$
         }
       if$
-      tie.or.space.prefix
+      use.ieej.setting #1 = { "" } { tie.or.space.prefix } if$
       "pages" bibinfo.check
       * *
       cap.status.std
