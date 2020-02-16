@@ -114,6 +114,13 @@ FUNCTION {ieej.setting.punct.year.aft} { #0 }
 FUNCTION {ieej.setting.emph.title} { #0 }
 
 
+% IEEE形式において、日本語の書籍名と雑誌名をemphasizeするかの指定
+% #0 : emphasize しない
+% #1 : emphasize する
+% default: { #0 }
+FUNCTION {ieee.jp.setting.emph.title} { #0 }
+
+
 % 電気学会形式において、タイトル前後の文字を指定
 % default: {bbl.ieej.jp.title.pre} { "「" }
 %          {bbl.ieej.jp.title.aft} { "」" }
@@ -1658,7 +1665,12 @@ FUNCTION {format.in.booktitle}
       intype missing$
         { 
           use.ieej.setting #0 =
-            { emphasize }
+            {
+              japanese.flag #0 = 
+                { emphasize }
+                { ieee.jp.setting.emph.title #1 =  { emphasize } { skip$ } if$ }
+              if$
+            }
             { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
           if$
           bbl.in " " *
@@ -1683,7 +1695,12 @@ FUNCTION {format.in.booktitle.edition}
         { skip$ }
       if$
       use.ieej.setting #0 =
-        { emphasize }
+        {
+          japanese.flag #0 = 
+            { emphasize }
+            { ieee.jp.setting.emph.title #1 =  { emphasize } { skip$ } if$ }
+          if$
+        }
         { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
       if$
       edition empty$ 'skip$
@@ -1765,7 +1782,12 @@ FUNCTION {format.book.title.edition}
         { skip$ }
       if$
       use.ieej.setting #0 =
-        { emphasize }
+        {
+          japanese.flag #0 = 
+            { emphasize }
+            { ieee.jp.setting.emph.title #1 =  { emphasize } { skip$ } if$ }
+          if$
+        }
         { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
       if$
       edition empty$ 'skip$
@@ -1818,7 +1840,12 @@ FUNCTION {format.book.title}
         { skip$ }
       if$
       use.ieej.setting #0 =
-        { emphasize }
+        {
+          japanese.flag #0 = 
+            { emphasize }
+            { ieee.jp.setting.emph.title #1 =  { emphasize } { skip$ } if$ }
+          if$
+        }
         { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
       if$
     }
@@ -1836,7 +1863,12 @@ FUNCTION {format.journal}
       cap.status.std
       select.language
       use.ieej.setting #0 =
-        { emphasize }
+        {
+          japanese.flag #0 = 
+            { emphasize }
+            { ieee.jp.setting.emph.title #1 =  { emphasize } { skip$ } if$ }
+          if$
+        }
         { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
       if$
     }
