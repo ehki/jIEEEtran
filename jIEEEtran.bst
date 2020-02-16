@@ -1355,40 +1355,85 @@ FUNCTION {format.address.org.or.pub.date}
     { this.to.prev.status
       this.status.std
       cap.status.std
-      address "address" bibinfo.check *
+      % 日本語では出版社の場所は記載しない。
+      use.ieej.setting #1 = japanese.flag #1 = and
+        { skip$ }
+        { address "address" bibinfo.check * }
+      if$
       t empty$
         { skip$ }
-        { punct.period 'prev.status.punct :=
-          space.large 'prev.status.space :=
-          address empty$
-            { skip$ }
-            { ": " * }
+        { use.ieej.setting #1 =
+            % space.largeからspace.normalに変更しスペースを抑制する
+            { 
+              space.normal 'prev.status.space := 
+              japanese.flag #1 = 'skip$ { ": " * } if$
+            }
+            { punct.period 'prev.status.punct :=
+              space.large 'prev.status.space :=
+              address empty$
+                { skip$ }
+                { ": " * }
+              if$
+            }
           if$
           t *
         }
       if$
-      year empty$ month empty$ and
+      use.ieej.setting #1 = incollection.flag #1 = and
         { skip$ }
-        { t empty$ address empty$ and
+        {
+          year empty$ month empty$ and
             { skip$ }
-            { ", " * }
-          if$
-          month empty$
-            { year empty$
+            { t empty$ address empty$ and
                 { skip$ }
-                { year "year" bibinfo.check * }
+                { use.ieej.setting #1 = 
+                  { japanese.flag #1 = { skip$ } { " " * } if$ }
+                  { japanese.flag #1 = { "，" * } { ", " * } if$ }
+                  if$
+                }
+              if$
+              month empty$
+                { year empty$
+                    { skip$ }
+                    { use.ieej.setting #1 = 
+                        { year "year" bibinfo.check
+                          bbl.ieej.year.aft *
+                          bbl.ieej.year.pre swap$ * * }
+                        { year "year" bibinfo.check * }
+                        if$
+                    }
+                  if$
+                }
+                { month "month" bibinfo.check *
+                  year empty$
+                    { skip$ }
+                    { " " * year "year" bibinfo.check * }
+                  if$
+                }
               if$
             }
-            { month "month" bibinfo.check *
-              year empty$
-                 { skip$ }
-                 { " " * year "year" bibinfo.check * }
+          if$
+          use.ieej.setting #1 = 
+            {
+              ieej.setting.punct.year.aft #0 = 
+                { punct.no 'this.status.punct := }
+                { skip$ }
               if$
             }
+            { skip$ }
           if$
         }
       if$
     }
+  if$
+  use.ieej.setting #1 =
+    {
+      ieej.setting.comma.year.pre #0 = 
+        { punct.comma 'prev.status.punct := }
+        { skip$ }
+      if$
+    }
+    { skip$ }
   if$
 }
 
@@ -1625,19 +1670,36 @@ FUNCTION {format.in.booktitle.edition}
     { this.to.prev.status
       this.status.std
       select.language
+      japanese.flag #1 = 
+        { punct.comma 'prev.status.punct := }
+        { skip$ }
+      if$
       use.ieej.setting #0 =
         { emphasize }
         { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
       if$
       edition empty$ 'skip$
-        { ", " *
+        { japanese.flag #1 = { "，" * } { ", " * } if$
           edition
-          convert.edition
-          "l" change.case$
-          * "~" * bbl.edition *
+          use.ieej.setting #1 = japanese.flag #1 = and
+            {
+              duplicate$ "1" =
+                { pop$ "初版" * }
+                { "第" swap$ * * "版" * }
+              if$
+            }
+            {
+              convert.edition
+              "l" change.case$
+              * "~" * bbl.edition *
+            }
+          if$
         }
       if$
-      bbl.in " " * swap$ *
+      japanese.flag #1 = 
+        { space.normal 'prev.status.space := }
+        { bbl.in " " * swap$ *}
+      if$
       cap.status.std
     }
   if$
@@ -1699,18 +1761,34 @@ FUNCTION {format.book.title.edition}
         { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
       if$
       edition empty$ 'skip$
-        { ", " *
+        { japanese.flag #1 = { "，" * } { ", " * } if$
           edition
-          convert.edition
-          status.cap
-            { "t" }
-            { "l" }
+          use.ieej.setting #1 = japanese.flag #1 = and
+            {
+              duplicate$ "1" =
+                { pop$ "初版" * }
+                { "第" swap$ * * "版" * }
+              if$
+            }
+            {
+              convert.edition
+              status.cap { "t" } { "l" } if$
+              change.case$
+              * "~" * bbl.edition *
+            }
           if$
-          change.case$
-          * "~" * bbl.edition *
         }
       if$
+      use.ieej.setting #1 = 
+        { space.normal 'prev.status.space := }
+        { skip$ }
+      if$
       cap.status.std
+      punct.comma 'this.status.punct :=
+      use.ieej.setting #1 =
+        { skip$ }
+        { punct.comma 'prev.status.punct := }
+      if$
     }
   if$
 }
