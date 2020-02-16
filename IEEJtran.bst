@@ -741,14 +741,19 @@ FUNCTION {output.nonnull}
     {
       prev.status.autho autho.close =
         { bbl.ieej.author.title.sep * }
-        { skip$}
+        { skip$ }
       if$
     }
     { skip$ }
   if$
   %%追加箇所1：日本語文献なら，"のあとにカンマ
-  use.ieej.setting #1 =
-    { prev.status.quote quote.close = { bbl.ieej.title.aft * } { skip$ } if$ }
+  prev.status.quote quote.close = 
+    {
+      use.ieej.setting #1 =
+        { bbl.ieej.title.aft * }
+        { japanese.flag #1 = { "''" * } { skip$ } if$ }
+      if$
+    }
     { skip$ }
   if$
   %%追加箇所1ここまで
@@ -763,7 +768,7 @@ FUNCTION {output.nonnull}
     {
       prev.status.punct punct.comma =
         { "，" * }
-        {skip$}
+        { skip$ }
       if$
     }
   if$ 
@@ -780,13 +785,8 @@ FUNCTION {output.nonnull}
   if$ 
   %%変更箇所3ここまで
   %%変更箇所4：英語の場合は"の前にカンマ
-  use.ieej.setting #0 =
-    {
-      prev.status.quote quote.close =
-        { "''" * }
-        { skip$ }
-      if$
-    }
+  use.ieej.setting #0 = japanese.flag #0 = and
+    { prev.status.quote quote.close = { "''" * } { skip$ } if$ }
     { skip$ }
   if$
   %%変更箇所4ここまで

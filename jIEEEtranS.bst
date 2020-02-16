@@ -745,12 +745,21 @@ FUNCTION {bbl.ieej.author.title.sep}
 
 FUNCTION {output.nonnull}
 { swap$
-  %%追加箇所1：日本語文献なら，"のあとにカンマ
-  japanese.flag #1 =
+  use.ieej.setting #1 =
     {
-      prev.status.quote quote.close =
-        { "''" * }
+      prev.status.autho autho.close =
+        { bbl.ieej.author.title.sep * }
         { skip$ }
+      if$
+    }
+    { skip$ }
+  if$
+  %%追加箇所1：日本語文献なら，"のあとにカンマ
+  prev.status.quote quote.close = 
+    {
+      use.ieej.setting #1 =
+        { bbl.ieej.title.aft * }
+        { japanese.flag #1 = { "''" * } { skip$ } if$ }
       if$
     }
     { skip$ }
@@ -761,13 +770,13 @@ FUNCTION {output.nonnull}
     { 
       prev.status.punct punct.comma =
         { "," * }
-        {skip$}
+        { skip$ }
       if$
     }
     {
       prev.status.punct punct.comma =
         { "，" * }
-        {skip$}
+        { skip$ }
       if$
     }
   if$ 
@@ -784,16 +793,11 @@ FUNCTION {output.nonnull}
   if$ 
   %%変更箇所3ここまで
   %%変更箇所4：英語の場合は"の前にカンマ
-  japanese.flag #0 =
-    {
-      prev.status.quote quote.close =
-        { "''" * }
-        { skip$ }
-      if$
-    }
+  use.ieej.setting #0 = japanese.flag #0 = and
+    { prev.status.quote quote.close = { "''" * } { skip$ } if$ }
     { skip$ }
   if$
-  %%変更箇所4ここまで
+%%変更箇所4ここまで
   %%変更箇所5：日本語の場合の謎スペースの抑制（全角カンマの後ろの空白で十分）
   prev.status.space space.normal =
     { 
