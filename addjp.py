@@ -37,7 +37,7 @@ def chk_last_comma(line):
 
 
 def format_jp_keys(line, skip=False):
-    line = format_authors(line)
+    # line = format_authors(line)
     if not skip:
         nspace = re.match(r'\s*', line).end()
         prefix = '\n' if chk_last_comma(line) else ',\n'
