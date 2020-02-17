@@ -1209,7 +1209,7 @@ FUNCTION {convert.edition}
 
 
 %%%%%%%%%%%%%%%%%%%%%%
-%% JAPANESE CHECKER %%
+%% JAPANESE HANDLER %%
 %%%%%%%%%%%%%%%%%%%%%%
 
 FUNCTION {chk.jp.entry} {
@@ -1217,6 +1217,18 @@ FUNCTION {chk.jp.entry} {
     {skip$} 
     {#1 'japanese.flag :=
     default.name.format.string.forJP 'name.format.string :=} 
+  if$
+}
+FUNCTION {emphasize.title}
+{
+  use.ieej.setting #0 =
+    {
+      japanese.flag #0 = 
+        { emphasize }
+        { ieee.jp.setting.emph.title #1 =  { emphasize } { skip$ } if$ }
+      if$
+    }
+    { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
   if$
 }
 FUNCTION {format.jp.edition}
@@ -1673,18 +1685,7 @@ FUNCTION {format.in.booktitle}
       this.status.std
       select.language
       intype missing$
-        { 
-          use.ieej.setting #0 =
-            {
-              japanese.flag #0 = 
-                { emphasize }
-                { ieee.jp.setting.emph.title #1 =  { emphasize } { skip$ } if$ }
-              if$
-            }
-            { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
-          if$
-          bbl.in " " *
-        }
+        { emphasize.title bbl.in " " * }
         { intype " " * }
       if$
       swap$ *
@@ -1705,15 +1706,7 @@ FUNCTION {format.in.booktitle.edition}
         { punct.comma 'prev.status.punct := }
         { skip$ }
       if$
-      use.ieej.setting #0 =
-        {
-          japanese.flag #0 = 
-            { emphasize }
-            { ieee.jp.setting.emph.title #1 =  { emphasize } { skip$ } if$ }
-          if$
-        }
-        { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
-      if$
+      emphasize.title
       edition empty$
         { skip$ }
         { bbl.title.edition.sep edition format.jp.edition }
@@ -1778,15 +1771,7 @@ FUNCTION {format.book.title.edition}
           punct.no 'prev.status.punct := }
         { skip$ }
       if$
-      use.ieej.setting #0 =
-        {
-          japanese.flag #0 = 
-            { emphasize }
-            { ieee.jp.setting.emph.title #1 =  { emphasize } { skip$ } if$ }
-          if$
-        }
-        { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
-      if$
+      emphasize.title
       edition empty$ 
         { skip$ }
         { bbl.title.edition.sep edition format.jp.edition }
@@ -1821,15 +1806,7 @@ FUNCTION {format.book.title}
         }
         { skip$ }
       if$
-      use.ieej.setting #0 =
-        {
-          japanese.flag #0 = 
-            { emphasize }
-            { ieee.jp.setting.emph.title #1 =  { emphasize } { skip$ } if$ }
-          if$
-        }
-        { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
-      if$
+      emphasize.title
     }
   if$
 }
@@ -1844,15 +1821,7 @@ FUNCTION {format.journal}
       this.status.std
       cap.status.std
       select.language
-      use.ieej.setting #0 =
-        {
-          japanese.flag #0 = 
-            { emphasize }
-            { ieee.jp.setting.emph.title #1 =  { emphasize } { skip$ } if$ }
-          if$
-        }
-        { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
-      if$
+      emphasize.title
     }
   if$
 }
