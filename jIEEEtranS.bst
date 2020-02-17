@@ -1223,6 +1223,17 @@ FUNCTION {chk.jp.entry} {
     default.name.format.string.forJP 'name.format.string :=} 
   if$
 }
+FUNCTION {format.jp.edition}
+{
+  use.ieej.setting #1 = japanese.flag #1 = and
+    { duplicate$ "1" = { pop$ "初版" * } { "第" swap$ * * "版" * } if$ }
+    { convert.edition "l" change.case$ * "~" * bbl.edition * }
+  if$
+}
+FUNCTION {bbl.title.edition.sep}
+{
+  japanese.flag #1 = { "，" * } { ", " * } if$
+}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1686,6 +1697,7 @@ FUNCTION {format.in.booktitle}
   if$
 }
 
+
 % This is used to format the booktitle of collection.
 % Here the "intype" field is not supported, but "edition" is.
 FUNCTION {format.in.booktitle.edition}
@@ -1706,23 +1718,9 @@ FUNCTION {format.in.booktitle.edition}
         }
         { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
       if$
-      edition empty$ 'skip$
-        { japanese.flag #1 = { "，" * } { ", " * } if$
-          edition
-          use.ieej.setting #1 = japanese.flag #1 = and
-            {
-              duplicate$ "1" =
-                { pop$ "初版" * }
-                { "第" swap$ * * "版" * }
-              if$
-            }
-            {
-              convert.edition
-              "l" change.case$
-              * "~" * bbl.edition *
-            }
-          if$
-        }
+      edition empty$
+        { skip$ }
+        { bbl.title.edition.sep edition format.jp.edition }
       if$
       japanese.flag #1 = 
         { space.normal 'prev.status.space := }
@@ -1793,24 +1791,9 @@ FUNCTION {format.book.title.edition}
         }
         { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
       if$
-      edition empty$ 'skip$
-        { japanese.flag #1 = { "，" * } { ", " * } if$
-          edition
-          use.ieej.setting #1 = japanese.flag #1 = and
-            {
-              duplicate$ "1" =
-                { pop$ "初版" * }
-                { "第" swap$ * * "版" * }
-              if$
-            }
-            {
-              convert.edition
-              status.cap { "t" } { "l" } if$
-              change.case$
-              * "~" * bbl.edition *
-            }
-          if$
-        }
+      edition empty$ 
+        { skip$ }
+        { bbl.title.edition.sep edition format.jp.edition }
       if$
       use.ieej.setting #1 = 
         { space.normal 'prev.status.space := }
