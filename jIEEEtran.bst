@@ -1238,7 +1238,21 @@ FUNCTION {bbl.title.edition.sep}
 {
   japanese.flag #1 = { "，" * } { ", " * } if$
 }
-
+FUNCTION {format.jp.year}
+{
+  use.ieej.setting #1 = 
+    { bbl.ieej.year.aft *
+      bbl.ieej.year.pre swap$ * * }
+    { * }
+  if$
+}
+FUNCTION {format.jp.title}
+{
+  use.ieej.setting #1 = japanese.flag #1 = and
+    { bbl.ieej.title.pre swap$ * bbl.ieej.title.aft * }
+    { skip$ }
+  if$
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% LATEX BIBLIOGRAPHY CODE %%
@@ -1428,13 +1442,7 @@ FUNCTION {format.address.org.or.pub.date}
               month empty$
                 { year empty$
                     { skip$ }
-                    { use.ieej.setting #1 = 
-                        { year "year" bibinfo.check
-                          bbl.ieej.year.aft *
-                          bbl.ieej.year.pre swap$ * * }
-                        { year "year" bibinfo.check * }
-                        if$
-                    }
+                    { year "year" bibinfo.check format.jp.year }
                   if$
                 }
                 { month "month" bibinfo.check *
@@ -1762,11 +1770,7 @@ FUNCTION {format.book.title.edition}
     { this.to.prev.status
       this.status.std
       select.language
-      use.ieej.setting #1 =
-        { bbl.ieej.title.pre swap$ * bbl.ieej.title.aft *
-          punct.no 'prev.status.punct := }
-        { skip$ }
-      if$
+      format.jp.title
       emphasize.title
       edition empty$ 
         { skip$ }
@@ -1793,15 +1797,7 @@ FUNCTION {format.book.title}
       this.status.std
       cap.status.std
       select.language
-      use.ieej.setting #1 =
-        {
-          japanese.flag #1 = 
-            { bbl.ieej.title.pre swap$ * bbl.ieej.title.aft * }
-            { skip$ }
-          if$
-        }
-        { skip$ }
-      if$
+      format.jp.title
       emphasize.title
     }
   if$
