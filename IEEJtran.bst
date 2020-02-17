@@ -1379,7 +1379,10 @@ FUNCTION {format.address.org.or.pub.date}
               space.normal 'prev.status.space := 
               japanese.flag #1 = 'skip$ { ": " * } if$
             }
-            { punct.period 'prev.status.punct :=
+            { japanese.flag #1 =
+                { punct.no 'prev.status.punct := }
+                { punct.period 'prev.status.punct := }
+              if$
               space.large 'prev.status.space :=
               address empty$
                 { skip$ }
