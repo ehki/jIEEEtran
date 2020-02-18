@@ -1,6 +1,8 @@
 %%
-%% IEEEtran.bst
-%% BibTeX Bibliography Style file for IEEE Journals and Conferences (unsorted)
+%% IEEJtran.bst
+%% BibTeX Bibliography Style file for IEEJ Journals and Conferences (unsorted)
+%% This code is from IEEEtran.bst.
+
 %% Version 1.14 (2015/08/26)
 %% 
 %% Copyright (c) 2003-2015 Michael Shell
@@ -17,6 +19,8 @@
 %% http://www.ctan.org/pkg/ieeetran
 %% and/or
 %% http://www.ieee.org/
+%% and/or
+%% https://github.com/YoshiRi/JPandENbst/
 %% 
 %% For use with BibTeX version 0.99a or later
 %%
@@ -110,6 +114,13 @@ FUNCTION {ieej.setting.punct.year.aft} { #0 }
 FUNCTION {ieej.setting.emph.title} { #0 }
 
 
+% IEEE形式において、日本語の書籍名と雑誌名をemphasizeするかの指定
+% #0 : emphasize しない
+% #1 : emphasize する
+% default: { #0 }
+FUNCTION {ieee.jp.setting.emph.title} { #0 }
+
+
 % 電気学会形式において、タイトル前後の文字を指定
 % default: {bbl.ieej.jp.title.pre} { "「" }
 %          {bbl.ieej.jp.title.aft} { "」" }
@@ -146,6 +157,13 @@ FUNCTION {bbl.ieej.pages} { "pp." }
 % 日本語文献において、pp. の表記法の設定
 % default: { "p." }
 FUNCTION {bbl.ieej.page} { "p." }
+
+
+% 日本語文献において、著者間の仕切り文字の設定
+% default: {bbl.ieej.jp.author.sep} { "・" }
+%          {bbl.ieej.en.author.sep} { ", " }
+FUNCTION {bbl.ieej.jp.author.sep} { "・" }
+FUNCTION {bbl.ieej.en.author.sep} { ", " }
 
 
 % #0 turns off the display of the number for articles.
@@ -201,7 +219,7 @@ FUNCTION {default.ALTinterwordstretchfactor} { "4" }
 % #0 turns off the "dashification" of repeated (i.e., identical to those
 % of the previous entry) names. The IEEE normally does this.
 % #1 enables
-FUNCTION {default.is.dash.repeated.names} { #1 }
+FUNCTION {default.is.dash.repeated.names} { #0 }
 
 
 % The default name format control string. %change based on japanese
@@ -231,14 +249,14 @@ FUNCTION {is.print.banners.to.terminal} { #1 }
 %% FILE VERSION AND BANNER %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-FUNCTION{bst.file.version} { "1.14" }
-FUNCTION{bst.file.date} { "2015/08/26" }
-FUNCTION{bst.file.website} { "http://www.michaelshell.org/tex/ieeetran/bibtex/" }
+FUNCTION{bst.file.version} { "0.10" }
+FUNCTION{bst.file.date} { "2020/02/16" }
+FUNCTION{bst.file.website} { "https://github.com/YoshiRi/JPandENbst/" }
 
 FUNCTION {banner.message}
 { is.print.banners.to.terminal
-     { "-- IEEEtran.bst version" " " * bst.file.version *
-       " (" * bst.file.date * ") " * "by Michael Shell." *
+     { "-- IEEJtran.bst version" " " * bst.file.version *
+       " (" * bst.file.date * ") " * "by YoshiRi." *
        top$
        "-- " bst.file.website *
        top$
@@ -266,7 +284,8 @@ FUNCTION {completed.message}
 %%%%%%%%%%%%%%%%%%%%%%
 %% STRING CONSTANTS %%
 %%%%%%%%%%%%%%%%%%%%%%
-
+FUNCTION {bbl.a}{ "A" }
+FUNCTION {bbl.an}{ "An" }
 FUNCTION {bbl.and}{ "and" }
 FUNCTION {bbl.etal}{ "et~al." }
 FUNCTION {bbl.editors}{ "eds." }
@@ -287,6 +306,7 @@ FUNCTION {bbl.revision}{ "Rev." }
 FUNCTION {bbl.series}{ "ser." }
 FUNCTION {bbl.standard}{ "Std." }
 FUNCTION {bbl.techrep}{ "Tech. Rep." }
+FUNCTION {bbl.the}{ "The" }
 FUNCTION {bbl.mthesis}{ "Master's thesis" }
 FUNCTION {bbl.phdthesis}{ "Ph.D. dissertation" }
 FUNCTION {bbl.st}{ "st" }
@@ -734,17 +754,17 @@ FUNCTION {output.nonnull}
     {
       prev.status.autho autho.close =
         { bbl.ieej.author.title.sep * }
-        { skip$}
+        { skip$ }
       if$
     }
     { skip$ }
   if$
   %%追加箇所1：日本語文献なら，"のあとにカンマ
-  japanese.flag #1 =
+  prev.status.quote quote.close = 
     {
-      prev.status.quote quote.close =
+      use.ieej.setting #1 =
         { bbl.ieej.title.aft * }
-        { skip$ }
+        { japanese.flag #1 = { "''" * } { skip$ } if$ }
       if$
     }
     { skip$ }
@@ -761,7 +781,7 @@ FUNCTION {output.nonnull}
     {
       prev.status.punct punct.comma =
         { "，" * }
-        {skip$}
+        { skip$ }
       if$
     }
   if$ 
@@ -778,13 +798,8 @@ FUNCTION {output.nonnull}
   if$ 
   %%変更箇所3ここまで
   %%変更箇所4：英語の場合は"の前にカンマ
-  japanese.flag #0 =
-    {
-      prev.status.quote quote.close =
-        { "''" * }
-        { skip$ }
-      if$
-    }
+  use.ieej.setting #0 = japanese.flag #0 = and
+    { prev.status.quote quote.close = { "''" * } { skip$ } if$ }
     { skip$ }
   if$
   %%変更箇所4ここまで
@@ -1196,7 +1211,7 @@ FUNCTION {convert.edition}
 
 
 %%%%%%%%%%%%%%%%%%%%%%
-%% JAPANESE CHECKER %%
+%% JAPANESE HANDLER %%
 %%%%%%%%%%%%%%%%%%%%%%
 
 FUNCTION {chk.jp.entry} {
@@ -1206,7 +1221,44 @@ FUNCTION {chk.jp.entry} {
     default.name.format.string.forJP 'name.format.string :=} 
   if$
 }
-
+FUNCTION {emphasize.title}
+{
+  use.ieej.setting #0 =
+    {
+      japanese.flag #0 = 
+        { emphasize }
+        { ieee.jp.setting.emph.title #1 =  { emphasize } { skip$ } if$ }
+      if$
+    }
+    { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
+  if$
+}
+FUNCTION {format.jp.edition}
+{
+  use.ieej.setting #1 = japanese.flag #1 = and
+    { duplicate$ "1" = { pop$ "初版" * } { "第" swap$ * * "版" * } if$ }
+    { convert.edition "l" change.case$ * "~" * bbl.edition * }
+  if$
+}
+FUNCTION {bbl.title.edition.sep}
+{
+  japanese.flag #1 = { "，" * } { ", " * } if$
+}
+FUNCTION {format.jp.year}
+{
+  use.ieej.setting #1 = 
+    { bbl.ieej.year.aft *
+      bbl.ieej.year.pre swap$ * * }
+    { * }
+  if$
+}
+FUNCTION {format.jp.title}
+{
+  use.ieej.setting #1 = japanese.flag #1 = and
+    { bbl.ieej.title.pre swap$ * bbl.ieej.title.aft * }
+    { skip$ }
+  if$
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% LATEX BIBLIOGRAPHY CODE %%
@@ -1231,7 +1283,7 @@ FUNCTION {start.entry}
 % the other gurus on comp.text.tex for their help and advice on the topic of
 % \selectlanguage, Babel and BibTeX.
 FUNCTION {begin.bib}
-{ "% Generated by IEEEtran.bst, version: " bst.file.version * " (" * bst.file.date * ")" *
+{ "% Generated by IEEJtran.bst, version: " bst.file.version * " (" * bst.file.date * ")" *
   write$ newline$
   preamble$ empty$ 'skip$
     { preamble$ write$ newline$ }
@@ -1259,7 +1311,7 @@ FUNCTION {begin.bib}
   write$ newline$
   "\expandafter\ifx\csname l@#1\endcsname\relax"
   write$ newline$
-  "\typeout{** WARNING: IEEEtran.bst: No hyphenation pattern has been}%"
+  "\typeout{** WARNING: IEEJtran.bst: No hyphenation pattern has been}%"
   write$ newline$
   "\typeout{** loaded for the language `#1'. Using the pattern for}%"
   write$ newline$
@@ -1354,16 +1406,22 @@ FUNCTION {format.address.org.or.pub.date}
       this.status.std
       cap.status.std
       % 日本語では出版社の場所は記載しない。
-      japanese.flag #1 =
+      use.ieej.setting #1 = japanese.flag #1 = and
         { skip$ }
         { address "address" bibinfo.check * }
       if$
       t empty$
         { skip$ }
-        { japanese.flag #1 =
+        { use.ieej.setting #1 =
             % space.largeからspace.normalに変更しスペースを抑制する
-            { space.normal 'prev.status.space := }
-            { punct.period 'prev.status.punct :=
+            { 
+              space.normal 'prev.status.space := 
+              japanese.flag #1 = 'skip$ { ": " * } if$
+            }
+            { japanese.flag #1 =
+                { punct.no 'prev.status.punct := }
+                { punct.period 'prev.status.punct := }
+              if$
               space.large 'prev.status.space :=
               address empty$
                 { skip$ }
@@ -1374,30 +1432,23 @@ FUNCTION {format.address.org.or.pub.date}
           t *
         }
       if$
-      incollection.flag #1 = 
+      use.ieej.setting #1 = incollection.flag #1 = and
         { skip$ }
         {
           year empty$ month empty$ and
             { skip$ }
             { t empty$ address empty$ and
                 { skip$ }
-                { japanese.flag #1 =
-                    { skip$ }
-                    { " " * }
-                    %{ ", " * }
+                { use.ieej.setting #1 = 
+                  { japanese.flag #1 = { skip$ } { " " * } if$ }
+                  { japanese.flag #1 = { "，" * } { ", " * } if$ }
                   if$
                 }
               if$
               month empty$
                 { year empty$
                     { skip$ }
-                    { use.ieej.setting #1 = 
-                        { year "year" bibinfo.check
-                          bbl.ieej.year.aft *
-                          bbl.ieej.year.pre swap$ * * }
-                        { year "year" bibinfo.check * }
-                        if$
-                    }
+                    { year "year" bibinfo.check format.jp.year }
                   if$
                 }
                 { month "month" bibinfo.check *
@@ -1445,9 +1496,10 @@ FUNCTION {format.names}
   s num.names$ 'numnames :=
   numnames 'namesleft :=
     { namesleft #0 > }
-    { s nameptr
-      name.format.string
-      format.name$
+    { japanese.flag #1 =
+        { s nameptr "{ff}" format.name$ "~" * s nameptr "{ll}" format.name$ * }
+        { s nameptr name.format.string format.name$ }
+      if$
       bibinfo bibinfo.check
       't :=
       nameptr #1 >
@@ -1462,16 +1514,11 @@ FUNCTION {format.names}
           if$
           namesleft #1 >
             { 
-            %%変更箇所1：日本語の場合にカンマを全角に変更．
-              japanese.flag #0 =
-                {
-                  ", " * t do.name.latex.cmd * 
-                }
-                {
-                  "，" * t do.name.latex.cmd * 
-                }
+              use.ieej.setting #0 = 
+                { japanese.flag #1 = { "，" } { ", " } if$ }
+                { japanese.flag #1 = { bbl.ieej.jp.author.sep } { bbl.ieej.en.author.sep } if$ }
               if$
-            %%変更箇所1ここまで
+              * t do.name.latex.cmd * 
             }
             { s nameptr "{ll}" format.name$ duplicate$ "others" =
                 { 't := }
@@ -1479,37 +1526,12 @@ FUNCTION {format.names}
               if$
               t "others" =
                 { " " * bbl.etal emphasize * }
-                { numnames #2 >
-                    { 
-                      %%変更箇所2：日本語の場合にカンマを全角に変更．
-                      japanese.flag #0 =
-                        {
-                          "," * 
-                        }
-                        {
-                          "，" *
-                        }
-                      if$
-                      %%変更箇所2ここまで
-                    }
-                    { skip$ }
+                {
+                  use.ieej.setting #0 = 
+                    { japanese.flag #1 = { "，" * } { ", " * bbl.and space.word * } if$ }
+                    { japanese.flag #1 = { bbl.ieej.jp.author.sep * } { bbl.ieej.en.author.sep * } if$ }
                   if$
-                  %%変更箇所3：日本語の場合で著者が2人の場合はandの代わりに全角カンマを入れる．
-                  %%bbl.andはandをくっつける処理と推測
-                  japanese.flag #0 =
-                    {
-                      bbl.and
-                      space.word * t do.name.latex.cmd *
-                    }
-                    {
-                      numnames #2 =
-                        { "，" * }
-                        { skip$ }
-                      if$
-                      t do.name.latex.cmd *
-                    }
-                  if$
-                  %%変更箇所3ここまで
+                t do.name.latex.cmd *
                 }
               if$
             }
@@ -1673,13 +1695,7 @@ FUNCTION {format.in.booktitle}
       this.status.std
       select.language
       intype missing$
-        { 
-          use.ieej.setting #0 =
-            { emphasize }
-            { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
-          if$
-          bbl.in " " *
-        }
+        { emphasize.title bbl.in " " * }
         { intype " " * }
       if$
       swap$ *
@@ -1687,6 +1703,7 @@ FUNCTION {format.in.booktitle}
     }
   if$
 }
+
 
 % This is used to format the booktitle of collection.
 % Here the "intype" field is not supported, but "edition" is.
@@ -1699,30 +1716,16 @@ FUNCTION {format.in.booktitle.edition}
         { punct.comma 'prev.status.punct := }
         { skip$ }
       if$
-      use.ieej.setting #0 =
-        { emphasize }
-        { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
-      if$
-      edition empty$ 'skip$
-        { japanese.flag #1 = { "，" * } { ", " * } if$
-          edition
-          japanese.flag #1 = 
-            { duplicate$ "1" =
-                { pop$ "初版" * }
-                { "第" swap$ * * "版" * }
-              if$
-            }
-            { convert.edition
-              "l" change.case$
-              * "~" * bbl.edition *
-            }
-          if$
-        }
+      emphasize.title
+      edition empty$
+        { skip$ }
+        { bbl.title.edition.sep edition format.jp.edition }
       if$
       japanese.flag #1 = 
         { space.normal 'prev.status.space := }
         { bbl.in " " * swap$ *}
       if$
+      cap.status.std
     }
   if$
 }
@@ -1742,7 +1745,7 @@ FUNCTION {format.article.title}
         { punct.no 'this.status.punct := }
       if$
       select.language
-      japanese.flag #1 =
+      use.ieej.setting #1 =
         { bbl.ieej.title.pre swap$ * }
         { "``" swap$ * }
       if$
@@ -1773,48 +1776,19 @@ FUNCTION {format.book.title.edition}
     { this.to.prev.status
       this.status.std
       select.language
-      use.ieej.setting #1 =
-        {
-          japanese.flag #1 = 
-            { bbl.ieej.title.pre swap$ * bbl.ieej.title.aft * }
-            { skip$ }
-          if$
-        }
+      format.jp.title
+      emphasize.title
+      edition empty$ 
         { skip$ }
+        { bbl.title.edition.sep edition format.jp.edition }
       if$
-      use.ieej.setting #0 =
-        { emphasize }
-        { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
-      if$
-      edition empty$ 'skip$
-        { japanese.flag #1 = { "，" * } { ", " * } if$
-          edition
-          japanese.flag #1 = 
-            {
-              duplicate$ "1" =
-                { pop$ "初版" * }
-                { "第" swap$ * * "版" * }
-              if$
-            }
-            {
-              convert.edition
-              status.cap
-                { "t" }
-                { "l" }
-              if$
-              change.case$
-              * "~" * bbl.edition *
-            }
-          if$
-        }
-      if$
-      japanese.flag #1 = 
+      use.ieej.setting #1 = 
         { space.normal 'prev.status.space := }
-        { bbl.in " " * swap$ *}
+        { skip$ }
       if$
       cap.status.std
       punct.comma 'this.status.punct :=
-      japanese.flag #1 =
+      use.ieej.setting #1 =
         { skip$ }
         { punct.comma 'prev.status.punct := }
       if$
@@ -1829,19 +1803,8 @@ FUNCTION {format.book.title}
       this.status.std
       cap.status.std
       select.language
-      use.ieej.setting #1 =
-        {
-          japanese.flag #1 = 
-            { bbl.ieej.title.pre swap$ * bbl.ieej.title.aft * }
-            { skip$ }
-          if$
-        }
-        { skip$ }
-      if$
-      use.ieej.setting #0 =
-        { emphasize }
-        { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
-      if$
+      format.jp.title
+      emphasize.title
     }
   if$
 }
@@ -1856,10 +1819,7 @@ FUNCTION {format.journal}
       this.status.std
       cap.status.std
       select.language
-      use.ieej.setting #0 =
-        { emphasize }
-        { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
-      if$
+      emphasize.title
     }
   if$
 }
@@ -2435,7 +2395,7 @@ FUNCTION {incollection}
   format.chapter output
   format.pages output
   format.note output
-  format.date output
+  use.ieej.setting #1 = { format.date output } { skip$ } if$
   format.url output
   fin.entry
   if.url.std.interword.spacing
