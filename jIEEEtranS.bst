@@ -1218,11 +1218,27 @@ FUNCTION {convert.edition}
 %% JAPANESE HANDLER %%
 %%%%%%%%%%%%%%%%%%%%%%
 
-FUNCTION {chk.jp.entry} {
-  isjapanese empty$ 
-    {skip$} 
-    {#1 'japanese.flag :=
-    default.name.format.string.forJP 'name.format.string :=} 
+%FUNCTION {chk.jp.entry} {
+%  isjapanese empty$ 
+%    {skip$} 
+%    {#1 'japanese.flag :=
+%    default.name.format.string.forJP 'name.format.string :=} 
+%  if$
+%}
+FUNCTION {chk.jp.kanji.str} {
+  duplicate$ empty$
+    { pop$ #0 }
+    { is.kanji.str$ #1 = { #1 } { #0 } if$ }
+  if$
+}
+FUNCTION {chk.jp.entry.pbibtex} {
+  author chk.jp.kanji.str #1 =
+  title chk.jp.kanji.str #1 = or
+  journal chk.jp.kanji.str #1 = or
+  publisher chk.jp.kanji.str #1 = or
+    { #1 'japanese.flag :=
+      default.name.format.string.forJP 'name.format.string := }
+    { skip$ }
   if$
 }
 FUNCTION {emphasize.title}
@@ -1276,7 +1292,8 @@ FUNCTION {start.entry}
   newline$
   ""
   initialize.prev.this.status
-  chk.jp.entry
+  %chk.jp.entry
+  chk.jp.entry.pbibtex
 }
 
 % Here we write out all the LaTeX code that we will need. The most involved
@@ -1495,6 +1512,7 @@ FUNCTION {format.names}
   this.to.prev.status
   this.status.std
   's :=
+  japanese.flag #1 = { s purify$ 's := } { skip$ } if$
   "" 't :=
   #1 'nameptr :=
   s num.names$ 'numnames :=
