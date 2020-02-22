@@ -22,12 +22,14 @@ def format_authors(t):
     rp, lp = t.find('{'), t.rfind('}')
     if rp == -1 or lp == -1:
         raise ValueError('No bracket found in the text.')
-    keysplit = ' and '
+    # keysplit = ' and '
     preauth = t[: rp + 1]
     authors = t[rp + 1 : lp]
+    authors = authors.replace('{', '')
+    authors = authors.replace('}', '')
     aftauth = t[lp:]
-    convert = [s.replace(' ', '~') for s in authors.split(keysplit)]
-    authors = keysplit.join(convert)
+    # convert = [s.replace(' ', '~') for s in authors.split(keysplit)]
+    # authors = keysplit.join(convert)
     return preauth + authors + aftauth
 
 
@@ -37,7 +39,7 @@ def chk_last_comma(line):
 
 
 def format_jp_keys(line, skip=False):
-    # line = format_authors(line)
+    line = format_authors(line)
     if not skip:
         nspace = re.match(r'\s*', line).end()
         prefix = '\n' if chk_last_comma(line) else ',\n'
