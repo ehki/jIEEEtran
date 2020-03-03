@@ -107,11 +107,22 @@ FUNCTION {ieej.setting.comma.year.pre} { #0 }
 FUNCTION {ieej.setting.punct.year.aft} { #0 }
 
 
-% 電気学会形式において、書籍名と雑誌名をemphasizeするかの指定
+% 電気学会形式において、英語の書籍名と雑誌名をemphasizeするかの指定
 % #0 : emphasize しない
 % #1 : emphasize する
-% default: { #0 }
-FUNCTION {ieej.setting.emph.title} { #0 }
+% default: {ieej.en.setting.emph.journal} { #1 }
+%        : {ieej.en.setting.emph.booktitle} { #0 }
+FUNCTION {ieej.en.setting.emph.journal} { #1 }
+FUNCTION {ieej.en.setting.emph.booktitle} { #0 }
+
+
+% 電気学会形式において、日本語の書籍名と雑誌名をemphasizeするかの指定
+% #0 : emphasize しない
+% #1 : emphasize する
+% default: {ieej.jp.setting.emph.journal} { #0 }
+%        : {ieej.jp.setting.emph.booktitle} { #0 }
+FUNCTION {ieej.jp.setting.emph.journal} { #0 }
+FUNCTION {ieej.jp.setting.emph.booktitle} { #0 }
 
 
 % IEEE形式において、日本語の書籍名と雑誌名をemphasizeするかの指定
@@ -1317,13 +1328,24 @@ FUNCTION {chk.jp.entry.pbibtex} {
 }
 
 FUNCTION {emphasize.title}
-{ use.ieej.setting #0 =
-    { japanese.flag #1 = ieee.jp.setting.emph.title #0 = and
-        { skip$ }
-        { emphasize }
+{ 's := 
+  use.ieej.setting #0 =
+    { japanese.flag #1 =
+        { ieee.jp.setting.emph.title #1 = { emphasize } { skip$ } if$ }
+        { emphasize } % IEEE/EN は emphasize
       if$
     }
-    { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
+    { japanese.flag #1 =
+        { ieej.jp.setting.emph.journal #1 = s "journal" = and { #1 } { #0 } if$
+          ieej.jp.setting.emph.booktitle #1 = s "booktitle" = and { #1 } { #0 } if$
+          or { emphasize } { skip$ } if$
+        }
+        { ieej.en.setting.emph.journal #1 = s "journal" = and { #1 } { #0 } if$
+          ieej.en.setting.emph.booktitle #1 = s "booktitle" = and { #1 } { #0 } if$
+          or { emphasize } { skip$ } if$
+        }
+      if$
+    }
   if$
 }
 
@@ -1785,7 +1807,7 @@ FUNCTION {format.in.booktitle}
       intype missing$
         { japanese.flag #1 = 
             { "" }
-            { emphasize.title bbl.in " " * }
+            { "booktitle" emphasize.title bbl.in " " * }
           if$
         }
         { intype " " * }
@@ -1808,7 +1830,7 @@ FUNCTION {format.in.booktitle.edition}
         { punct.comma 'prev.status.punct := }
         { skip$ }
       if$
-      emphasize.title
+      "booktitle" emphasize.title
       edition empty$
         { skip$ }
         { bbl.title.edition.sep edition format.jp.edition }
@@ -1873,7 +1895,7 @@ FUNCTION {format.book.title.edition}
       this.status.std
       select.language
       format.jp.title
-      emphasize.title
+      "booktitle" emphasize.title
       edition empty$ 
         { skip$ }
         { bbl.title.edition.sep edition format.jp.edition }
@@ -1900,7 +1922,7 @@ FUNCTION {format.book.title}
       cap.status.std
       select.language
       format.jp.title
-      emphasize.title
+      "booktitle" emphasize.title
     }
   if$
 }
@@ -1915,7 +1937,7 @@ FUNCTION {format.journal}
       this.status.std
       cap.status.std
       select.language
-      emphasize.title
+      "journal" emphasize.title
     }
   if$
 }
