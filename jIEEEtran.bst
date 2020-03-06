@@ -259,8 +259,8 @@ FUNCTION {is.print.banners.to.terminal} { #1 }
 %% FILE VERSION AND BANNER %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-FUNCTION{bst.file.version} { "0.10" }
-FUNCTION{bst.file.date} { "2020/02/16" }
+FUNCTION{bst.file.version} { "0.11" }
+FUNCTION{bst.file.date} { "2020/03/06" }
 FUNCTION{bst.file.website} { "https://github.com/YoshiRi/JPandENbst/" }
 
 FUNCTION {banner.message}
