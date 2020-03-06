@@ -157,6 +157,18 @@ FUNCTION {bbl.ieej.pages} { "pp." }
 FUNCTION {bbl.ieej.page} { "p." }
 
 
+% 電気学会形式において、日本語/英語文献の章番号前後文字、チルダ(~)を使用するかの設定
+% default: 
+FUNCTION {bbl.ieej.jp.chapter.pre} { "" }
+FUNCTION {bbl.ieej.jp.chapter.aft} { "章" }
+FUNCTION {bbl.ieej.jp.chapter.tie.pre} { #0 } % 章番号前文字と章番号の間にチルダを挿入しない
+FUNCTION {bbl.ieej.jp.chapter.tie.aft} { #0 } % 章番号と章番号後文字との間にチルダを挿入しない
+FUNCTION {bbl.ieej.en.chapter.pre} { "ch." }
+FUNCTION {bbl.ieej.en.chapter.aft} { "" }
+FUNCTION {bbl.ieej.en.chapter.tie.pre} { #0 } % 章番号前文字と章番号の間にチルダを挿入する
+FUNCTION {bbl.ieej.en.chapter.tie.aft} { #0 } % 章番号と章番号後文字との間にチルダを挿入しない
+
+
 % 日本語文献において、著者間の仕切り文字の設定
 % default: {bbl.ieej.jp.author.sep} { "・" }
 %          {bbl.ieej.en.author.sep} { ", " }
@@ -247,8 +259,8 @@ FUNCTION {is.print.banners.to.terminal} { #1 }
 %% FILE VERSION AND BANNER %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-FUNCTION{bst.file.version} { "0.10" }
-FUNCTION{bst.file.date} { "2020/02/16" }
+FUNCTION{bst.file.version} { "0.11" }
+FUNCTION{bst.file.date} { "2020/03/06" }
 FUNCTION{bst.file.website} { "https://github.com/YoshiRi/JPandENbst/" }
 
 FUNCTION {banner.message}
@@ -350,7 +362,8 @@ MACRO {dec} {"Dec."}
 %%%%%%%%%%%%%%%%%%
 
 ENTRY
-  { isjapanese
+  { 
+    %isjapanese
     address
     assignee
     author
@@ -728,7 +741,34 @@ FUNCTION {bbl.ieej.author.title.sep}
     { bbl.ieej.en.author.title.sep }
   if$
 }
-
+FUNCTION {bbl.ieej.chapter.pre}
+{
+  japanese.flag #1 =
+    { bbl.ieej.jp.chapter.pre }
+    { bbl.ieej.en.chapter.pre }
+  if$
+}
+FUNCTION {bbl.ieej.chapter.aft}
+{
+  japanese.flag #1 =
+    { bbl.ieej.jp.chapter.aft }
+    { bbl.ieej.en.chapter.aft }
+  if$
+}
+FUNCTION {bbl.ieej.chapter.tie.pre}
+{
+  japanese.flag #1 =
+    { bbl.ieej.jp.chapter.tie.pre }
+    { bbl.ieej.en.chapter.tie.pre }
+  if$
+}
+FUNCTION {bbl.ieej.chapter.tie.aft}
+{
+  japanese.flag #1 =
+    { bbl.ieej.jp.chapter.tie.aft }
+    { bbl.ieej.en.chapter.tie.aft }
+  if$
+}
 
 % The output routines write out the *next* to the top (previous) item on the
 % stack, adding punctuation and such as needed. Since IEEEtran.bst maintains
@@ -1212,11 +1252,27 @@ FUNCTION {convert.edition}
 %% JAPANESE HANDLER %%
 %%%%%%%%%%%%%%%%%%%%%%
 
-FUNCTION {chk.jp.entry} {
-  isjapanese empty$ 
-    {skip$} 
-    {#1 'japanese.flag :=
-    default.name.format.string.forJP 'name.format.string :=} 
+%FUNCTION {chk.jp.entry} {
+%  isjapanese empty$ 
+%    {skip$} 
+%    {#1 'japanese.flag :=
+%    default.name.format.string.forJP 'name.format.string :=} 
+%  if$
+%}
+FUNCTION {chk.jp.kanji.str} {
+  duplicate$ empty$
+    { pop$ #0 }
+    { is.kanji.str$ #1 = { #1 } { #0 } if$ }
+  if$
+}
+FUNCTION {chk.jp.entry.pbibtex} {
+  author chk.jp.kanji.str #1 =
+  title chk.jp.kanji.str #1 = or
+  journal chk.jp.kanji.str #1 = or
+  publisher chk.jp.kanji.str #1 = or
+    { #1 'japanese.flag :=
+      default.name.format.string.forJP 'name.format.string := }
+    { skip$ }
   if$
 }
 FUNCTION {emphasize.title}
@@ -1270,7 +1326,8 @@ FUNCTION {start.entry}
   newline$
   ""
   initialize.prev.this.status
-  chk.jp.entry
+  %chk.jp.entry
+  chk.jp.entry.pbibtex
 }
 
 % Here we write out all the LaTeX code that we will need. The most involved
@@ -1489,6 +1546,7 @@ FUNCTION {format.names}
   this.to.prev.status
   this.status.std
   's :=
+  japanese.flag #1 = { s purify$ 's := } { skip$ } if$
   "" 't :=
   #1 'nameptr :=
   s num.names$ 'numnames :=
@@ -1952,16 +2010,43 @@ FUNCTION {format.chapter}
     { "" }
     { this.to.prev.status
       this.status.std
-      type empty$
-        { bbl.chapter }
-        { type "l" change.case$
-          "type" bibinfo.check
+      use.ieej.setting #0 = 
+        {
+          type empty$
+            { bbl.chapter }
+            { type "l" change.case$
+              "type" bibinfo.check
+            }
+          if$
+          chapter tie.or.space.prefix
+          "chapter" bibinfo.check
+          * *
+          cap.status.std
+        }
+        {
+          type empty$
+            { bbl.ieej.chapter.pre }
+            { type "l" change.case$
+              "type" bibinfo.check
+            }
+          if$
+          chapter
+          bbl.ieej.chapter.tie.pre #1 =
+            { tie.or.space.prefix }
+            { "" }
+          if$
+          "chapter" bibinfo.check
+          * *
+          bbl.ieej.chapter.aft 
+          bbl.ieej.chapter.tie.aft #1 =
+            { tie.or.space.prefix }
+            { "" }
+          if$
+          "chapter" bibinfo.check
+          * *
+          cap.status.std
         }
       if$
-      chapter tie.or.space.prefix
-      "chapter" bibinfo.check
-      * *
-      cap.status.std
     }
   if$
 }
