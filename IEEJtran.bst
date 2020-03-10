@@ -428,8 +428,6 @@ INTEGERS { prev.status.punct this.status.punct punct.std
            space.no space.normal space.large
            prev.status.quote this.status.quote quote.std
            quote.no quote.close
-           prev.status.autho this.status.autho autho.std
-           autho.no autho.close
            prev.status.nline this.status.nline nline.std
            nline.no nline.newblock 
            status.cap cap.std
@@ -567,8 +565,6 @@ FUNCTION {initialize.status.constants}
   #2 'space.large :=
   #0 'quote.no :=
   #1 'quote.close :=
-  #0 'autho.no :=
-  #1 'autho.close :=
   #0 'cap.no :=
   #1 'cap.yes :=
   #0 'nline.no :=
@@ -581,7 +577,6 @@ FUNCTION {std.status.using.comma}
 { punct.comma 'punct.std :=
   space.normal 'space.std :=
   quote.no 'quote.std :=
-  autho.no 'autho.std :=
   nline.no 'nline.std :=
   cap.no 'cap.std :=
 }
@@ -590,7 +585,6 @@ FUNCTION {std.status.using.period}
 { punct.period 'punct.std :=
   space.normal 'space.std :=
   quote.no 'quote.std :=
-  autho.no 'autho.std :=
   nline.no 'nline.std :=
   cap.yes 'cap.std :=
 }
@@ -599,12 +593,10 @@ FUNCTION {initialize.prev.this.status}
 { punct.no 'prev.status.punct :=
   space.no 'prev.status.space :=
   quote.no 'prev.status.quote :=
-  autho.no 'prev.status.autho :=
   nline.no 'prev.status.nline :=
   punct.no 'this.status.punct :=
   space.no 'this.status.space :=
   quote.no 'this.status.quote :=
-  autho.no 'this.status.autho :=
   nline.no 'this.status.nline :=
   cap.yes 'status.cap :=
 }
@@ -613,7 +605,6 @@ FUNCTION {this.status.std}
 { punct.std 'this.status.punct :=
   space.std 'this.status.space :=
   quote.std 'this.status.quote :=
-  autho.std 'this.status.autho :=
   nline.std 'this.status.nline :=
 }
 
@@ -623,7 +614,6 @@ FUNCTION {this.to.prev.status}
 { this.status.punct 'prev.status.punct :=
   this.status.space 'prev.status.space :=
   this.status.quote 'prev.status.quote :=
-  this.status.autho 'prev.status.autho :=
   this.status.nline 'prev.status.nline :=
 }
 
@@ -790,15 +780,6 @@ FUNCTION {bbl.ieej.chapter.tie.aft}
 
 FUNCTION {output.nonnull}
 { swap$
-  use.ieej.setting #1 =
-    {
-      prev.status.autho autho.close =
-        { bbl.ieej.author.title.sep * }
-        { skip$ }
-      if$
-    }
-    { skip$ }
-  if$
   %%追加箇所1：日本語文献なら，"のあとにカンマ
   prev.status.quote quote.close = 
     {
@@ -1629,7 +1610,7 @@ FUNCTION {format.authors}
 {
   author "author" format.names
   use.ieej.setting #1 = 
-    { autho.close 'this.status.autho :=
+    { bbl.ieej.author.title.sep *
       punct.no 'this.status.punct := }
     { skip$ }
   if$
