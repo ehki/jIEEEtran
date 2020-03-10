@@ -242,8 +242,8 @@ FUNCTION {default.is.dash.repeated.names} { #0 }
 
 
 % The default name format control string. %change based on japanese
-FUNCTION {default.name.format.string}{ "{f.~}{vv~}{ll}{, jj}" }
-FUNCTION {default.name.format.string.forJP}{ "{ff ~}{vv~}{ll}{, jj}" }
+FUNCTION {default.name.format.en.string}{ "{f.~}{vv~}{ll}{, jj}" }
+FUNCTION {default.name.format.jp.string}{ "{ff}~{vv~}{ll}{, jj}" }
 
 
 % The default LaTeX font command for the names.
@@ -485,7 +485,7 @@ FUNCTION {initialize.controls}
   default.is.use.alt.interword.spacing 'is.use.alt.interword.spacing :=
   default.is.dash.repeated.names 'is.dash.repeated.names :=
   default.ALTinterwordstretchfactor 'ALTinterwordstretchfactor :=
-  default.name.format.string 'name.format.string :=
+  default.name.format.en.string 'name.format.string :=
   default.name.latex.cmd 'name.latex.cmd :=
   default.name.url.prefix 'name.url.prefix :=
 }
@@ -854,7 +854,7 @@ FUNCTION {fin.entry}
   newline$
   %% for JP setting
   #0 'japanese.flag :=
-  default.name.format.string 'name.format.string :=
+  default.name.format.en.string 'name.format.string :=
 }
 
 
@@ -1218,7 +1218,7 @@ FUNCTION {chk.jp.entry.pbibtex} {
   journal chk.jp.kanji.str #1 = or
   publisher chk.jp.kanji.str #1 = or
     { #1 'japanese.flag :=
-      default.name.format.string.forJP 'name.format.string := }
+      default.name.format.jp.string 'name.format.string := }
     { skip$ }
   if$
 }
@@ -1477,10 +1477,7 @@ FUNCTION {format.names}
   s num.names$ 'numnames :=
   numnames 'namesleft :=
     { namesleft #0 > }
-    { japanese.flag #1 =
-        { s nameptr "{ff}" format.name$ "~" * s nameptr "{ll}" format.name$ * }
-        { s nameptr name.format.string format.name$ }
-      if$
+    { s nameptr name.format.string format.name$
       bibinfo bibinfo.check
       't :=
       nameptr #1 >
