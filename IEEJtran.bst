@@ -1430,6 +1430,19 @@ FUNCTION {longest.label.pass}
 
 %% Lower Level Formats (used by higher level formats)
 
+FUNCTION {format.pub}
+{ 't :=
+  ""
+  t empty$
+    { skip$ }
+    { this.to.prev.status
+      this.status.std
+      cap.status.std
+      t *
+    }
+  if$
+}
+
 FUNCTION {format.address.org.or.pub.date}
 { 't :=
   ""
@@ -1443,85 +1456,50 @@ FUNCTION {format.address.org.or.pub.date}
     { this.to.prev.status
       this.status.std
       cap.status.std
-      % 日本語では出版社の場所は記載しない。
-      use.ieej.setting #1 = japanese.flag #1 = and
-        { skip$ }
-        { address "address" bibinfo.check * }
-      if$
+      address "address" bibinfo.check *
       t empty$
         { skip$ }
-        { use.ieej.setting #1 =
-            % space.largeからspace.normalに変更しスペースを抑制する
-            { 
-              space.normal 'prev.status.space := 
-              japanese.flag #1 = 'skip$ { ": " * } if$
-            }
-            { japanese.flag #1 =
-                { punct.no 'prev.status.punct := }
-                { punct.period 'prev.status.punct := }
-              if$
-              space.large 'prev.status.space :=
-              address empty$
-                { skip$ }
-                { ": " * }
-              if$
-            }
+        { 
+          japanese.flag #1 =
+            { punct.no 'prev.status.punct := }
+            { punct.period 'prev.status.punct := }
+          if$
+          space.large 'prev.status.space :=
+          address empty$
+            { skip$ }
+            { ": " * }
           if$
           t *
         }
       if$
-      use.ieej.setting #1 = incollection.flag #1 = and
+      year empty$ month empty$ and
         { skip$ }
-        {
-          year empty$ month empty$ and
+        { t empty$ address empty$ and
             { skip$ }
-            { t empty$ address empty$ and
-                { skip$ }
-                { use.ieej.setting #1 = 
-                  { japanese.flag #1 = { skip$ } { " " * } if$ }
-                  { japanese.flag #1 = { "，" * } { ", " * } if$ }
-                  if$
-                }
-              if$
-              month empty$
-                { year empty$
-                    { skip$ }
-                    { year "year" bibinfo.check format.jp.year }
-                  if$
-                }
-                { month "month" bibinfo.check *
-                  year empty$
-                    { skip$ }
-                    { " " * year "year" bibinfo.check * }
-                  if$
-                }
+            { use.ieej.setting #1 = 
+              { japanese.flag #1 = { skip$ } { " " * } if$ }
+              { japanese.flag #1 = { "，" * } { ", " * } if$ }
               if$
             }
           if$
-          use.ieej.setting #1 = 
-            {
-              ieej.setting.punct.year.aft #0 = 
-                { punct.no 'this.status.punct := }
+          month empty$
+            { year empty$
                 { skip$ }
+                { year "year" bibinfo.check format.jp.year }
               if$
             }
-            { skip$ }
+            { month "month" bibinfo.check *
+              year empty$
+                { skip$ }
+                { " " * year "year" bibinfo.check * }
+              if$
+            }
           if$
         }
       if$
     }
   if$
-  use.ieej.setting #1 =
-    {
-      ieej.setting.comma.year.pre #0 = 
-        { punct.comma 'prev.status.punct := }
-        { skip$ }
-      if$
-    }
-    { skip$ }
-  if$
 }
-
 
 FUNCTION {format.names}
 { 'bibinfo :=
@@ -1897,6 +1875,9 @@ FUNCTION {format.organization}
     }
   if$
 }
+
+FUNCTION {format.publisher}
+{ publisher "publisher" bibinfo.warn format.pub }
 
 FUNCTION {format.address.publisher.date}
 { publisher "publisher" bibinfo.warn format.address.org.or.pub.date }
@@ -2377,10 +2358,14 @@ FUNCTION {book}
     { skip$ }
     { format.editors output }
   if$
-  format.address.publisher.date output
+  use.ieej.setting #1 = 
+    { format.publisher output }
+    { format.address.publisher.date output }
+  if$
   format.volume output
   format.number output
   format.note output
+  use.ieej.setting #0 = 'skip$ { format.date output } if$
   format.url output
   fin.entry
   if.url.std.interword.spacing
@@ -2432,12 +2417,16 @@ FUNCTION {inbook}
   name.or.dash
   format.book.title.edition output
   format.series output
-  format.address.publisher.date output
+  use.ieej.setting #1 = 
+    { format.publisher output }
+    { format.address.publisher.date output }
+  if$
   format.volume output
   format.number output
   format.chapter output
   format.pages output
   format.note output
+  use.ieej.setting #0 = 'skip$ { format.date output } if$
   format.url output
   fin.entry
   if.url.std.interword.spacing
@@ -2455,13 +2444,16 @@ FUNCTION {incollection}
   format.in.booktitle.edition "booktitle" output.warn
   format.series output
   format.editors output
-  format.address.publisher.date.nowarn output
+  use.ieej.setting #1 = 
+    { format.publisher output }
+    { format.address.publisher.date output }
+  if$
   format.volume output
   format.number output
   format.chapter output
   format.pages output
   format.note output
-  use.ieej.setting #1 = { format.date output } { skip$ } if$
+  use.ieej.setting #0 = 'skip$ { format.date output } if$
   format.url output
   fin.entry
   if.url.std.interword.spacing
