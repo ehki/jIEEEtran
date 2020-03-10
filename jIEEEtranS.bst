@@ -162,7 +162,14 @@ FUNCTION {bbl.ieej.page} { "p." }
 
 
 % 電気学会形式において、日本語/英語文献の章番号前後文字、チルダ(~)を使用するかの設定
-% default: 
+% default: {bbl.ieej.jp.chapter.pre} { "" }
+%          {bbl.ieej.jp.chapter.aft} { "章" }
+%          {bbl.ieej.jp.chapter.tie.pre} { #0 }
+%          {bbl.ieej.jp.chapter.tie.aft} { #0 }
+%          {bbl.ieej.en.chapter.pre} { "ch." }
+%          {bbl.ieej.en.chapter.aft} { "" }
+%          {bbl.ieej.en.chapter.tie.pre} { #0 }
+%          {bbl.ieej.en.chapter.tie.aft} { #0 }
 FUNCTION {bbl.ieej.jp.chapter.pre} { "" }
 FUNCTION {bbl.ieej.jp.chapter.aft} { "章" }
 FUNCTION {bbl.ieej.jp.chapter.tie.pre} { #0 } % 章番号前文字と章番号の間にチルダを挿入しない
@@ -784,7 +791,6 @@ FUNCTION {bbl.ieej.chapter.tie.aft}
 
 FUNCTION {output.nonnull}
 { swap$
-  %%追加箇所1：日本語文献なら，"のあとにカンマ
   prev.status.quote quote.close = 
     {
       use.ieej.setting #1 =
@@ -794,60 +800,31 @@ FUNCTION {output.nonnull}
     }
     { skip$ }
   if$
-  %%追加箇所1ここまで
-  %%変更箇所2：日本語文献なら全角カンマに
-  japanese.flag #0 =
-    { 
-      prev.status.punct punct.comma =
-        { "," * }
-        { skip$ }
-      if$
-    }
-    {
-      prev.status.punct punct.comma =
-        { "，" * }
-        { skip$ }
-      if$
-    }
-  if$ 
-  %%変更箇所2ここまで
-  %%変更箇所3：日本語の場合は全角ピリオド
-  prev.status.punct punct.period =
-    { 
-      japanese.flag #0 =
-        { add.period$ }
-        { "．" * }
-      if$
-    }
+  prev.status.punct punct.comma =
+    { japanese.flag #0 = { "," * } { "，" * } if$ }
     { skip$ }
-  if$ 
-  %%変更箇所3ここまで
-  %%変更箇所4：英語の場合は"の前にカンマ
+  if$
+  prev.status.punct punct.period =
+    { japanese.flag #0 = { add.period$ } { "．" * } if$ }
+    { skip$ }
+  if$
   use.ieej.setting #0 = japanese.flag #0 = and
     { prev.status.quote quote.close = { "''" * } { skip$ } if$ }
     { skip$ }
   if$
-  %%変更箇所4ここまで
-  %%変更箇所5：日本語の場合の謎スペースの抑制（全角カンマの後ろの空白で十分）
   prev.status.space space.normal =
-    { 
-      japanese.flag #0 =
-        { " " * }
-        { skip$ }
-      if$
-    }
+    { japanese.flag #0 = { " " * } { skip$ } if$ }
     { skip$ }
   if$
-  %%変更箇所5ここまで
   prev.status.space space.large =
-    { large.space * }
-    { skip$ }
-  if$
+     { large.space * }
+     { skip$ }
+   if$
   write$
   prev.status.nline nline.newblock =
-    { newline$ "\newblock " write$ }
-    { skip$ }
-  if$
+     { newline$ "\newblock " write$ }
+     { skip$ }
+   if$
 }
 
 FUNCTION {output}
@@ -871,13 +848,7 @@ FUNCTION {output.warn}
 FUNCTION {fin.entry}
 { this.status.punct punct.no =
     { skip$ }
-    { 
-      %%変更箇所：日本語文献の場合，全角ピリオドに
-      japanese.flag #0 =
-        { add.period$ }
-        { "．" * }
-      if$
-    }
+    { japanese.flag #0 = { add.period$ } { "．" * } if$ }
   if$
   this.status.quote quote.close =
     { "''" * }
@@ -1239,13 +1210,6 @@ FUNCTION {convert.edition}
 %% JAPANESE HANDLER %%
 %%%%%%%%%%%%%%%%%%%%%%
 
-%FUNCTION {chk.jp.entry} {
-%  isjapanese empty$ 
-%    {skip$} 
-%    {#1 'japanese.flag :=
-%    default.name.format.string.forJP 'name.format.string :=} 
-%  if$
-%}
 FUNCTION {chk.jp.kanji.str} {
   duplicate$ empty$
     { pop$ #0 }
@@ -1266,9 +1230,9 @@ FUNCTION {emphasize.title}
 {
   use.ieej.setting #0 =
     {
-      japanese.flag #0 = 
+      japanese.flag #1 = ieee.jp.setting.emph.title #0 = and
+        { skip$ }
         { emphasize }
-        { ieee.jp.setting.emph.title #1 =  { emphasize } { skip$ } if$ }
       if$
     }
     { ieej.setting.emph.title #1 = { emphasize } { skip$ } if$ }
