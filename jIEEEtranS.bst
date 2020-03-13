@@ -187,6 +187,25 @@ FUNCTION {bbl.ieej.jp.author.sep} { "・" }
 FUNCTION {bbl.ieej.en.author.sep} { ", " }
 
 
+% 電気学会形式において、発行年と発行月の区切り文字の指定
+% default: { "-" }
+FUNCTION {bbl.ieej.year.month.sep} { "-" }
+
+
+% 電気学会形式において、発行月の表示形式の指定
+% #0 : "1", "2", ..., "12" のように数字で表示
+% #1 : "Jan", "Feb.", ..., "Dec." のようにアルファベットで表示
+% default: { #0 }
+FUNCTION {format.month.ieej} { #0 }
+
+
+% IEEE形式において、発行月の表示形式の指定
+% #0 : "1", "2", ..., "12" のように数字で表示
+% #1 : "Jan", "Feb.", ..., "Dec." のようにアルファベットで表示
+% default: { #1 }
+FUNCTION {format.month.ieee} { #1 }
+
+
 % #0 turns off the display of the number for articles.
 % #1 enables
 FUNCTION {default.is.use.number.for.article} { #1 }
@@ -1187,6 +1206,39 @@ FUNCTION {word.to.num}
 }
 
 
+FUNCTION {month.word.to.num}
+{ duplicate$ "l" change.case$ 's :=
+  s "jan." = s "january" = or { pop$ "1" } { skip$ } if$
+  s "feb." = s "febuary" = or { pop$ "2" } { skip$ } if$
+  s "mar." = s "march" = or { pop$ "3" } { skip$ } if$
+  s "apr." = s "april" = or { pop$ "4" } { skip$ } if$
+  s "may." = s "may" = or { pop$ "5" } { skip$ } if$
+  s "jun." = s "june" = or { pop$ "6" } { skip$ } if$
+  s "jul." = s "july" = or { pop$ "7" } { skip$ } if$
+  s "aug." = s "august" = or { pop$ "8" } { skip$ } if$
+  s "sep." = s "september" = or { pop$ "9" } { skip$ } if$
+  s "oct." = s "october" = or { pop$ "10" } { skip$ } if$
+  s "nov." = s "november" = or { pop$ "11" } { skip$ } if$
+  s "dec." = s "december" = or { pop$ "12" } { skip$ } if$
+}
+
+
+FUNCTION {month.num.to.word}
+{ duplicate$ "l" change.case$ 's :=
+  s "1" = { pop$ "Jan." } { skip$ } if$
+  s "2" = { pop$ "Feb." } { skip$ } if$
+  s "3" = { pop$ "Mar." } { skip$ } if$
+  s "4" = { pop$ "Apr." } { skip$ } if$
+  s "5" = { pop$ "May" } { skip$ } if$
+  s "6" = { pop$ "June" } { skip$ } if$
+  s "7" = { pop$ "July" } { skip$ } if$
+  s "8" = { pop$ "Aug." } { skip$ } if$
+  s "9" = { pop$ "Sep." } { skip$ } if$
+  s "10" = { pop$ "Oct." } { skip$ } if$
+  s "11" = { pop$ "Nov." } { skip$ } if$
+  s "12" = { pop$ "Dec." } { skip$ } if$
+}
+
 % Converts the string on the top of the stack to numerical
 % ordinal (e.g., "11th") form.
 FUNCTION {convert.edition}
@@ -1584,7 +1636,12 @@ FUNCTION {format.editors}
 %% date
 
 FUNCTION {format.date}
-{ month "month" bibinfo.check duplicate$ empty$
+{ month "month" bibinfo.check month.word.to.num
+  use.ieej.setting #1 =
+    { format.month.ieej #1 = { month.num.to.word } { skip$ } if$ }
+    { format.month.ieee #1 = { month.num.to.word } { skip$ } if$ }
+  if$
+  duplicate$ empty$
   year  "year" bibinfo.check duplicate$ empty$
     { swap$ 'skip$
         { this.to.prev.status
@@ -1597,7 +1654,10 @@ FUNCTION {format.date}
     { this.to.prev.status
       this.status.std
       cap.status.std
-      swap$ 'skip$ { swap$ " " * swap$ } if$ *
+      use.ieej.setting #1 =
+        { swap$ 'skip$ { bbl.ieej.year.month.sep * swap$ } if$ * }
+        { swap$ 'skip$ { swap$ " " * swap$ } if$ * }
+      if$
       use.ieej.setting #1 =
         { bbl.ieej.year.aft * bbl.ieej.year.pre swap$ *
           ieej.setting.punct.year.aft #0 = 
