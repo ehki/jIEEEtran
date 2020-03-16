@@ -206,6 +206,18 @@ FUNCTION {format.month.ieej} { #0 }
 FUNCTION {format.month.ieee} { #1 }
 
 
+% 電気学会形式において、
+% 「手法Aと手法B、どちらが正しいのか?」
+% "Method A and B - Which is correct?"
+% のように、?や.など文区切り文字がタイトル最後にきた場合でも
+% 「手法Aと手法B、どちらが正しいのか?」，学会名
+% "Method A and B - Which is correct?", Journal title
+% のように"の後にカンマを打つかの設定
+% #0: カンマを打たない, #1: カンマを打つ
+% default: { #1 }
+FUNCTION { bbl.ieej.force.punct.aft.quote } { #1 }
+
+
 % #0 turns off the display of the number for articles.
 % #1 enables
 FUNCTION {default.is.use.number.for.article} { #1 }
@@ -1786,7 +1798,11 @@ FUNCTION {format.article.title}
     { quote.close 'this.status.quote :=
       is.last.char.not.punct
         { punct.std 'this.status.punct := }
-        { punct.no 'this.status.punct := }
+        { use.ieej.setting #1 = bbl.ieej.force.punct.aft.quote #1 = and
+            { punct.std 'this.status.punct := }
+            { punct.no 'this.status.punct := }
+            if$
+        }
       if$
       select.language
       use.ieej.setting #1 =
