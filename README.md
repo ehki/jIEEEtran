@@ -16,11 +16,11 @@ IEEEtranとIEEJtranの2形式を扱うようにしています。
 \bibliographystyle{IEEJtran}
 \bibliography{FILENAME.bib}
 ```
-コンパイル時に`.bib`ファイルを処理するコマンドには英語用の`bibtex`ではなく、日本語用の`pbibtex`を使用してください。`pbibtex`でのみ用意されている`is.kanji.str$`という関数を使用して日本語/英語の判断をしているため、英語用の`bibtex`ではどの`.bst`ファイルも正しく動きません。`is.kanji.str$`関数を使用した日本語の探索は、`author`、`journal`、`title`、`publisher` の4つのタグに限定しています。サンプルのbibファイルや出力結果は`test`ディレクトリにあります。
+コンパイル時に`.bib`ファイルを処理するコマンドには英語用の`bibtex`ではなく、日本語用の`pbibtex`を使用してください。`pbibtex`でのみ用意されている`is.kanji.str$`という関数を使用して日本語/英語の判断をしているため、英語用の`bibtex`ではどの`.bst`ファイルも正しく動きません。`is.kanji.str$`関数を使用した日本語の探索は、`author`、`journal`、`title`、`publisher` の4つのタグに限定しています。
 
 ## 応用：英語と日本語を併記
 
-電気学会が求める英語と日本語の併記を実現するため、中間ファイルの`.aux`と`.bbl`をlatexの外部で改変します。英語文献と日本語文献のcitationkeyがそれぞれ`engkey`と`jpkey`であるとすれば、合わせて一つの文献として表示するには`engkey/ej/jpkey`という一つのcitationkeyとしてtexファイル中に記載します(`mixej.py`上部の設定で`/ej/`という特殊文字列は変更可能です)。bibファイル中には`engkey`と`jpkey`それぞれに相当するエントリが必要です。伝統的な通常のコンパイル過程である
+電気学会が求める英語と日本語の併記を実現するため、中間ファイルの`.aux`と`.bbl`をlatexの外部で`python+mixej.py`で改変します。`mixej.py`はメインtexファイルと同じフォルダに入れてください。英語文献と日本語文献のcitationkeyがそれぞれ`engkey`と`jpkey`であるとすれば、合わせて一つの文献として表示するには`engkey/ej/jpkey`という一つのcitationkeyとしてtexファイル中に記載します(`mixej.py`上部の設定で`/ej/`という特殊文字列は変更可能です)。bibファイル中には`engkey`と`jpkey`それぞれに相当するエントリが必要です。伝統的な通常のコンパイル過程である
 ```text
 latex → bibtex → latex → latex → dvipdfmx
 ```
@@ -54,25 +54,26 @@ Latexmkを使用する場合には`bibtx/pbibtx`の実行の有無が自動で�
 "latex-workshop.latex.tools": [
   {
   "command": "latexmk",
-  "name": "latexmk python ../mixej.py",
+  "name": "latexmk python mixej.py",
   "args": [
     "-e", "$ENV{'PYCMD'}=''",
     "-e", "$latex='platex %O -synctex=1 -interaction=nonstopmode -kanji=utf8 -file-line-error %S'",
-    "-e", "$bibtex='python ../mixej.py; pbibtex %O %B; python ../mixej.py'",
+    "-e", "$bibtex='python mixej.py; pbibtex %O %B; python mixej.py'",
     "-e", "$dvipdf='dvipdfmx -V 7 %O -o %D %S'",
     "-norc", "-pdfdvi", "%DOC%"
     ],
   }
 ],
 "latex-workshop.latex.recipes": [
-  { "name": "latexmk, ../mixej.py", "tools": [ "latexmk python ../mixej.py" ] }
+  { "name": "latexmk, mixej.py", "tools": [ "latexmk python mixej.py" ] }
 ],
 ```
-なお、`test`ファイルの中から、一つ上の階層にある`mixej.py`を呼ぶために`../mixej.py`としています。
-`"name": "latexmk python ../mixej.py`や`"name ": "latexmk, ../mixej.py"`は単なる識別子ですので結果には影響しません。
-この設定で、latexmkが`bibtex`での処理が必要だと判断した場合に、`python ../mixej.py %B`→`pbibtex %B`→`python ../mixej.py %B`と連続して処理を行ってくれます。
+なお、`mixej.py`の置き場所がメインtexファイルと異なる場合には`mixej.py`のパスを変更してください。
+`"name": "latexmk python mixej.py`や`"name ": "latexmk, mixej.py"`は単なる識別子ですので結果には影響しません。
+この設定で、latexmkが`bibtex`での処理が必要だと判断した場合に、`python mixej.py %B`→`pbibtex %B`→`python mixej.py %B`と連続して処理を行ってくれます。
 
 # 参考文献
 - [日本語と英語を混ぜられるようにbibtexスタイルファイルを改造しよう](https://qiita.com/HexagramNM/items/3ad757a9f5ee5d15e363#_reference-2be0cc9a71381591bb17)
 - [IEEEtran.bst](http://tug.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/bibtex/IEEEtran.bst)
+- [How to Use the IEEEtran BIBTEX Style](http://ftp.jaist.ac.jp/pub/CTAN/macros/latex/contrib/IEEEtran/bibtex/IEEEtran_bst_HOWTO.pdf)
 - [ShiroTakeda/jecon-bst](https://github.com/ShiroTakeda/jecon-bst)
