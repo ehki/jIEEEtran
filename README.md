@@ -4,7 +4,6 @@ IEEEtranとIEEJtranの2形式を扱うようにしています。
 
 - IEEJtran.bst：電気学会の日英両対応フォーマット
 - jIEEEtran.bst：通常のIEEEtranの日本語対応版
-- jIEEEtranS.bst：著者のアルファベット順で並び替えたIEEEtranSの日本語対応版
 - mixej.py：同一文献で日本語と英語を併記するために、pbibtexコマンドの前後に挟むスクリプト
 
 # 使い方
@@ -76,5 +75,4 @@ Latexmkを使用する場合には`bibtx/pbibtx`の実行の有無が自動で�
 # 参考文献
 - [日本語と英語を混ぜられるようにbibtexスタイルファイルを改造しよう](https://qiita.com/HexagramNM/items/3ad757a9f5ee5d15e363#_reference-2be0cc9a71381591bb17)
 - [IEEEtran.bst](http://tug.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/bibtex/IEEEtran.bst)
-- [IEEEtranS.bst](http://tug.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/bibtex/IEEEtranS.bst)
 - [ShiroTakeda/jecon-bst](https://github.com/ShiroTakeda/jecon-bst)
