@@ -33,8 +33,7 @@ latex → python mixej.py → bibtex → python mixej.py → latex → latex →
 以上の操作により、`\cite{engkye, jpkey}`として引用すると`.bbl`中に
 ```latex
 \bibitem{engkey}
-I.~Yamada, J.~Sato: ``Article title3'', Japanese Transaction, Vol.6, No.10,
-  p.156 (2020-10)
+I.~Yamada, J.~Sato: ``Article title3'', Japanese Transaction, Vol.6, No.10, p.156 (2020-10)
 
 \bibitem{jpkey}
 山田~一郎・佐藤~次郎：「文献タイトル3」，日本語学会，Vol.6，No.10，p.156（2020-10）
@@ -42,25 +41,24 @@ I.~Yamada, J.~Sato: ``Article title3'', Japanese Transaction, Vol.6, No.10,
 と二つの`\bibitem`として出力される英語と日本語の文献を、`(in Japanese)\\\n`を間に挟み`citationkey`を変更して
 ```latex
 \bibitem{engkey/ej/jpkey}
-I.~Yamada, J.~Sato: ``Article title3'', Japanese Transaction, Vol.6, No.10,
-  p.156 (2020-10)(in Japanese)\\
+I.~Yamada, J.~Sato: ``Article title3'', Japanese Transaction, Vol.6, No.10, p.156 (2020-10)(in Japanese)\\
 山田~一郎・佐藤~次郎：「文献タイトル3」，日本語学会，Vol.6，No.10，p.156（2020-10）
 ```
-と、一つの`\bibitem`と扱うことができます。
+と、一つの`\bibitem`として扱うことができます。
 
 Latexmkを使用する場合には`bibtx/pbibtx`の実行の有無が自動で判別されますが、`$bibtex`部分のコマンドを書き換えればpythonコマンドを含めて必要な回数実行されます。例えばVScode+Latex Workshopのシンプルなコンパイル設定は次のように変更できます。お使いのコマンドに合わせて適宜変更してください。
 
 ```json
 "latex-workshop.latex.tools": [
   {
-  "command": "latexmk",
-  "name": "latexmk python mixej.py",
-  "args": [
-    "-e", "$latex='platex %O -synctex=1 -interaction=nonstopmode -kanji=utf8 -file-line-error %S'",
-    "-e", "$bibtex='python mixej.py %B; pbibtex %O %B; python mixej.py %B'",
-    "-e", "$dvipdf='dvipdfmx -V 7 %O -o %D %S'",
-    "-norc", "-pdfdvi", "%DOC%"
-    ],
+    "command": "latexmk",
+    "name": "latexmk python mixej.py",
+    "args": [
+      "-e", "$latex='platex %O -synctex=1 -interaction=nonstopmode -kanji=utf8 -file-line-error %S'",
+      "-e", "$bibtex='python mixej.py %B; pbibtex %O %B; python mixej.py %B'",
+      "-e", "$dvipdf='dvipdfmx -V 7 %O -o %D %S'",
+      "-norc", "  1-pdfdvi", "%DOC%"
+      ],
   }
 ],
 "latex-workshop.latex.recipes": [
