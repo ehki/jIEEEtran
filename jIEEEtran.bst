@@ -1202,18 +1202,18 @@ FUNCTION {word.to.num}
 
 FUNCTION {month.word.to.num}
 { duplicate$ "l" change.case$ 's :=
-  s "jan." = s "january" = or { pop$ "1" } { skip$ } if$
-  s "feb." = s "febuary" = or { pop$ "2" } { skip$ } if$
-  s "mar." = s "march" = or { pop$ "3" } { skip$ } if$
-  s "apr." = s "april" = or { pop$ "4" } { skip$ } if$
-  s "may." = s "may" = or { pop$ "5" } { skip$ } if$
-  s "jun." = s "june" = or { pop$ "6" } { skip$ } if$
-  s "jul." = s "july" = or { pop$ "7" } { skip$ } if$
-  s "aug." = s "august" = or { pop$ "8" } { skip$ } if$
-  s "sep." = s "september" = or { pop$ "9" } { skip$ } if$
-  s "oct." = s "october" = or { pop$ "10" } { skip$ } if$
-  s "nov." = s "november" = or { pop$ "11" } { skip$ } if$
-  s "dec." = s "december" = or { pop$ "12" } { skip$ } if$
+  s "jan." = s "jan" = s "january" = or or { pop$ "1" } { skip$ } if$
+  s "feb." = s "feb" = s "febuary" = or or { pop$ "2" } { skip$ } if$
+  s "mar." = s "mar" = s "march" = or or { pop$ "3" } { skip$ } if$
+  s "apr." = s "apr" = s "april" = or or { pop$ "4" } { skip$ } if$
+  s "may." = s "may" = s "may" = or or { pop$ "5" } { skip$ } if$
+  s "jun." = s "jun" = s "june" = or or { pop$ "6" } { skip$ } if$
+  s "jul." = s "jul" = s "july" = or or { pop$ "7" } { skip$ } if$
+  s "aug." = s "aug" = s "august" = or or { pop$ "8" } { skip$ } if$
+  s "sep." = s "sep" = s "september" = or or { pop$ "9" } { skip$ } if$
+  s "oct." = s "oct" = s "october" = or or { pop$ "10" } { skip$ } if$
+  s "nov." = s "nov" = s "november" = or or { pop$ "11" } { skip$ } if$
+  s "dec." = s "dec" = s "december" = or or { pop$ "12" } { skip$ } if$
 }
 
 
