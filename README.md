@@ -53,44 +53,25 @@ Latexmkを使用する場合には`bibtx/pbibtx`の実行の有無が自動で�
 
 ```json
 "latex-workshop.latex.tools": [
-    {
-        "command": "latexmk",
-        "args": [
-            "-e",
-            "$ENV{'PYCMD'}='python mixej.py'",
-            "-e",
-            "$latex='platex %O -synctex=1 -interaction=nonstopmode -kanji=utf8 -file-line-error %S'",
-            "-e",
-            "$bibtex='$PYCMD %B; pbibtex %O %B; $PYCMD %B'",
-            "-e",
-            "$dvipdf='dvipdfmx -V 7 %O -o %D %S'",
-            "-norc",
-            "-pdfdvi",
-            "%DOC%"
-        ],
-        "name": "latexmk"
-    }
+  {
+  "command": "latexmk",
+  "name": "latexmk python ../mixej.py",
+  "args": [
+    "-e", "$ENV{'PYCMD'}=''",
+    "-e", "$latex='platex %O -synctex=1 -interaction=nonstopmode -kanji=utf8 -file-line-error %S'",
+    "-e", "$bibtex='python ../mixej.py; pbibtex %O %B; python ../mixej.py'",
+    "-e", "$dvipdf='dvipdfmx -V 7 %O -o %D %S'",
+    "-norc", "-pdfdvi", "%DOC%"
+    ],
+  }
 ],
 "latex-workshop.latex.recipes": [
-    {
-    "name": "toolchain",
-    "tools": [
-        "latexmk"
-        ]
-    }
+  { "name": "latexmk, ../mixej.py", "tools": [ "latexmk python ../mixej.py" ] }
 ],
 ```
-なお、
-```json
-"-e",
-"$ENV{'PYCMD'}='python mixej.py'",t
-```
-では`pbibtex`前後に実行するPythonコマンドを設定し、環境変数`$PYCMD`に格納しています。そして
-```json
-"-e",
-"$bibtex='$PYCMD %B; pbibtex %O %B; $PYCMD %B'",
-```
-の設定で、latexmkが`bibtex`での処理が必要だと判断した場合に、`python mixej.py %B`→`pbibtex %B`→`python mixej.py %B`と連続して処理を行ってくれます。
+なお、`test`ファイルの中から、一つ上の階層にある`mixej.py`を呼ぶために`../mixej.py`としています。
+`"name": "latexmk python ../mixej.py`や`"name ": "latexmk, ../mixej.py"`は単なる識別子ですので結果には影響しません。
+この設定で、latexmkが`bibtex`での処理が必要だと判断した場合に、`python ../mixej.py %B`→`pbibtex %B`→`python ../mixej.py %B`と連続して処理を行ってくれます。
 
 # 参考文献
 - [日本語と英語を混ぜられるようにbibtexスタイルファイルを改造しよう](https://qiita.com/HexagramNM/items/3ad757a9f5ee5d15e363#_reference-2be0cc9a71381591bb17)
