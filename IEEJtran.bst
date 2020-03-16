@@ -2509,15 +2509,24 @@ FUNCTION {inproceedings}
   format.editors output
   format.volume output
   format.number output
-  publisher empty$
-    { format.address.organization.date output }
-    { format.organization "organization" bibinfo.check output
-      format.address.publisher.date output
+  use.ieej.setting #1 = 
+    { format.paper output
+      format.pages output
+      format.address output
+    }
+    { publisher empty$
+        { format.address.organization.date output }
+        { format.organization "organization" bibinfo.check output
+          format.address.publisher.date output
+        }
+      if$
+      format.paper output
+      format.pages output
+
     }
   if$
-  format.paper output
-  format.pages output
   format.note output
+  use.ieej.setting #0 = 'skip$ { format.date output } if$
   format.url output
   fin.entry
   if.url.std.interword.spacing
