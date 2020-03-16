@@ -21,7 +21,7 @@ IEEEtranとIEEJtranの2形式を扱うようにしています。
 
 ## 応用：英語と日本語を併記
 
-電気学会が求める英語と日本語の併記を実現するため、中間ファイルの`.aux`と`.bbl`をlatexの外部で改変します。英語文献と日本語文献のcitationkeyがそれぞれ`engkey`と`jpkey`であるとすれば、合わせて一つの文献として表示するには`engkey/je/jpkey`という一つのcitationkeyとしてtexファイル中に記載します(`mixej.py`上部の設定で`/je/`という特殊文字列は変更可能です)。bibファイル中には`engkey`と`jpkey`それぞれに相当するエントリが必要です。伝統的な通常のコンパイル過程である
+電気学会が求める英語と日本語の併記を実現するため、中間ファイルの`.aux`と`.bbl`をlatexの外部で改変します。英語文献と日本語文献のcitationkeyがそれぞれ`engkey`と`jpkey`であるとすれば、合わせて一つの文献として表示するには`engkey/ej/jpkey`という一つのcitationkeyとしてtexファイル中に記載します(`mixej.py`上部の設定で`/ej/`という特殊文字列は変更可能です)。bibファイル中には`engkey`と`jpkey`それぞれに相当するエントリが必要です。伝統的な通常のコンパイル過程である
 ```text
 latex → bibtex → latex → latex → dvipdfmx
 ```
@@ -29,7 +29,7 @@ latex → bibtex → latex → latex → dvipdfmx
 ```text
 latex → python mixej.py → bibtex → python mixej.py → latex → latex → dvipdfmx
 ```
-と、`mixej.py`を`bibtex`前後に1回ずつ実行します。一回目の`python mixej.py`で、`.aux`と`.bbl`中の`engkey/je/jpkey`を`engkey`と`jpkey`の二つに分け、続く`bibtex`で`engkey`と`jpkey`をそれぞれbibtexにて整形させます。二回目の`python mixej.py`で、`.aux`と`.bbl`中の`engkey`と`jpkey`を再び`engkey/je/jpkey`の一つのcitationkeyとして扱うように改変し、最後の二回の`latex`で一つのcitationkeyである`engkey/je/jpkey`として扱います。
+と、`mixej.py`を`bibtex`前後に1回ずつ実行します。一回目の`python mixej.py`で、`.aux`と`.bbl`中の`engkey/ej/jpkey`を`engkey`と`jpkey`の二つに分け、続く`bibtex`で`engkey`と`jpkey`をそれぞれbibtexにて整形させます。二回目の`python mixej.py`で、`.aux`と`.bbl`中の`engkey`と`jpkey`を再び`engkey/ej/jpkey`の一つのcitationkeyとして扱うように改変し、最後の二回の`latex`で一つのcitationkeyである`engkey/ej/jpkey`として扱います。
 
 以上の操作により、`\cite{engkye, jpkey}`として引用すると`.bbl`中に
 ```latex
@@ -42,7 +42,7 @@ I.~Yamada, J.~Sato: ``Article title3'', Japanese Transaction, Vol.6, No.10,
 ```
 と二つの`\bibitem`として出力される英語と日本語の文献を、`(in Japanese)\\\n`を間に挟み`citationkey`を変更して
 ```latex
-\bibitem{engkey/je/jpkey}
+\bibitem{engkey/ej/jpkey}
 I.~Yamada, J.~Sato: ``Article title3'', Japanese Transaction, Vol.6, No.10,
   p.156 (2020-10)(in Japanese)\\
 山田~一郎・佐藤~次郎：「文献タイトル3」，日本語学会，Vol.6，No.10，p.156（2020-10）
@@ -83,7 +83,7 @@ Latexmkを使用する場合には`bibtx/pbibtx`の実行の有無が自動で�
 なお、
 ```json
 "-e",
-"$ENV{'PYCMD'}='python mixej.py'",
+"$ENV{'PYCMD'}='python mixej.py'",t
 ```
 では`pbibtex`前後に実行するPythonコマンドを設定し、環境変数`$PYCMD`に格納しています。そして
 ```json

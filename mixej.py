@@ -3,7 +3,7 @@ import platform
 import os
 import json
 
-SPLIT_KEY = '/je/'
+SPLIT_KEY = '/ej/'
 ITEM_SEP = '(in Japanese)\\\\'
 
 FILE_VERSION = '0.12'
