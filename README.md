@@ -56,9 +56,8 @@ Latexmkを使用する場合には`bibtx/pbibtx`の実行の有無が自動で�
   "command": "latexmk",
   "name": "latexmk python mixej.py",
   "args": [
-    "-e", "$ENV{'PYCMD'}=''",
     "-e", "$latex='platex %O -synctex=1 -interaction=nonstopmode -kanji=utf8 -file-line-error %S'",
-    "-e", "$bibtex='python mixej.py; pbibtex %O %B; python mixej.py'",
+    "-e", "$bibtex='python mixej.py %B; pbibtex %O %B; python mixej.py %B'",
     "-e", "$dvipdf='dvipdfmx -V 7 %O -o %D %S'",
     "-norc", "-pdfdvi", "%DOC%"
     ],

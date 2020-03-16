@@ -470,8 +470,7 @@ INTEGERS { prev.status.punct this.status.punct punct.std
            nline.no nline.newblock 
            status.cap cap.std
            cap.no cap.yes
-           japanese.flag
-           incollection.flag}
+           japanese.flag}
 
 INTEGERS { longest.label.width multiresult nameptr namesleft number.label numnames }
 
@@ -608,7 +607,6 @@ FUNCTION {initialize.status.constants}
   #0 'nline.no :=
   #1 'nline.newblock :=
   #0 'japanese.flag :=
-  #0 'incollection.flag :=
 }
 
 FUNCTION {std.status.using.comma}
@@ -2470,9 +2468,7 @@ FUNCTION {inbook}
 }
 
 FUNCTION {incollection}
-{ 
-  #1 'incollection.flag :=
-  std.status.using.comma
+{ std.status.using.comma
   start.entry
   if.url.alt.interword.spacing
   format.authors "author" output.warn
@@ -2494,7 +2490,6 @@ FUNCTION {incollection}
   format.url output
   fin.entry
   if.url.std.interword.spacing
-  #0 'incollection.flag :=
 }
 
 FUNCTION {inproceedings}
