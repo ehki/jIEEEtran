@@ -10,3 +10,5 @@
 *.synctex.gz
 *.vscode
 *.ejp
+*.bcf
+*.run.xml

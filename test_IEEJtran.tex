@@ -1,18 +1,18 @@
-\documentclass[10pt,a4paper]{article}
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{graphicx}
+\documentclass[9pt, twocolumn, a4paper]{jsarticle}
+\usepackage[top=20truemm, bottom=20truemm, left=20truemm, right=20truemm]{geometry}
+\setlength{\columnsep}{3zw}
 \usepackage{listings, jlisting}
-\author{JPandENbst}
+\usepackage[sectionbib]{bibunits}
+\usepackage{enumitem}
+\setitemize{itemsep=-0.1\baselineskip}
+
 \lstset{
   basicstyle={\scriptsize\ttfamily},
-  identifierstyle={\small},
-  commentstyle={\smallitshape},
-  keywordstyle={\small\bfseries},
-  ndkeywordstyle={\small},
-  stringstyle={\small\ttfamily},
+  identifierstyle={\footnotesize},
+  commentstyle={\footnotesizeitshape},
+  keywordstyle={\footnotesize\bfseries},
+  ndkeywordstyle={\footnotesize},
+  stringstyle={\footnotesize\ttfamily},
   frame={tb},
   breaklines=true,
   columns=[l]{fullflexible},
@@ -26,17 +26,19 @@
 }
 \begin{document}
 
+\section{日本語}
+\begin{bibunit}[IEEJtran]
 
-\section{日本語文献}
-\subsection{article\\}
-japaneseTest1 \cite{japaneseTest1},
-japaneseTest2 \cite{japaneseTest2},
-japaneseTest3 \cite{japaneseTest3}
+\subsection{articles}
+\begin{itemize}
+  \item jpArticle1 \cite{jpArticle1}
+  \item jpArticle2 \cite{jpArticle2}
+  \item jpArticle3 \cite{jpArticle3}
+\end{itemize}
 
 \begin{lstlisting}
-@article{japaneseTest1,
+@article{jpArticle1,
  author = {山田 一郎 and 山田 次郎 and 山田 三郎 and 山田 四郎},
- isjapanese = {true},
  year = {2019},
  journal = {日本語学会},
  title = {文献1},
@@ -45,9 +47,8 @@ japaneseTest3 \cite{japaneseTest3}
  volume = {15},
  month = {3}
 }
-@article{japaneseTest2,
- author = {山田 五郎 and 山田 六郎},
- isjapanese = {true},
+@article{jpArticle2,
+ author = {{山田 五郎} and {山田 六郎}},
  year = {2019},
  journal = {日本語学会},
  title = {文献2},
@@ -55,7 +56,7 @@ japaneseTest3 \cite{japaneseTest3}
  pages = {21},
  volume = {15}
 }
-@article{japaneseTest3,
+@article{jpArticle3,
  author = {{山田 八郎} and {山田 六郎}},
  year = {2010},
  journal = {日本語の学会名},
@@ -66,14 +67,17 @@ japaneseTest3 \cite{japaneseTest3}
 }
 \end{lstlisting}
 
-\subsection{book\\}
-japaneseBook1 \cite{japaneseBook1}, 
-japaneseBook2 \cite{japaneseBook2}
+
+
+\subsection{book}
+\begin{itemize}
+  \item jpBook1 \cite{jpBook1}
+  \item jpBook2 \cite{jpBook2}
+\end{itemize}
 
 \begin{lstlisting}
-@book{japaneseBook1,
+@book{jpBook1,
  author = {佐藤 一郎},
- isjapanese = {true},
  year = {2010},
  publisher = {日本語出版},
  address = {東京},
@@ -81,9 +85,8 @@ japaneseBook2 \cite{japaneseBook2}
  edition = {1},
  pages = {100--200}
 }
-@book{japaneseBook2,
+@book{jpBook2,
  author = {佐藤 二郎 and 佐藤 三郎},
- isjapanese = {true},
  year = {2012},
  publisher = {日本語出版},
  address = {東京},
@@ -93,14 +96,15 @@ japaneseBook2 \cite{japaneseBook2}
 }
 \end{lstlisting}
 
-\subsection{incollection\\}
-japaneseBook3 \cite{japaneseBook3}, 
-japaneseBook4 \cite{japaneseBook4}
+\subsection{incollection}
+\begin{itemize}
+  \item jpIncollection1 \cite{jpIncollection1}
+  \item jpIncollection2 \cite{jpIncollection2}
+\end{itemize}
 
 \begin{lstlisting}
-@incollection{japaneseBook3,
- author = {佐藤 二郎 and 佐藤 三郎},
- isjapanese = {true},
+@incollection{jpIncollection1,
+ author = {{佐藤 二郎} and {佐藤 三郎}},
  year = {2012},
  publisher = {日本語出版},
  address = {東京},
@@ -109,7 +113,7 @@ japaneseBook4 \cite{japaneseBook4}
  edition = {2},
  pages = {100--200}
 }
-@incollection{japaneseBook4,
+@incollection{jpIncollection2,
  author = {山田 一郎},
  year = {1900},
  publisher = {出版会社},
@@ -122,16 +126,24 @@ japaneseBook4 \cite{japaneseBook4}
 }
 \end{lstlisting}
 
+{\footnotesize \putbib[samplebib]}
+\end{bibunit}
 
+\clearpage
 \section{英語}
+\begin{bibunit}[IEEJtran]
+
 \subsection{article}
 
-englishTest1 \cite{englishTest1},
-englishTest2 \cite{englishTest2},
-englishTest3 \cite{englishTest3}
+\begin{itemize}
+  \item enArticle1 \cite{enArticle1}
+  \item enArticle2 \cite{enArticle2}
+  \item enArticle3 \cite{enArticle3}
+  \item enArticle4 \cite{enArticle4}
+\end{itemize}
 
 \begin{lstlisting}
-@article{englishTest1,
+@article{enArticle1,
  author = {Ichiro Yamada and Jiro Yamada and Saburo Yamada and Shiro Yamada},
  year = {2019},
  journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
@@ -141,26 +153,38 @@ englishTest3 \cite{englishTest3}
  volume = {15},
  month = {July}
 }
-@article{englishTest2,
+@article{enArticle2,
  author = {Goro Yamada and Rokuro Yamada},
  year = {2019},
  journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
  title = {Title2},
  month = {dec.}
 }
-@article{englishTest3,
+@article{enArticle3,
  author = {Goro Yamada and Rokuro Yamada},
  year = {2018},
  journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
  title = {Title2 is true?},
  month = {nov}
 }
+@article{enArticle4,
+ author = {Hiroshi Sato and Jiro Sasaki},
+ year = {2010},
+ journal = {IEEJ Sample Transactions},
+ title = {Article with language field},
+ month = {march},
+ language = {japaneese}
+}
 \end{lstlisting}
 
 \subsection{inproceedings}
-EngConf1 \cite{EngConf1}
+
+\begin{itemize}
+  \item enInproceedings1 \cite{enInproceedings1}
+\end{itemize}
+
 \begin{lstlisting}
-@inproceedings{EngConf1,
+@inproceedings{enInproceedings1,
  author = {Hayashi Shinji and Ogura Yasuhiro},
  title = {Sample Conference Article Title},
  booktitle = {Proc. 5th Internatinoal Sample Conference (ISC)},
@@ -173,10 +197,13 @@ EngConf1 \cite{EngConf1}
 \end{lstlisting}
 
 \subsection{book}
-englishBook1 \cite{englishBook1}
+
+\begin{itemize}
+  \item enBook1 \cite{enBook1}
+\end{itemize}
 
 \begin{lstlisting}
-@book{englishBook1,
+@book{enBook1,
  address = {City, Country},
  publisher = {Publisher},
  author = {Engligh Author and German Author and Japanese Author},
@@ -188,10 +215,13 @@ englishBook1 \cite{englishBook1}
 \end{lstlisting}
 
 \subsection{incollection}
-englishBook2 \cite{englishBook2}
+
+\begin{itemize}
+  \item enIncollection1 \cite{enIncollection1}
+\end{itemize}
 
 \begin{lstlisting}
-@incollection{englishBook2,
+@incollection{enIncollection1,
  address = {City, Country},
  publisher = {Publisher},
  author = {Engligh Author and German Author and Japanese Author},
@@ -204,14 +234,23 @@ englishBook2 \cite{englishBook2}
 }
 \end{lstlisting}
 
+{\footnotesize \putbib[samplebib]}
+\end{bibunit}
+
+\clearpage
 \section{英語と日本語の併記}
+\begin{bibunit}[IEEJtran]
+
 \subsection{article}
 
-englishTest5eng/ej/japaneseTest5 \cite{englishTest5eng/ej/japaneseTest5}
-englishTest6eng/ej/japaneseTest6 \cite{englishTest6eng/ej/japaneseTest6}
-englishTest7eng/ej/japaneseTest7 \cite{englishTest7eng/ej/japaneseTest7}
+\begin{itemize}
+  \item enjArticle1/ej/jpjArticle1 \cite{enjArticle1/ej/jpjArticle1}
+  \item enjArticle2/ej/jpjArticle2 \cite{enjArticle2/ej/jpjArticle2}
+  \item enjArticle3/ej/jpjArticle3 \cite{enjArticle3/ej/jpjArticle3}
+\end{itemize}
+
 \begin{lstlisting}
-@article{englishTest5eng
+@article{enjArticle1,
  author = {Ichiro Yamada and Jiro Sato and Saburo Tanaka and Shiro Suzuki},
  year = {2016},
  journal = {Japanese Transaction},
@@ -219,9 +258,10 @@ englishTest7eng/ej/japaneseTest7 \cite{englishTest7eng/ej/japaneseTest7}
  number = {5},
  pages = {45--60},
  volume = {10},
- month = {3}
+ month = {3},
+ language = {japanese}
 }
-@article{japaneseTest5,
+@article{jpjArticle1,
  author = {山田 一郎 and 佐藤 次郎 and 田中 三郎 and 鈴木 四郎},
  year = {2016},
  journal = {日本語学会},
@@ -231,7 +271,7 @@ englishTest7eng/ej/japaneseTest7 \cite{englishTest7eng/ej/japaneseTest7}
  volume = {10},
  month = {3}
 }
-@article{englishTest6eng,
+@article{enjArticle2,
  author = {Ichiro Yamada},
  year = {2000},
  journal = {Japanese Transaction},
@@ -239,9 +279,10 @@ englishTest7eng/ej/japaneseTest7 \cite{englishTest7eng/ej/japaneseTest7}
  number = {1},
  pages = {4--6},
  volume = {12},
- month = {12}
+ month = {12},
+ language = {Japanese}
 }
-@article{japaneseTest6,
+@article{jpjArticle2,
  author = {山田 一郎},
  year = {2000},
  journal = {日本語学会},
@@ -251,7 +292,7 @@ englishTest7eng/ej/japaneseTest7 \cite{englishTest7eng/ej/japaneseTest7}
  volume = {12},
  month = {12}
 }
-@article{englishTest7eng,
+@article{enjArticle3,
  author = {Ichiro Yamada and Jiro Sato},
  year = {2020},
  journal = {Japanese Transaction},
@@ -259,9 +300,10 @@ englishTest7eng/ej/japaneseTest7 \cite{englishTest7eng/ej/japaneseTest7}
  number = {10},
  pages = {156},
  volume = {6},
- month = {oct.}
+ month = {oct.},
+ language = {Japanese}
 }
-@article{japaneseTest7,
+@article{jpjArticle3,
  author = {山田 一郎 and 佐藤 次郎},
  year = {2020},
  journal = {日本語学会},
@@ -273,8 +315,35 @@ englishTest7eng/ej/japaneseTest7 \cite{englishTest7eng/ej/japaneseTest7}
 }
 \end{lstlisting}
 
-% \bibliographystyle{jIEEEtran}
-\bibliographystyle{IEEJtran}
+\subsection{book}
 
-\bibliography{samplebib}
+\begin{itemize}
+ \item enjBook1/ej/jpjBook1 \cite{enjBook1/ej/jpjBook1}
+\end{itemize}
+
+\begin{lstlisting}
+@book{enjBook1,
+ author = {Ichiro Sato},
+ year = {2010},
+ publisher = {Japanese Publisher},
+ address = {Tokyo},
+ title = {Japanese Book title},
+ edition = {1},
+ pages = {100--200},
+ language = {japaneese}
+}
+@book{jpjBook1,
+ author = {佐藤 一郎},
+ year = {2010},
+ publisher = {日本語出版},
+ address = {東京},
+ title = {日本語本},
+ edition = {1},
+ pages = {100--200}
+}
+\end{lstlisting}
+
+{\footnotesize \putbib[samplebib]}
+\end{bibunit}
+
 \end{document}
