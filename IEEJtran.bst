@@ -20,7 +20,7 @@
 %% and/or
 %% http://www.ieee.org/
 %% and/or
-%% https://github.com/YoshiRi/JPandENbst/
+%% https://github.com/ehki/jIEEEtran/
 %% 
 %% For use with BibTeX version 0.99a or later
 %%
@@ -302,7 +302,7 @@ FUNCTION {is.print.banners.to.terminal} { #1 }
 FUNCTION{bst.file.name} { "IEEJtran.bst" }
 FUNCTION{bst.file.version} { "0.12" }
 FUNCTION{bst.file.date} { "2020/03/17" }
-FUNCTION{bst.file.website} { "https://github.com/YoshiRi/JPandENbst/" }
+FUNCTION{bst.file.website} { "https://github.com/ehki/jIEEEtran/" }
 
 FUNCTION {banner.message}
 { is.print.banners.to.terminal
