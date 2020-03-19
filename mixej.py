@@ -9,7 +9,7 @@ ITEM_SEP = '(in Japanese)\\\\'
 FILE_VERSION = '0.12'
 FILE_DATE = '2020/03/17'
 FILE_AUTHOR = 'Haruki Ejiri'
-FILE_URL = 'https://github.com/YoshiRi/JPandENbst/'
+FILE_URL = 'https://github.com/ehki/jIEEEtran/'
 
 
 def check_load_file(fn, asjson=False):
