@@ -2,7 +2,7 @@
 %% IEEJtran.bst
 %% BibTeX Bibliography Style file for IEEJ Journals and Conferences (unsorted)
 %%
-%% Version 0.12 (2020/03/17)
+%% Version 0.13 (2020/03/20)
 %% 
 %% Copyright (c) 2020 Haruki Ejiri and Yoshi Ri 
 %% 
@@ -20,7 +20,7 @@
 %% and/or
 %% http://www.ieee.org/
 %% and/or
-%% https://github.com/YoshiRi/JPandENbst/
+%% https://github.com/ehki/jIEEEtran/
 %% 
 %% For use with BibTeX version 0.99a or later
 %%
@@ -216,6 +216,31 @@ FUNCTION {format.month.ieee} { #1 }
 FUNCTION { bbl.ieej.force.punct.aft.quote } { #1 }
 
 
+% languageにJapaneseやFrenchの指定がある場合に、(in Language)を表記するかの設定
+% #0 言語表記しない
+% #1 IEEE-Reference-Guideの通りに言語表記する
+%    https://ieeeauthorcenter.ieee.org/wp-content/uploads/IEEE-Reference-Guide.pdf
+% #2 文献末尾に言語表記する
+% default : { #1 } % for jIEEEtran.bst
+%           { #2 } % for IEEJtran.bst
+FUNCTION {bbl.format.language} { #2 }
+
+
+% language表記の後にピリオドを打つかの設定
+% default : { #1 } % for jIEEEtran.bst (デフォルト通りで強制しない)
+%           { #0 } % for IEEJtran.bst (ピリオドを強制的に打たせない)
+FUNCTION {bbl.format.language.punct} { #0 }
+
+
+% select.language関数を用いてタイトルジャーナル名に
+% \BIBforeignlanguage{Japanese}
+% などのhyphenation設定の処理を行うかの設定。
+% { #1 } : hyphenation設定を行う(設定していないとWARNINGが出る。
+% { #0 } : hyphenation設定を行わない
+% default : { #0 }
+FUNCTION {bbl.use.select.language} { #0 }
+
+
 % #0 turns off the display of the number for articles.
 % #1 enables
 FUNCTION {default.is.use.number.for.article} { #1 }
@@ -300,9 +325,9 @@ FUNCTION {is.print.banners.to.terminal} { #1 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 FUNCTION{bst.file.name} { "IEEJtran.bst" }
-FUNCTION{bst.file.version} { "0.12" }
-FUNCTION{bst.file.date} { "2020/03/17" }
-FUNCTION{bst.file.website} { "https://github.com/YoshiRi/JPandENbst/" }
+FUNCTION{bst.file.version} { "0.13" }
+FUNCTION{bst.file.date} { "2020/03/20" }
+FUNCTION{bst.file.website} { "https://github.com/ehki/jIEEEtran/" }
 
 FUNCTION {banner.message}
 { is.print.banners.to.terminal
@@ -870,6 +895,7 @@ FUNCTION {output.warn}
   if$
 }
 
+
 % "fin.entry" is the output routine that handles the last item of the entry
 % (which will be on the top of the stack when "fin.entry" is called).
 
@@ -940,7 +966,7 @@ FUNCTION {do.name.latex.cmd}
 % IEEEtran.cls).
 FUNCTION {select.language}
 { duplicate$ empty$ 'pop$
-    { language empty$ 'skip$
+    { language empty$ bbl.use.select.language #0 = or 'skip$
         { "\BIBforeignlanguage{" language * "}{" * swap$ * "}" * }
       if$
     }
@@ -1526,6 +1552,11 @@ FUNCTION {format.address.org.or.pub.date}
           t *
         }
       if$
+      language empty.field.to.null.string
+      duplicate$ empty$ bbl.format.language #1 = not or
+        { * }
+        { capitalize " (in " swap$ * ")" * * }
+      if$
       year empty$ month empty$ and
         { skip$ }
         { t empty$ address empty$ and
@@ -1936,6 +1967,22 @@ FUNCTION {format.school}
   if$
 }
 
+FUNCTION {format.language}
+{ language empty.field.to.null.string
+  duplicate$ empty$ bbl.format.language #0 = or 'skip$
+    { this.to.prev.status
+      this.status.std
+      capitalize
+      punct.comma 'this.status.punct :=
+      bbl.format.language.punct #0 =
+        { punct.no 'this.status.punct := }
+        { skip$ }
+      if$
+      "(in " swap$ * ")" *
+      cap.status.std
+    }
+  if$
+}
 
 
 %% volume/number/series/chapter/pages
@@ -2369,6 +2416,7 @@ FUNCTION {article}
   format.authors "author" output.warn
   name.or.dash
   format.article.title "title" output.warn
+  bbl.format.language #1 = { format.language output } 'skip$ if$
   format.journal "journal" bibinfo.check "journal" output.warn
   format.volume output
   format.number.if.use.for.article output
@@ -2376,6 +2424,7 @@ FUNCTION {article}
   format.date "year" output.warn
   format.note output
   format.url output
+  bbl.format.language #2 = { format.language output } 'skip$ if$
   fin.entry
   if.url.std.interword.spacing
 }

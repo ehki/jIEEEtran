@@ -4,12 +4,12 @@ import os
 import json
 
 SPLIT_KEY = '/ej/'
-ITEM_SEP = '(in Japanese)\\\\'
+ITEM_SEP = '\\hspace{0mm}\\\\'
 
-FILE_VERSION = '0.12'
-FILE_DATE = '2020/03/17'
+FILE_VERSION = '0.13'
+FILE_DATE = '2020/03/20'
 FILE_AUTHOR = 'Haruki Ejiri'
-FILE_URL = 'https://github.com/YoshiRi/JPandENbst/'
+FILE_URL = 'https://github.com/ehki/jIEEEtran/'
 
 
 def check_load_file(fn, asjson=False):
@@ -125,7 +125,7 @@ def divide_bbl(fn, pairs):
     --
     \\bibitem{englishTest5/ej/japaneseTest5}
     I.~Yamada, J.~Sato, S.~Tanaka, S.~Suzuki: ``Article title'', Japanese
-    Transaction, Vol.10, No.5, pp.45--60 (2016-3)(in Japanese)\\\\
+    Transaction, Vol.10, No.5, pp.45--60 (2016-3)\\hspace{0mm}\\\\
     山田~一郎・佐藤~次郎・田中~三郎・鈴木~四郎：「文献タイトル」，
     日本語学会，Vol.10，No.5，pp.45--60（2016-3）
     --
@@ -278,7 +278,7 @@ def combine_bbl(fn, pairs):
     --
     \\bibitem{englishTest5/ej/japaneseTest5}
     I.~Yamada, J.~Sato, S.~Tanaka, S.~Suzuki: ``Article title'', Japanese
-    Transaction, Vol.10, No.5, pp.45--60 (2016-3)(in Japanese)\\\\
+    Transaction, Vol.10, No.5, pp.45--60 (2016-3)\\hspace{0mm}\\\\
     山田~一郎・佐藤~次郎・田中~三郎・鈴木~四郎：「文献タイトル」，
     日本語学会，Vol.10，No.5，pp.45--60（2016-3）
     --
@@ -320,7 +320,7 @@ def divide_ej_key(bn):
     --
     \\bibitem{englishTest5/ej/japaneseTest5}
     I.~Yamada, J.~Sato, S.~Tanaka, S.~Suzuki: ``Article title'', Japanese
-    Transaction, Vol.10, No.5, pp.45--60 (2016-3)(in Japanese)\\\\
+    Transaction, Vol.10, No.5, pp.45--60 (2016-3)\\hspace{0mm}\\\\
     山田~一郎・佐藤~次郎・田中~三郎・鈴木~四郎：「文献タイトル」，
     日本語学会，Vol.10，No.5，pp.45--60（2016-3）
     --
@@ -399,7 +399,7 @@ def combine_ej_key(bn):
     --
     \\bibitem{englishTest5/ej/japaneseTest5}
     I.~Yamada, J.~Sato, S.~Tanaka, S.~Suzuki: ``Article title'', Japanese
-    Transaction, Vol.10, No.5, pp.45--60 (2016-3)(in Japanese)\\\\
+    Transaction, Vol.10, No.5, pp.45--60 (2016-3)\\hspace{0mm}\\\\
     山田~一郎・佐藤~次郎・田中~三郎・鈴木~四郎：「文献タイトル」，
     日本語学会，Vol.10，No.5，pp.45--60（2016-3）
     --
