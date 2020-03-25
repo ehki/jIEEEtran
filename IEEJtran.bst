@@ -1573,8 +1573,13 @@ FUNCTION {format.address.org.or.pub.date}
                 { year "year" bibinfo.check format.jp.year }
               if$
             }
-            { month "month" bibinfo.check *
-              year empty$
+            { month "month" bibinfo.check month.word.to.num
+              use.ieej.setting #1 =
+                { format.month.ieej #1 = { month.num.to.word } { skip$ } if$ }
+                { format.month.ieee #1 = { month.num.to.word } { skip$ } if$ }
+              if$
+              *
+                year empty$
                 { skip$ }
                 { " " * year "year" bibinfo.check * }
               if$
@@ -1778,7 +1783,11 @@ FUNCTION {format.in.booktitle}
       this.status.std
       select.language
       intype missing$
-        { emphasize.title bbl.in " " * }
+        { japanese.flag #1 = 
+            { "" }
+            { emphasize.title bbl.in " " * }
+          if$
+        }
         { intype " " * }
       if$
       swap$ *
