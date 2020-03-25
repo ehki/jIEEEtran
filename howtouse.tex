@@ -1,0 +1,199 @@
+\documentclass[10pt, a4paper]{jsarticle}
+\usepackage[top=20truemm, bottom=20truemm, left=20truemm, right=20truemm]{geometry}
+\setlength{\columnsep}{3zw}
+\usepackage{listings, jlisting}
+\usepackage[sectionbib]{bibunits}
+\usepackage{cite}
+\renewcommand{\refname}{\small 参考文献}
+\usepackage{multicol}
+\usepackage{enumitem}
+\setitemize{itemsep=-0.1\baselineskip}
+\newsavebox{\mybox}
+\lstset{
+  basicstyle={\scriptsize\ttfamily},
+  identifierstyle={\footnotesize},
+  commentstyle={\footnotesizeitshape},
+  keywordstyle={\footnotesize\bfseries},
+  ndkeywordstyle={\footnotesize},
+  stringstyle={\footnotesize\ttfamily},
+  breaklines=true,
+  columns=[l]{fullflexible},
+  multicols=2
+}
+
+\newcommand{\putlst}[1]{
+  \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-1.5zw}
+  \lstinputlisting{#1}\vspace{-1.8zw}
+  \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
+}
+
+\begin{document}
+
+\section{日本語}
+
+\subsection{articles}
+
+\putlst{bib/jparticle.bib}
+
+\begin{bibunit}[IEEJtran]
+  \begin{itemize}
+    \item jpArticle1 \cite{jpArticle1}
+    \item jpArticle2 \cite{jpArticle2}
+    \item jpArticle3 \cite{jpArticle3}
+  \end{itemize}
+  {\small \putbib[bib/jparticle]}
+\end{bibunit}
+\begin{bibunit}[jIEEEtran]
+  \begin{itemize}
+    \item jpArticle1 \cite{jpArticle1}
+    \item jpArticle2 \cite{jpArticle2}
+    \item jpArticle3 \cite{jpArticle3}
+  \end{itemize}
+  {\small \putbib[bib/jparticle]}
+\end{bibunit}
+
+
+
+\subsection{book}
+
+\putlst{bib/jpbook.bib}
+
+\begin{bibunit}[IEEJtran]
+  \begin{itemize}
+    \item jpBook1 \cite{jpBook1}
+    \item jpBook2 \cite{jpBook2}
+  \end{itemize}
+  {\small \putbib[bib/jpbook]}
+\end{bibunit}
+\begin{bibunit}[jIEEEtran]
+  \begin{itemize}
+    \item jpBook1 \cite{jpBook1}
+    \item jpBook2 \cite{jpBook2}
+  \end{itemize}
+  {\small \putbib[bib/jpbook]}
+\end{bibunit}
+
+
+\subsection{incollection}
+
+\putlst{bib/jpincollection.bib}
+
+\begin{bibunit}[IEEJtran]
+  \begin{itemize}
+    \item jpIncollection1 \cite{jpIncollection1}
+    \item jpIncollection2 \cite{jpIncollection2}
+  \end{itemize}
+  {\small \putbib[bib/jpincollection]}
+\end{bibunit}
+\begin{bibunit}[jIEEEtran]
+  \begin{itemize}
+    \item jpIncollection1 \cite{jpIncollection1}
+    \item jpIncollection2 \cite{jpIncollection2}
+  \end{itemize}
+  {\small \putbib[bib/jpincollection]}
+\end{bibunit}
+
+\clearpage
+\section{英語}
+
+\subsection{article}
+
+\putlst{bib/enarticle.bib}
+
+\begin{bibunit}[IEEJtran]
+  enArticle1--4\cite{enArticle1,enArticle2,enArticle3,enArticle4}
+  {\small \putbib[bib/enarticle]}
+\end{bibunit}
+\begin{bibunit}[jIEEEtran]
+  enArticle1--4\cite{enArticle1,enArticle2,enArticle3,enArticle4}
+  {\small \putbib[bib/enarticle]}
+\end{bibunit}
+
+
+\subsection{inproceedings}
+
+\putlst{bib/eninproceedings.bib}
+
+\begin{bibunit}[IEEJtran]
+  \begin{itemize}
+    \item enInproceedings1 \cite{enInproceedings1}
+  \end{itemize}
+  {\small \putbib[bib/eninproceedings]}
+\end{bibunit}
+\begin{bibunit}[jIEEEtran]
+  \begin{itemize}
+    \item enInproceedings1 \cite{enInproceedings1}
+  \end{itemize}
+  {\small \putbib[bib/eninproceedings]}
+\end{bibunit}
+
+
+\subsection{book}
+
+\putlst{bib/enbook.bib}
+
+\begin{bibunit}[IEEJtran]
+  \begin{itemize}
+    \item enBook1 \cite{enBook1}
+  \end{itemize}
+  {\small \putbib[bib/enbook]}
+\end{bibunit}
+\begin{bibunit}[jIEEEtran]
+  \begin{itemize}
+    \item enBook1 \cite{enBook1}
+  \end{itemize}
+  {\small \putbib[bib/enbook]}
+\end{bibunit}
+
+\subsection{incollection}
+
+\putlst{bib/enincollection.bib}
+
+\begin{bibunit}[IEEJtran]
+  \begin{itemize}
+    \item enIncollection1 \cite{enIncollection1}
+  \end{itemize}
+  {\small \putbib[bib/enincollection]}
+\end{bibunit}
+\begin{bibunit}[jIEEEtran]
+  \begin{itemize}
+    \item enIncollection1 \cite{enIncollection1}
+  \end{itemize}
+  {\small \putbib[bib/enincollection]}
+\end{bibunit}
+
+
+\clearpage
+\section{英語と日本語の併記}
+
+\subsection{article}
+
+\putlst{bib/ejarticle.bib}
+
+\begin{bibunit}[IEEJtran]
+  enjArticle1--3/ej/jpjArticle1--3 \cite{enjArticle1/ej/jpjArticle1,enjArticle2/ej/jpjArticle2,enjArticle3/ej/jpjArticle3}
+  {\small \putbib[bib/ejarticle]}
+\end{bibunit}
+\begin{bibunit}[jIEEEtran]
+  enjArticle1--3/ej/jpjArticle1--3 \cite{enjArticle1/ej/jpjArticle1,enjArticle2/ej/jpjArticle2,enjArticle3/ej/jpjArticle3}
+  {\small \putbib[bib/ejarticle]}
+\end{bibunit}
+
+\subsection{book}
+
+\putlst{bib/ejbook.bib}
+
+\begin{bibunit}[IEEJtran]
+  \begin{itemize}
+    \item enjBook1/ej/jpjBook1 \cite{enjBook1/ej/jpjBook1}
+  \end{itemize}
+  {\small \putbib[bib/ejbook]}
+\end{bibunit}
+\begin{bibunit}[jIEEEtran]
+  \begin{itemize}
+    \item enjBook1/ej/jpjBook1 \cite{enjBook1/ej/jpjBook1}
+  \end{itemize}
+  {\small \putbib[bib/ejbook]}
+\end{bibunit}
+
+\end{document}
