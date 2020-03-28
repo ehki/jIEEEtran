@@ -2462,6 +2462,7 @@ FUNCTION {book}
   format.note output
   use.ieej.setting #0 = 'skip$ { format.date output } if$
   format.url output
+  bbl.format.language #2 = { format.language output } 'skip$ if$
   fin.entry
   if.url.std.interword.spacing
 }
