@@ -1,15 +1,26 @@
 \documentclass[10pt, a4paper]{jsarticle}
-\usepackage[top=20truemm, bottom=20truemm, left=20truemm, right=20truemm]{geometry}
+\usepackage[top=20truemm, bottom=20truemm, left=25truemm, right=25truemm]{geometry}
 \setlength{\columnsep}{3zw}
 \usepackage{listings, jlisting}
 \usepackage[sectionbib]{bibunits}
+\usepackage{url}
 \usepackage{cite}
+\usepackage{textcomp}[=2018/08/11]
+\usepackage[T1]{fontenc}
+\usepackage[dvipdfmx]{hyperref}
+\usepackage{pxjahyper}
+\hypersetup{
+	colorlinks=false,
+  bookmarksnumbered=true,
+	pdfborder={0 0 0},
+}
+\setcounter{tocdepth}{3}
 \renewcommand{\refname}{\small 参考文献}
 \usepackage{multicol}
 \usepackage{enumitem}
 \setitemize{itemsep=-0.1\baselineskip}
 \newsavebox{\mybox}
-\lstset{
+\lstdefinestyle{twocol}{
   basicstyle={\scriptsize\ttfamily},
   identifierstyle={\footnotesize},
   commentstyle={\footnotesizeitshape},
@@ -20,197 +31,630 @@
   columns=[l]{fullflexible},
   multicols=2
 }
-
+\lstdefinestyle{onecol}{
+  basicstyle={\scriptsize\ttfamily},
+  identifierstyle={\footnotesize},
+  commentstyle={\footnotesizeitshape},
+  keywordstyle={\footnotesize\bfseries},
+  ndkeywordstyle={\footnotesize},
+  stringstyle={\footnotesize\ttfamily},
+  breaklines=true,
+  columns=[l]{fullflexible}
+}
 \newcommand{\putlst}[1]{
   \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-1.5zw}
-  \lstinputlisting{#1}\vspace{-1.8zw}
+  \lstinputlisting[style=twocol,firstline=5]{#1}\vspace{-1.8zw}
   \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
 }
+\begin{filecontents}[overwrite]{article.bib}
+@article{Article,
+  author = {Author(s)},
+  title = {Title},
+  language = {Language},
+  journal = {Journal},
+  month = {Month},
+  year = {Year},
+  volume = {Volume},
+  note = {Note},
+  url = {URL}
+}
+@article{jpArticle1,
+  author = {山田 一郎 and 山田 次郎 and 山田 三郎 and 山田 四郎},
+  year = {2019},
+  journal = {日本語学会},
+  title = {文献1},
+  number = {10},
+  pages = {20--30},
+  volume = {15},
+  month = {3}
+}
+@article{jpArticle2,
+  author = {{山田 五郎} and {山田 六郎}},
+  year = {2019},
+  journal = {日本語学会},
+  title = {文献2},
+  number = {10},
+  pages = {21},
+  volume = {15},
+  month = {12}
+}
+@article{jpArticle3,
+  author = {{山田 八郎} and {山田 六郎}},
+  year = {2010},
+  journal = {日本語の学会名},
+  title = {手法1と手法2、どちらが正しいのか?},
+  number = {1},
+  pages = {15},
+  volume = {5}
+}
+@article{enArticle1,
+  author = {Ichiro Yamada and Jiro Yamada and Saburo Yamada and Shiro Yamada},
+  year = {2019},
+  journal = {Japanese Journal},
+  title = {Title1},
+  number = {10},
+  pages = {20--30},
+  volume = {15},
+  month = {march},
+  language = {Japanese}
+}
+@article{enArticle2,
+  author = {Goro Yamada and Rokuro Yamada},
+  year = {2019},
+  journal = {Japanese Journal},
+  title = {Title2},
+  volume = {15},
+  number = {10},
+  pages = {21},
+  month = {dec.},
+  language = {Japanese}
+}
+@article{enArticle3,
+  author = {Goro Yamada and Rokuro Yamada},
+  year = {2018},
+  journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  title = {Title2 is true?},
+  month = {nov}
+}
+@article{enArticle4,
+  author = {Hiroshi Sato and Jiro Sasaki},
+  year = {2010},
+  journal = {IEEJ Sample Transactions},
+  title = {Article with language field},
+  month = {march},
+  language = {japanese}
+}
+\end{filecontents}
+\begin{filecontents}[overwrite]{inproceedings.bib}
+@inproceedings{Inproceedings,
+  author = {Author(s)},
+  title = {Title},
+  intype = {Intype},
+  booktitle = {Booktitle},
+  language = {Language},
+  series = {Series},
+  editor = {Editor(s)},
+  volume = {Volume},
+  number = {Number},
+  organization = {Organization},
+  address = {Address},
+  publisher = {Publisher},
+  month = {Month},
+  year = {Year},
+  paper = {Paper},
+  type = {Type},
+  pages = {Pages},
+  note = {Note},
+  url = {URL}
+}
+@inproceedings{jpInproceedings1,
+  author = {山田 一郎 and 山田 次郎},
+  title = {文献タイトル},
+  booktitle = {令和2年日本語大会},
+  address = {大阪},
+  year = {2010},
+  month = {3},
+  number = {10},
+  pages = {20--30}
+}
+@inproceedings{jpInproceedings2,
+  author = {山田 三郎 and 佐藤 四郎},
+  title = {タイトル},
+  booktitle = {第30回部門大会},
+  address = {東京},
+  year = {2005},
+  month = {2},
+  number = {2},
+  pages = {15--19}
+}
+@inproceedings{enInproceedings1,
+  author = {Hayashi Shinji and Ogura Yasuhiro},
+  title = {Sample Conference Article Title},
+  booktitle = {Proc. 5th Internatinoal Sample Conference (ISC)},
+  address = {Tokyo, Japan},
+  month = {jan},
+  year = {1997},
+  pages = {290-294},
+  number = {2}
+}
+@inproceedings{enInproceedings2,
+  author = {Yamada Sabuso and Sato Shiro},
+  title = {Title},
+  booktitle = {Proc. 30th Society Conference},
+  address = {Tokyo},
+  year = {2005},
+  month = {2},
+  number = {2},
+  pages = {15--19},
+  language = {Japanese}
+}
+\end{filecontents}
+\begin{filecontents}[overwrite]{incollection.bib}
+@inproceedings{Incollection,
+  author = {Author(s)},
+  title = {Title},
+  booktitle = {Booktitle},
+  language = {Language},
+  edition = {Edition},
+  series = {Series},
+  editor = {Editor},
+  address = {Address},
+  publisher = {Publisher},
+  month = {Month},
+  year = {Year},
+  volume = {Volume},
+  number = {Number},
+  organization = {Organization},
+  paper = {Paper},
+  type = {Type},
+  pages = {Pages},
+  note = {Note},
+  url = {URL}
+}
+@incollection{jpIncollection1,
+  author = {{佐藤 二郎} and {佐藤 三郎}},
+  year = {2012},
+  publisher = {日本語出版},
+  address = {東京},
+  title = {日本語本2の中の抜粋},
+  booktitle = {日本語本2},
+  edition = {2},
+  pages = {100--200}
+}
+@incollection{jpIncollection2,
+  author = {山田 一郎},
+  year = {1900},
+  publisher = {出版会社},
+  address = {東京},
+  title = {タイトル},
+  booktitle = {日本語本3},
+  chapter = {3},
+  edition = {1},
+  pages = {100--150},
+}
+@incollection{enIncollection1,
+  address = {City, Country},
+  publisher = {Publisher},
+  author = {Engligh Author and German Author and Japanese Author},
+  booktitle = {Booktitle},
+  chapter = {4},
+  pages = {200--220},
+  title = {Title},
+  edition = {2},
+  year = {2000},
+}  
+\end{filecontents}
+\begin{filecontents}[overwrite]{book.bib}
+@book{Book,
+  author = {Author(s)},
+  editor = {Editor(s)},
+  title = {Title},
+  language = {Language},
+  edition = {Edition},
+  series = {Series},
+  address = {Address},
+  publisher = {Publisher},
+  month = {Month},
+  year = {Year},
+  volume = {Volume},
+  note = {Note},
+  url = {URL}
+}
+@book{jpBook1,
+  author = {佐藤 一郎},
+  year = {2010},
+  publisher = {日本語出版},
+  address = {東京},
+  title = {日本語本},
+  edition = {1},
+  pages = {100--200}
+}
+@book{jpBook2,
+  author = {佐藤 二郎 and 佐藤 三郎},
+  year = {2012},
+  publisher = {日本語出版},
+  address = {東京},
+  title = {日本語本2},
+  edition = {2},
+  pages = {100--200}
+}
+@book{enBook1,
+  address = {City, Country},
+  publisher = {Publisher},
+  author = {Engligh Author and German Author and Japanese Author},
+  year = {2000},
+  title = {Title, not booktitle},
+  edition = {3},
+  pages = {1-10},
+}
+@book{enjBook1,
+  author = {Ichiro Sato},
+  year = {2010},
+  publisher = {Japanese Publisher},
+  address = {Tokyo},
+  title = {Japanese Book title},
+  edition = {1},
+  pages = {100--200},
+  language = {japaneese}
+}
+@book{jpjBook1,
+  author = {佐藤 一郎},
+  year = {2010},
+  publisher = {日本語出版},
+  address = {東京},
+  title = {日本語本},
+  edition = {1},
+  pages = {100--200}
+}
+\end{filecontents}
+\begin{filecontents}[overwrite]{ref.bib}
+@misc{IEEEtran,
+  author = {Michael Shell},
+  url = {https://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/bibtex},
+  title = {{IEEEtran}},
+  month = {August},
+  year = {2015}
+}
+@misc{jIEEEtran,
+  author = {ehki},
+  url = {https://github.com/ehki/jIEEEtran},
+  title = {{jIEEEtran}},
+  month = {March},
+  year = {2020}
+ }
+@misc{jeconbst,
+  author = {ShiroTakeda},
+  url = {http://shirotakeda.org/ja/tex-ja/jecon-ja.html},
+  title = {{jecon.bst}},
+  month = {August},
+  year = {2019}
+}
+@article{10009874585,
+  author="奈良, 宏一 and 長谷川, 淳",
+  title="新しい柔軟な電気エネルギー流通システム",
+  journal="電気学会論文誌. B, 電力・エネルギー部門誌",
+  ISSN="03854213",
+  publisher="電気学会",
+  year="1996",
+  month="dec",
+  volume="117",
+  number="1",
+  pages="47-53",
+  URL="https://ci.nii.ac.jp/naid/10009874585/",
+  DOI="",
+}
+\end{filecontents}
+
+\title{\texttt{jIEEEtran.bst}/\texttt{IEEJtran.bst}:\\電気系日本人ユーザ向け\BibTeX スタイルファイル\\(ver. 0.13)}
+\author{江尻 開}
+
+
 
 \begin{document}
 
-\section{日本語}
+\maketitle
+\tableofcontents
 
-\subsection{articles}
 
-\putlst{bib/jparticle.bib}
+
+\section{概要}
+\begin{bibunit}[jIEEEtran]
+
+電気系の論文を執筆する日本人ユーザ向けに、IEEEと電気学会の引用スタイルを保ったまま日本語の取り扱いを自然にした\BibTeX スタイル(\texttt{.bst})ファイルです。
+電気学会原稿の下書きや卒業論文、修士論文など、\LaTeX を使用した文献管理の一助になることを目的としています。
+Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi氏が日本語の自然な表記を実装し、現在は著者らがリポジトリを譲渡していただきGitHub上\cite{jIEEEtran}で継続して開発しています。
+オプションの追記方法や日本語の判別方法については、武田氏らによる\texttt{jecon.bst}\cite{jeconbst}を参考にしています。
+間違いがあった場合でも大きな被害が出るレポジトリではありませんので、ご要望や問題があればお気軽にIssueやPull Requestを飛ばしてください。
+なお、電気学会公認ではありませんし、全ての環境で動作を保証するものではありません。不具合が生じても責任を負うことはできませんのでご容赦ください。
+
+{\small \putbib[ref]}
+\end{bibunit}
+
+
+\section{使用例}
+まずはいくつかの文献タイプについて\texttt{.bib}ファイルの中身とコンパイル結果の例を示します。
+
+\subsection{article}
+
+\texttt{article}タイプのエントリでは次のフィールドをサポートします。
+\begin{center}
+\textbf{author}, \textbf{title}, \textsl{language}, \textbf{journal}, volume, number, pages, month, year, note, \textsl{url}.
+\end{center}
+このうち\textbf{textbf}で示したフィールドは必須、レギュラーフォントで示したフィールドはオプションです。
+\textsl{textsl}で示したフィールドは拡張用のフィールドで、標準的な\BibTeX ではサポートされていない可能性があります。
+\texttt{article}タイプのエントリでは、\texttt{language}フィールドに例えば``Japanese''を書くと、\texttt{IEEJtran.bst}では各エントリの最後に``(in Japanese)''を追記し、\texttt{jIEEEtran.bst}では\texttt{title}と\texttt{journal}の間に``(in Japanese)''を記載します。
+
+\texttt{.bib}ファイルの例と、\texttt{IEEJtran.bst}および\texttt{jIEEEtran.bst}を使用して引用した際の出力例を次に示します。
+
+\putlst{article.bib}
 
 \begin{bibunit}[IEEJtran]
-  \begin{itemize}
-    \item jpArticle1 \cite{jpArticle1}
-    \item jpArticle2 \cite{jpArticle2}
-    \item jpArticle3 \cite{jpArticle3}
-  \end{itemize}
-  {\small \putbib[bib/jparticle]}
+  \nocite{Article,jpArticle1,jpArticle2,jpArticle3,enArticle1,enArticle2,enArticle3,enArticle4}
+  \renewcommand{\refname}{\small 参考文献(IEEJtran.bst)}
+  {\small \putbib[article]}
 \end{bibunit}
 \begin{bibunit}[jIEEEtran]
-  \begin{itemize}
-    \item jpArticle1 \cite{jpArticle1}
-    \item jpArticle2 \cite{jpArticle2}
-    \item jpArticle3 \cite{jpArticle3}
-  \end{itemize}
-  {\small \putbib[bib/jparticle]}
+  \nocite{Article,jpArticle1,jpArticle2,jpArticle3,enArticle1,enArticle2,enArticle3,enArticle4}
+  \renewcommand{\refname}{\small 参考文献(jIEEEtran.bst)}
+  {\small \putbib[article]}
 \end{bibunit}
 
-
-\subsection{inproceedings}
-
-\putlst{bib/jpinproceedings.bib}
+\vspace{2em}
+電気学会の引用スタイルで求められているように英語と日本語を併記する場合、例えば
+\begin{center}
+  \verb*|\cite{enArticle1/ej/jpArticle1}|
+\end{center}
+と記載すれば\texttt{enArticle1}と\texttt{jpArticle1}を一つのエントリとして扱えます。これには外部pythonファイルの\texttt{mixej.py}が必要ですので、\ref{sec:compile_procedure}節と\ref{sec:compile_config}節において後述します。英語と日本語の併記は\texttt{IEEJtran.bst}だけでなく\texttt{jIEEEtran.bst}でも使用することができます。
+例えば\texttt{enArticle1}と\texttt{jpArticle1}、\texttt{enArticle2}と\texttt{jpArticle2}を一つの文献としてまとめると、次のように出力されます。
 
 \begin{bibunit}[IEEJtran]
-  \begin{itemize}
-    \item jpInproceedings1 \cite{jpInproceedings1}
-  \end{itemize}
-  {\small \putbib[bib/jpinproceedings]}
+  \nocite{enArticle1/ej/jpArticle1,enArticle2/ej/jpArticle2}
+  \renewcommand{\refname}{\small 英日を併記した参考文献(IEEJtran.bst)}
+  {\small \putbib[article]}
 \end{bibunit}
 \begin{bibunit}[jIEEEtran]
-  \begin{itemize}
-    \item jpInproceedings1 \cite{jpInproceedings1}
-  \end{itemize}
-  {\small \putbib[bib/jpinproceedings]}
+  \nocite{enArticle1/ej/jpArticle1,enArticle2/ej/jpArticle2}
+  \renewcommand{\refname}{\small 英日を併記した参考文献(jIEEEtran.bst)}
+  {\small \putbib[article]}
 \end{bibunit}
 
 
 \subsection{book}
 
-\putlst{bib/jpbook.bib}
+\texttt{book}タイプのエントリでは次のフィールドをサポートします。
+
+\begin{center}
+  \textbf{author} and/or \textbf{editor}, \textbf{title}, \textsl{language}, edition,
+  series, \\
+  address, \textbf{publisher}, month, \textbf{year}, volume, note, \textsl{url}.
+\end{center}
+
+\texttt{.bib}ファイルの例とそれぞれの\texttt{bst}ファイルの出力例を以下に示します。
+
+\putlst{book.bib}
 
 \begin{bibunit}[IEEJtran]
-  \begin{itemize}
-    \item jpBook1 \cite{jpBook1}
-    \item jpBook2 \cite{jpBook2}
-  \end{itemize}
-  {\small \putbib[bib/jpbook]}
+  \nocite{Book,jpBook1,jpBook2,enBook1}
+  \renewcommand{\refname}{\small 参考文献(IEEJtran.bst)}
+  {\small \putbib[book]}
 \end{bibunit}
 \begin{bibunit}[jIEEEtran]
-  \begin{itemize}
-    \item jpBook1 \cite{jpBook1}
-    \item jpBook2 \cite{jpBook2}
-  \end{itemize}
-  {\small \putbib[bib/jpbook]}
+  \nocite{Book,jpBook1,jpBook2,enBook1}
+  \renewcommand{\refname}{\small 参考文献(jIEEEtran.bst)}
+  {\small \putbib[book]}
 \end{bibunit}
+\begin{bibunit}[IEEJtran]
+  \nocite{enjBook1/ej/jpjBook1}
+  \renewcommand{\refname}{\small 英日を併記した参考文献(IEEJtran.bst)}
+  {\small \putbib[book]}
+\end{bibunit}
+\begin{bibunit}[jIEEEtran]
+  \nocite{enjBook1/ej/jpjBook1}
+  \renewcommand{\refname}{\small 英日を併記した参考文献(jIEEEtran.bst)}
+  {\small \putbib[book]}
+\end{bibunit}
+
+
+\subsection{inproceedings/conference}
+
+\texttt{inproceedings}タイプのエントリや\texttt{conference}タイプのエントリでは次のフィールドをサポートします。なお、どちらのタイプが指定されても\texttt{bst}内部ではエイリアスにより\texttt{inproceedings}タイプとして処理されます。
+\begin{center}
+  \textbf{author}, \textbf{title}, \textsl{intype}, \textbf{booktitle}, \textsl{language}, series, editor, volume, number, \\
+  organization, address, publisher, month, \textbf{year}, \textsl{paper}, \textsl{type}, pages, note, \textsl{url}.
+\end{center}
+このうち、\textsl{intype}フィールドや\textsl{paper}フィールド、\textsl{type}フィールドについては本家の\texttt{IEEEtran.bst}のマニュアルを参照ください。\texttt{.bib}ファイルの例とそれぞれの\texttt{bst}ファイルの出力例を以下に示します。
+
+\putlst{inproceedings.bib}
+
+\begin{bibunit}[IEEJtran]
+  \nocite{Inproceedings,jpInproceedings1,enInproceedings1,jpInproceedings2,enInproceedings2}
+  \renewcommand{\refname}{\small 参考文献(IEEJtran.bst)}
+  {\small \putbib[inproceedings]}
+\end{bibunit}
+\begin{bibunit}[jIEEEtran]
+  \nocite{Inproceedings,jpInproceedings1,enInproceedings1,jpInproceedings2,enInproceedings2}
+  \renewcommand{\refname}{\small 参考文献(jIEEEtran.bst)}
+  {\small \putbib[inproceedings]}
+\end{bibunit}
+\begin{bibunit}[IEEJtran]
+  \nocite{jpInproceedings1/ej/enInproceedings1,jpInproceedings2/ej/enInproceedings2}
+  \renewcommand{\refname}{\small 英日を併記した参考文献(IEEJtran.bst)}
+  {\small \putbib[inproceedings]}
+\end{bibunit}
+\begin{bibunit}[jIEEEtran]
+  \nocite{jpInproceedings1/ej/enInproceedings1,jpInproceedings2/ej/enInproceedings2}
+  \renewcommand{\refname}{\small 英日を併記した参考文献(jIEEEtran.bst)}
+  {\small \putbib[inproceedings]}
+\end{bibunit}
+
 
 
 \subsection{incollection}
 
-\putlst{bib/jpincollection.bib}
+\texttt{incollection}タイプのエントリは、書籍のうちタイトルのある一部分を引用したい場合に使用されます。次のフィールドをサポートします。
+
+\begin{center}
+  \textbf{author}, \textbf{title}, \textbf{booktitle}, \textsl{language}, edition, series, editor, address, publisher, \\
+  month, \textbf{year}, volume, number, chapter, type, pages, note, \textsl{url}.
+\end{center}
+
+\texttt{.bib}ファイルの例とそれぞれの\texttt{bst}ファイルの出力例を以下に示します。
+
+\putlst{incollection.bib}
 
 \begin{bibunit}[IEEJtran]
-  \begin{itemize}
-    \item jpIncollection1 \cite{jpIncollection1}
-    \item jpIncollection2 \cite{jpIncollection2}
-  \end{itemize}
-  {\small \putbib[bib/jpincollection]}
+  \nocite{Incollection,jpIncollection1,jpIncollection2,enIncollection1}
+  \renewcommand{\refname}{\small 参考文献(IEEJtran.bst)}
+  {\small \putbib[incollection]}
 \end{bibunit}
 \begin{bibunit}[jIEEEtran]
-  \begin{itemize}
-    \item jpIncollection1 \cite{jpIncollection1}
-    \item jpIncollection2 \cite{jpIncollection2}
-  \end{itemize}
-  {\small \putbib[bib/jpincollection]}
+  \nocite{Incollection,jpIncollection1,jpIncollection2,enIncollection1}
+  \renewcommand{\refname}{\small 参考文献(jIEEEtran.bst)}
+  {\small \putbib[incollection]}
 \end{bibunit}
-
-\clearpage
-\section{英語}
-
-\subsection{article}
-
-\putlst{bib/enarticle.bib}
-
 \begin{bibunit}[IEEJtran]
-  enArticle1--4\cite{enArticle1,enArticle2,enArticle3,enArticle4}
-  {\small \putbib[bib/enarticle]}
+  \nocite{enIncollection1/ej/jpIncollection1}
+  \renewcommand{\refname}{\small 英日を併記した参考文献(IEEJtran.bst)}
+  {\small \putbib[incollection]}
 \end{bibunit}
 \begin{bibunit}[jIEEEtran]
-  enArticle1--4\cite{enArticle1,enArticle2,enArticle3,enArticle4}
-  {\small \putbib[bib/enarticle]}
+  \nocite{enIncollection1/ej/jpIncollection1}
+  \renewcommand{\refname}{\small 英日を併記した参考文献(jIEEEtran.bst)}
+  {\small \putbib[incollection]}
 \end{bibunit}
 
 
-\subsection{inproceedings}
-
-\putlst{bib/eninproceedings.bib}
-
-\begin{bibunit}[IEEJtran]
-  \begin{itemize}
-    \item enInproceedings1 \cite{enInproceedings1}
-  \end{itemize}
-  {\small \putbib[bib/eninproceedings]}
-\end{bibunit}
-\begin{bibunit}[jIEEEtran]
-  \begin{itemize}
-    \item enInproceedings1 \cite{enInproceedings1}
-  \end{itemize}
-  {\small \putbib[bib/eninproceedings]}
-\end{bibunit}
 
 
-\subsection{book}
+\section{使用方法}
 
-\putlst{bib/enbook.bib}
+\subsection{必要環境}
 
-\begin{bibunit}[IEEJtran]
-  \begin{itemize}
-    \item enBook1 \cite{enBook1}
-  \end{itemize}
-  {\small \putbib[bib/enbook]}
-\end{bibunit}
-\begin{bibunit}[jIEEEtran]
-  \begin{itemize}
-    \item enBook1 \cite{enBook1}
-  \end{itemize}
-  {\small \putbib[bib/enbook]}
-\end{bibunit}
-
-\subsection{incollection}
-
-\putlst{bib/enincollection.bib}
-
-\begin{bibunit}[IEEJtran]
-  \begin{itemize}
-    \item enIncollection1 \cite{enIncollection1}
-  \end{itemize}
-  {\small \putbib[bib/enincollection]}
-\end{bibunit}
-\begin{bibunit}[jIEEEtran]
-  \begin{itemize}
-    \item enIncollection1 \cite{enIncollection1}
-  \end{itemize}
-  {\small \putbib[bib/enincollection]}
-\end{bibunit}
+\texttt{jIEEEtran.bst}や\texttt{IEEJtran.bst}は\BibTeX 用のスタイルファイルですので、当然\BibTeX を利用できる環境と使用する\texttt{.bib}ファイルが必要です。
+\BibTeX の環境構築方法については本マニュアルの範囲外とします。
+また、日本人ユーザを想定していますので、\texttt{platex}や\texttt{pbibtex}は既に使用可能であるものとします。
+\texttt{jIEEEtran.bst}、\texttt{IEEJtran.bst}いずれも\texttt{pbibtex}に用意されている\texttt{is.kanji.str\$} 関数を使用しているため、\BibTeX コンパイラとして\texttt{bibtex}ではなく必ず\texttt{pbibtex}を使用してください。
+なお、\texttt{is.kanji.str\$} 関数による日本語の判定は、\texttt{author}、\texttt{title}、\texttt{journal}、\texttt{publisher}の4つのフィールドに限定しています。
 
 
-\clearpage
-\section{英語と日本語の併記}
 
-\subsection{article}
+\subsection{\texttt{jIEEEtran.bst}/\texttt{IEEJtran.bst}の置き場所}
 
-\putlst{bib/ejarticle.bib}
+\texttt{jIEEEtran.bst}と\texttt{IEEJtran.bst}は\LaTeX のコンパイラが認識できる場所に置いてください。
+すなわち、コンパイル対象の\texttt{.tex}ファイルと同一のディレクトリに置いてもよいですし、パスの通った場所に置いても動作します。
+例えば\texttt{ieeetr.bst}が置かれている\texttt{texmf-dist/bibtex/bst/base}に置いてもよいでしょう。
+この場合、ファイル一覧表の更新コマンドである\texttt{mktexlsr}を実行するのを忘れないでください。
+英語と日本語の併記を実現する\texttt{mixej.py}はコンパイル対象の\texttt{.tex}ファイルから相対パスで参照できる場所であれば実行可能ですが、\texttt{.tex}ファイルと同一のディレクトリに置くことを推奨します。
 
-\begin{bibunit}[IEEJtran]
-  enjArticle1--3/ej/jpjArticle1--3 \cite{enjArticle1/ej/jpjArticle1,enjArticle2/ej/jpjArticle2,enjArticle3/ej/jpjArticle3}
-  {\small \putbib[bib/ejarticle]}
-\end{bibunit}
-\begin{bibunit}[jIEEEtran]
-  enjArticle1--3/ej/jpjArticle1--3 \cite{enjArticle1/ej/jpjArticle1,enjArticle2/ej/jpjArticle2,enjArticle3/ej/jpjArticle3}
-  {\small \putbib[bib/ejarticle]}
-\end{bibunit}
 
-\subsection{book}
 
-\putlst{bib/ejbook.bib}
+\subsection{\texttt{bib}ファイルの書き方}
 
-\begin{bibunit}[IEEJtran]
-  \begin{itemize}
-    \item enjBook1/ej/jpjBook1 \cite{enjBook1/ej/jpjBook1}
-  \end{itemize}
-  {\small \putbib[bib/ejbook]}
-\end{bibunit}
-\begin{bibunit}[jIEEEtran]
-  \begin{itemize}
-    \item enjBook1/ej/jpjBook1 \cite{enjBook1/ej/jpjBook1}
-  \end{itemize}
-  {\small \putbib[bib/ejbook]}
-\end{bibunit}
+\texttt{.bib}ファイルの書き方は通常通りで構いません。
+日本人著者の取り扱いは、\texttt{author = \{\{}\textgt{姓姓 名名}\texttt{\} and \{}\textgt{姓姓 名名}\texttt{\}\}}と、\texttt{\{\}}で挟んでもいいですし、\texttt{author = \{姓姓 名名 and 姓姓 名名\}}と、\texttt{\{\}}で挟まなくても大丈夫です。
+\texttt{.bst}内部では\texttt{\{\}}は消去して処理しています。
+Mendeleyでは、前者はAuthorをInstitutoin/Organizationとして記載した場合、後者は通常のLastname, Firstnameとして記載した場合に相当します。
+
+タイトルの後、出版社の後、文献の最後など、適切な箇所に(in Japanese)と言語表記をする場合にはlanguageフィールドが必要です。
+MendeleyではPreferenceからDocument Detailsへと進めば常に表示させることが可能です。
+
+
+
+\subsection{\texttt{tex}ファイルの書き方}
+
+\texttt{jIEEEtran.bst}や\texttt{IEEJtran.bst}へのパスが通っている、もしくはコンパイルする\texttt{.tex}ファイルと同一ディレクトリにこれらの\texttt{.bst}ファイルが置かれていれば、\BibTeX スタイルファイルとして\texttt{jIEEEtran.bst}や\texttt{IEEJtran.bst}を指定するのは簡単です。
+他の\texttt{bst}ファイルを指定するのと同様に、\texttt{tex}ファイル中で
+
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
+\begin{lstlisting}[style=onecol]
+\bibliographystyle{jIEEEtran}
+\end{lstlisting}\vspace{-1.8zw}
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
+\noindent
+や
+
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
+\begin{lstlisting}[style=onecol]
+\bibliographystyle{IEEJtran}
+\end{lstlisting}\vspace{-1.8zw}
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
+\noindent
+と書けば実行できます。
+
+
+
+\subsection{文字コードについて}
+
+UTF-8を使用しましょう。
+SHIFT-JISやEUC-JPは非対応です。
+
+
+\subsection{コンパイル手順}
+\label{sec:compile_procedure}
+
+英語と日本語の併記を行わない場合、通常通りのコンパイル手順で\texttt{.pdf}を生成することができます。
+例えば\texttt{platex}で\texttt{.dvi}を生成し、\texttt{.dvi}から\texttt{.pdf}を生成、\BibTeX コマンドには\texttt{pbibtex}を使う場合、
+\begin{center}
+\texttt{platex → pbibtex → platex → platex → dvipdfmx}
+\end{center}
+という手順です。
+
+英語と日本語の併記を行う場合、通常のコンパイル手順での\texttt{pbibtex}前後に\texttt{python}による\texttt{mixej.py}の処理を一回ずつ挟みます。
+前と同様に、\texttt{platex}で\texttt{.dvi}を生成し、\texttt{.dvi}から\texttt{.pdf}を生成、\BibTeX コマンドには\texttt{pbibtex}を使う場合、
+\begin{center}
+\texttt{platex → python mixej.py → pbibtex → python mixej.py → platex → platex → dvipdfmx}
+\end{center}
+という手順に変更されます。
+
+論文誌や学内資料の原稿のように\texttt{.tex}ファイル中に文献リストを1つしか出力しない場合、上の処理を1ステップずつ実行しても問題ありません。
+しかし、このマニュアルや学位論文、書籍などで文献リストを複数出力するために\texttt{bibunits}パッケージを使用して文献リストを複数出力する場合には、Latexmkの使用を推奨します。
+これは、\texttt{bu1.aux, bu1.bbl, bu5.aux, bu5.bbl}のように、\texttt{bibunits}パッケージが何個の\texttt{bu}ファイルを出力するかが不明で、1ステップずつの実行では\texttt{bu}ファイルの個数をユーザが把握する必要があり面倒だからです。
+Latexmkを使用していれば、各\texttt{bu}ファイルをそれぞれ必要な回数だけ処理してくれます。
+
+
+
+\subsection{コンパイラの設定の例}
+\label{sec:compile_config}
+
+% 英語と日本語の併記を実現するためには\texttt{pbibtex}の前後にpythonでの処理を挟む必要があります。
+% そのため、コンパイラではBibTeXコマンドの設定方法に注意が必要です。
+\ref{sec:compile_procedure}節においても触れましたが、本マニュアルのように英語と日本語の併記を実現するために\texttt{/ej/}のコマンドが含まれているものを適切に扱うためには、\texttt{python mixej.py}のコマンドを\BibTeX コマンドの前後に1回ずつ実行する必要があります。
+そのため、コンパイラでは\BibTeX コマンドの設定方法に注意が必要です。
+
+Latexmkを使用している場合には、\texttt{latexmkrc}に対して次のように設定することで実現可能です。
+
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
+\begin{lstlisting}[style=onecol]
+#!/usr/bin/perl
+
+$latex = 'platex %O -synctex=1 -interaction=nonstopmode -kanji=utf8 -file-line-error %S';
+$bibtex = 'python mixej.py %B; pbibtex %O %B; python mixej.py %B';
+$dvipdf = 'dvipdfmx -V 7 %O -o %D %S';
+$pdf_previewer = "open -ga /Applications/Skim.app";
+\end{lstlisting}\vspace{-1.8zw}
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
+
+最近ではVisual Studio Codeを使用している方が多いと思いますが、VSCodeのLaTeX Workshop Extension用の設定は次のように書けます。
+
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
+\begin{lstlisting}[style=onecol]
+"latex-workshop.latex.tools": [
+  {
+    "command": "latexmk",
+    "name": "latexmk python mixej.py",
+    "args": [
+      "-e", "$latex='platex %O -synctex=1 -interaction=nonstopmode -kanji=utf8 -file-line-error %S'",
+      "-e", "$bibtex='python mixej.py %B; pbibtex %O %B; python mixej.py %B'",
+      "-e", "$dvipdf='dvipdfmx -V 7 %O -o %D %S'",
+      "-norc", "-pdfdvi", "%DOC%"
+      ],
+  }
+],
+"latex-workshop.latex.recipes": [
+  { "name": "latexmk, mixej.py", "tools": [ "latexmk python mixej.py" ] }
+],
+\end{lstlisting}\vspace{-1.8zw}
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
+
 
 \end{document}
