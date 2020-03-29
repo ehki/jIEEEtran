@@ -366,8 +366,9 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 オプションの追記方法や日本語の判別方法については、武田氏らによる\texttt{jecon.bst}\cite{jeconbst}を参考にしています。
 間違いがあった場合でも大きな被害が出るレポジトリではありませんので、ご要望や問題があればお気軽にIssueやPull Requestを飛ばしてください。
 なお、電気学会公認ではありませんし、全ての環境で動作を保証するものではありません。不具合が生じても責任を負うことはできませんのでご容赦ください。
+なお、\TeX Live 2019の使用を想定しています。\texttt{w32tex}や古い\TeX Liveでの動作は確認していません。pbibtexは\texttt{0.99d-j0.33}、pythonは\texttt{3.7.6}および\texttt{3.8.1}での動作を確認しています。
 
-{\small \putbib[ref]}
+{\small \putbib[./ref]}
 \end{bibunit}
 
 
@@ -391,12 +392,12 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 \begin{bibunit}[IEEJtran]
   \nocite{Article,jpArticle1,jpArticle2,jpArticle3,enArticle1,enArticle2,enArticle3,enArticle4}
   \renewcommand{\refname}{\small 参考文献(IEEJtran.bst)}
-  {\small \putbib[article]}
+  {\small \putbib[./article]}
 \end{bibunit}
 \begin{bibunit}[jIEEEtran]
   \nocite{Article,jpArticle1,jpArticle2,jpArticle3,enArticle1,enArticle2,enArticle3,enArticle4}
   \renewcommand{\refname}{\small 参考文献(jIEEEtran.bst)}
-  {\small \putbib[article]}
+  {\small \putbib[./article]}
 \end{bibunit}
 
 \vspace{2em}
@@ -410,12 +411,12 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 \begin{bibunit}[IEEJtran]
   \nocite{enArticle1/ej/jpArticle1,enArticle2/ej/jpArticle2}
   \renewcommand{\refname}{\small 英日を併記した参考文献(IEEJtran.bst)}
-  {\small \putbib[article]}
+  {\small \putbib[./article]}
 \end{bibunit}
 \begin{bibunit}[jIEEEtran]
   \nocite{enArticle1/ej/jpArticle1,enArticle2/ej/jpArticle2}
   \renewcommand{\refname}{\small 英日を併記した参考文献(jIEEEtran.bst)}
-  {\small \putbib[article]}
+  {\small \putbib[./article]}
 \end{bibunit}
 
 
@@ -436,22 +437,22 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 \begin{bibunit}[IEEJtran]
   \nocite{Book,jpBook1,jpBook2,enBook1}
   \renewcommand{\refname}{\small 参考文献(IEEJtran.bst)}
-  {\small \putbib[book]}
+  {\small \putbib[./book]}
 \end{bibunit}
 \begin{bibunit}[jIEEEtran]
   \nocite{Book,jpBook1,jpBook2,enBook1}
   \renewcommand{\refname}{\small 参考文献(jIEEEtran.bst)}
-  {\small \putbib[book]}
+  {\small \putbib[./book]}
 \end{bibunit}
 \begin{bibunit}[IEEJtran]
   \nocite{enjBook1/ej/jpjBook1}
   \renewcommand{\refname}{\small 英日を併記した参考文献(IEEJtran.bst)}
-  {\small \putbib[book]}
+  {\small \putbib[./book]}
 \end{bibunit}
 \begin{bibunit}[jIEEEtran]
   \nocite{enjBook1/ej/jpjBook1}
   \renewcommand{\refname}{\small 英日を併記した参考文献(jIEEEtran.bst)}
-  {\small \putbib[book]}
+  {\small \putbib[./book]}
 \end{bibunit}
 
 
@@ -469,22 +470,22 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 \begin{bibunit}[IEEJtran]
   \nocite{Inproceedings,jpInproceedings1,enInproceedings1,jpInproceedings2,enInproceedings2}
   \renewcommand{\refname}{\small 参考文献(IEEJtran.bst)}
-  {\small \putbib[inproceedings]}
+  {\small \putbib[./inproceedings]}
 \end{bibunit}
 \begin{bibunit}[jIEEEtran]
   \nocite{Inproceedings,jpInproceedings1,enInproceedings1,jpInproceedings2,enInproceedings2}
   \renewcommand{\refname}{\small 参考文献(jIEEEtran.bst)}
-  {\small \putbib[inproceedings]}
+  {\small \putbib[./inproceedings]}
 \end{bibunit}
 \begin{bibunit}[IEEJtran]
   \nocite{jpInproceedings1/ej/enInproceedings1,jpInproceedings2/ej/enInproceedings2}
   \renewcommand{\refname}{\small 英日を併記した参考文献(IEEJtran.bst)}
-  {\small \putbib[inproceedings]}
+  {\small \putbib[./inproceedings]}
 \end{bibunit}
 \begin{bibunit}[jIEEEtran]
   \nocite{jpInproceedings1/ej/enInproceedings1,jpInproceedings2/ej/enInproceedings2}
   \renewcommand{\refname}{\small 英日を併記した参考文献(jIEEEtran.bst)}
-  {\small \putbib[inproceedings]}
+  {\small \putbib[./inproceedings]}
 \end{bibunit}
 
 
@@ -505,22 +506,22 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 \begin{bibunit}[IEEJtran]
   \nocite{Incollection,jpIncollection1,jpIncollection2,enIncollection1}
   \renewcommand{\refname}{\small 参考文献(IEEJtran.bst)}
-  {\small \putbib[incollection]}
+  {\small \putbib[./incollection]}
 \end{bibunit}
 \begin{bibunit}[jIEEEtran]
   \nocite{Incollection,jpIncollection1,jpIncollection2,enIncollection1}
   \renewcommand{\refname}{\small 参考文献(jIEEEtran.bst)}
-  {\small \putbib[incollection]}
+  {\small \putbib[./incollection]}
 \end{bibunit}
 \begin{bibunit}[IEEJtran]
   \nocite{enIncollection1/ej/jpIncollection1}
   \renewcommand{\refname}{\small 英日を併記した参考文献(IEEJtran.bst)}
-  {\small \putbib[incollection]}
+  {\small \putbib[./incollection]}
 \end{bibunit}
 \begin{bibunit}[jIEEEtran]
   \nocite{enIncollection1/ej/jpIncollection1}
   \renewcommand{\refname}{\small 英日を併記した参考文献(jIEEEtran.bst)}
-  {\small \putbib[incollection]}
+  {\small \putbib[./incollection]}
 \end{bibunit}
 
 
@@ -621,7 +622,7 @@ Latexmkを使用していれば、各\texttt{bu}ファイルをそれぞれ必�
 \ref{sec:compile_procedure}節においても触れましたが、本マニュアルのように英語と日本語の併記を実現するために\texttt{/ej/}のコマンドが含まれているものを適切に扱うためには、\texttt{python mixej.py}のコマンドを\BibTeX コマンドの前後に1回ずつ実行する必要があります。
 そのため、コンパイラでは\BibTeX コマンドの設定方法に注意が必要です。
 
-Latexmkを使用している場合には、\texttt{latexmkrc}に対して次のように設定することで実現可能です。
+Latexmkを使用している場合、MacやLinuxなどのUNIX系列では\texttt{latexmkrc}に対して次のように設定することで実現可能です。
 
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
 \begin{lstlisting}[style=onecol]
@@ -634,7 +635,17 @@ $pdf_previewer = "open -ga /Applications/Skim.app";
 \end{lstlisting}\vspace{-1.8zw}
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
 
-最近ではVisual Studio Codeを使用している方が多いと思いますが、VSCodeのLaTeX Workshop Extension用の設定は次のように書けます。
+\noindent
+Windowsでは、cmd, powershellともに\texttt{bibtex}の設定を次のようにすれば動きます。ただし、\texttt{\&}前後の半角スペースを忘れずに記入してください。
+
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
+\begin{lstlisting}[style=onecol]
+$bibtex = '@cd & python mixej.py %B & pbibtex %B & python mixej.py %B';
+\end{lstlisting}\vspace{-1.8zw}
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
+
+
+最近ではVisual Studio Codeを使用している方が多いと思いますが、MacやLinuxでのVSCodeのLaTeX Workshop Extension用の設定は次のように書けます。Windowsの場合は\texttt{.latexmkrc}の場合と同様に\texttt{bibtex}コマンドを書き換えてください。
 
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
 \begin{lstlisting}[style=onecol]
