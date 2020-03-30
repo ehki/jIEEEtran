@@ -148,7 +148,7 @@
   url = {URL}
 }
 @inproceedings{jpInproceedings1,
-  author = {山田 一郎 and 山田 次郎},
+  author = {山田, 一郎 and 山田, 次郎},
   title = {文献タイトル},
   booktitle = {令和2年日本語大会},
   address = {大阪},
@@ -158,7 +158,7 @@
   pages = {20--30}
 }
 @inproceedings{jpInproceedings2,
-  author = {山田 三郎 and 佐藤 四郎},
+  author = {山田, 三郎 and 佐藤, 四郎},
   title = {タイトル},
   booktitle = {第30回部門大会},
   address = {東京},
@@ -168,7 +168,7 @@
   pages = {15--19}
 }
 @inproceedings{enInproceedings1,
-  author = {Hayashi Shinji and Ogura Yasuhiro},
+  author = {Hayashi, Shinji and Ogura, Yasuhiro},
   title = {Sample Conference Article Title},
   booktitle = {Proc. 5th Internatinoal Sample Conference (ISC)},
   address = {Tokyo, Japan},
@@ -178,7 +178,7 @@
   number = {2}
 }
 @inproceedings{enInproceedings2,
-  author = {Yamada Sabuso and Sato Shiro},
+  author = {Yamada, Sabuso and Sato, Shiro},
   title = {Title},
   booktitle = {Proc. 30th Society Conference},
   address = {Tokyo},
@@ -212,7 +212,7 @@
   url = {URL}
 }
 @incollection{jpIncollection1,
-  author = {{佐藤 二郎} and {佐藤 三郎}},
+  author = {{佐藤 二郎} and {林 三郎}},
   year = {2012},
   publisher = {日本語出版},
   address = {東京},
@@ -222,7 +222,7 @@
   pages = {100--200}
 }
 @incollection{jpIncollection2,
-  author = {山田 一郎},
+  author = {山田, 一郎},
   year = {1900},
   publisher = {出版会社},
   address = {東京},
@@ -233,15 +233,14 @@
   pages = {100--150},
 }
 @incollection{enIncollection1,
-  address = {City, Country},
-  publisher = {Publisher},
-  author = {Engligh Author and German Author and Japanese Author},
-  booktitle = {Booktitle},
-  chapter = {4},
-  pages = {200--220},
-  title = {Title},
+  address = {Tokyo, Japan},
+  publisher = {JP Press},
+  author = {Sato, Jiro and Hayashi, Saburo},
+  booktitle = {Jpbook2},
+  title = {Part of Jpbook2},
+  pages = {100--200},
   edition = {2},
-  year = {2000},
+  year = {2012},
 }  
 \end{filecontents}
 \begin{filecontents}[overwrite]{book.bib}
@@ -261,7 +260,7 @@
   url = {URL}
 }
 @book{jpBook1,
-  author = {佐藤 一郎},
+  author = {佐藤, 一郎},
   year = {2010},
   publisher = {日本語出版},
   address = {東京},
@@ -270,7 +269,7 @@
   pages = {100--200}
 }
 @book{jpBook2,
-  author = {佐藤 二郎 and 佐藤 三郎},
+  author = {佐藤, 二郎 and 佐藤, 三郎},
   year = {2012},
   publisher = {日本語出版},
   address = {東京},
@@ -281,7 +280,7 @@
 @book{enBook1,
   address = {City, Country},
   publisher = {Publisher},
-  author = {Engligh Author and German Author and Japanese Author},
+  author = {Sato, Jiro and Hayashi, Saburo},
   year = {2000},
   title = {Title, not booktitle},
   edition = {3},
@@ -328,20 +327,6 @@
   title = {{jecon.bst}},
   month = {August},
   year = {2019}
-}
-@article{10009874585,
-  author="奈良, 宏一 and 長谷川, 淳",
-  title="新しい柔軟な電気エネルギー流通システム",
-  journal="電気学会論文誌. B, 電力・エネルギー部門誌",
-  ISSN="03854213",
-  publisher="電気学会",
-  year="1996",
-  month="dec",
-  volume="117",
-  number="1",
-  pages="47-53",
-  URL="https://ci.nii.ac.jp/naid/10009874585/",
-  DOI="",
 }
 \end{filecontents}
 
@@ -552,7 +537,7 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 \subsection{\texttt{bib}ファイルの書き方}
 
 \texttt{.bib}ファイルの書き方は通常通りで構いません。
-日本人著者の取り扱いは、\texttt{author = \{\{}\textgt{姓姓 名名}\texttt{\} and \{}\textgt{姓姓 名名}\texttt{\}\}}と、\texttt{\{\}}で挟んでもいいですし、\texttt{author = \{姓姓 名名 and 姓姓 名名\}}と、\texttt{\{\}}で挟まなくても大丈夫です。
+日本人著者の取り扱いは、\texttt{author = \{\{}\textgt{姓姓 名名}\texttt{\} and \{}\textgt{姓姓 名名}\texttt{\}\}}と、\texttt{\{\}}で挟んでもいいですし、\texttt{author = \{姓姓, 名名 and 姓姓, 名名\}}と、\texttt{\{\}}で挟まず半角カンマを挿入しても大丈夫です。
 \texttt{.bst}内部では\texttt{\{\}}は消去して処理しています。
 Mendeleyでは、前者はAuthorをInstitutoin/Organizationとして記載した場合、後者は通常のLastname, Firstnameとして記載した場合に相当します。
 
