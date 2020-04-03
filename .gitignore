@@ -12,3 +12,11 @@
 *.ejp
 *.bcf
 *.run.xml
+*.toc
+*.out
+
+article.bib
+book.bib
+incollection.bib
+inproceedings.bib
+ref.bib

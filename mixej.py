@@ -6,8 +6,8 @@ import json
 SPLIT_KEY = '/ej/'
 ITEM_SEP = '\\hspace{0mm}\\\\'
 
-FILE_VERSION = '0.13'
-FILE_DATE = '2020/03/20'
+FILE_VERSION = '0.14'
+FILE_DATE = '2020/04/03'
 FILE_AUTHOR = 'Haruki Ejiri'
 FILE_URL = 'https://github.com/ehki/jIEEEtran/'
 
@@ -33,7 +33,7 @@ def check_load_file(fn, asjson=False):
 
     sys.stdout.write('-- Checking file %s, ' % fn)
     try:
-        with open(fn, 'r') as f:
+        with open(fn, 'r', encoding='utf-8') as f:
             sys.stdout.write('exist, load.\n')
             if asjson:
                 return json.load(f)
@@ -63,7 +63,7 @@ def save_pairs(fn, pairs):
     """
 
     sys.stdout.write('-- Saving found pairs to %s, ' % fn)
-    with open(fn, 'w') as f:
+    with open(fn, 'w', encoding='utf-8') as f:
         json.dump(pairs, f)
     sys.stdout.write('done.\n')
     return 0
@@ -81,11 +81,9 @@ def divide_aux(fn, pairs):
     --
     will be converted to the following two divided citations and bibitems.
     --
-    \\citation{englishTest7}
-    \\citation{japaneseTest7}
+    \\citation{englishTest7,japaneseTest7}
 
-    \\bibcite{englishTest7}{1}
-    \\bibcite{japaneseTest7}{16}
+    \\bibcite{englishTest7,japaneseTest7}{16}
     --
 
     Parameters
@@ -108,11 +106,9 @@ def divide_aux(fn, pairs):
         combi = SPLIT_KEY.join([k1, k2])
         # for example, combi is "engkey/ej/jpkey", wehere SPLIT_KEY is "/ej/"
         sys.stdout.write('-- Dividing %s into %s and %s\n' % (combi, k1, k2))
-        aux = aux.replace('\\citation{%s}' % combi,
-                          '\\citation{%s}\n\\citation{%s}' % (k1, k2))
-        aux = aux.replace('\\bibcite{%s}' % combi,
-                          '\\bibcite{%s}{1}\n\\bibcite{%s}' % (k1, k2))
-    with open(fn, 'w') as f:
+        aux = aux.replace('%s' % combi,
+                          '%s,%s' % (k1, k2))
+    with open(fn, 'w', encoding='utf-8') as f:
         f.write(aux)
     return 0
 
@@ -163,7 +159,7 @@ def divide_bbl(fn, pairs):
         bbl = bbl.replace(ITEM_SEP, '\n\n\\bibitem{%s}' % k2)
         bbl = bbl.replace('\\bibitem{%s}' % combi, '\\bibitem{%s}' % k1)
     sys.stdout.write('-- Saving divided bbl to %s, ' % fn)
-    with open(fn, 'w') as f:
+    with open(fn, 'w', encoding='utf-8') as f:
         f.write(bbl)
     sys.stdout.write('done.\n')
     return 0 # successfully finished
@@ -195,12 +191,15 @@ def find_pairs(fn, aux):
     pairs = []
     sys.stdout.write('-- ')
     for line in aux.split('\n'):
-        if SPLIT_KEY in line and '\\citation' in line:
-            line = line.replace('\\citation{', '').replace('}', '')
+        if SPLIT_KEY not in line or '\\citation' not in line:
+            continue
+        # the line contains \citation and /ej/
+        for l in line.replace('\\citation{', '').replace('}', '').split(','):
             # convert '\citation{hoge1/ej/hoge2}' to 'hoge1/ej/hoge2'
-            pairs.append(line.split(SPLIT_KEY))
-            # store as ['hoge1', 'hoge2'] pairs
-            sys.stdout.write('.')
+            if len(l.split(SPLIT_KEY)) == 2:
+                pairs.append(l.split(SPLIT_KEY))
+                # store as ['hoge1', 'hoge2'] pairs
+                sys.stdout.write('.')
     if len(pairs) == 0:
         sys.stdout.write('No combined keys found.\n')
         ret = 0
@@ -217,11 +216,9 @@ def combine_aux(fn, pairs):
     This code combine the divided key(s) in aux file.
     For example, the following two divided citation(s) and bibcite(s) in aux file
     --
-    \\citation{englishTest7}
-    \\citation{japaneseTest7}
+    \\citation{englishTest7,japaneseTest7}
 
-    \\bibcite{englishTest7}{1}
-    \\bibcite{japaneseTest7}{16}
+    \\bibcite{englishTest7,japaneseTest7}{16}
     --
     will be converted to the following combined citations and bibitems.
     --
@@ -250,12 +247,10 @@ def combine_aux(fn, pairs):
         combi = SPLIT_KEY.join([k1, k2])
         # for example, combi is "engkey/ej/jpkey", wehere SPLIT_KEY is "/ej/"
         sys.stdout.write('-- Combining %s and %s to %s\n' % (k1, k2, combi))
-        aux = aux.replace('\\citation{%s}\n\\citation{%s}' % (k1, k2),\
-                          '\\citation{%s}' % combi)
-        aux = aux.replace('\\bibcite{%s}{1}\n\\bibcite{%s}' % (k1, k2),\
-                          '\\bibcite{%s}' % combi)
+        aux = aux.replace('%s,%s' % (k1, k2),\
+                          '%s' % combi)
     sys.stdout.write('-- Saving combined aux to %s, ' % fn)
-    with open(fn, 'w') as f:
+    with open(fn, 'w', encoding='utf-8') as f:
         f.write(aux)
     sys.stdout.write('done.\n')
 
@@ -307,7 +302,7 @@ def combine_bbl(fn, pairs):
         bbl = bbl.replace('\\bibitem{%s}' % k1,
                           '\\bibitem{%s}' % combi)
     sys.stdout.write('-- Saving combined bbl to %s, ' % fn)
-    with open(fn, 'w') as f:
+    with open(fn, 'w', encoding='utf-8') as f:
         f.write(bbl)
     sys.stdout.write('done.\n')
 
@@ -470,7 +465,7 @@ if __name__ == '__main__':
         # print('-- %d divided citation keys were successfully combined' % ck)
         sys.stdout.write('-- Fin, %d keys were combined.\n' % ck)
         sys.exit(0)
-    with open(sys.argv[1]+ '.ejp', 'w') as f:
+    with open(sys.argv[1]+ '.ejp', 'w', encoding='utf-8') as f:
         json.dump([], f)
     sys.stdout.write(
         '-- No cmobined nor divided citation key in the aux file\n')
