@@ -22,7 +22,7 @@
 %% and/or
 %% https://github.com/ehki/jIEEEtran/
 %% 
-%% For use with BibTeX version 0.99a or later
+%% For use with pbibtex version 0.99d-j0.33 or later
 %%
 %% This is a numerical citation style.
 %% 
@@ -32,15 +32,16 @@
 %% implied; without even the implied warranty of MERCHANTABILITY or
 %% FITNESS FOR A PARTICULAR PURPOSE! 
 %% User assumes all risk.
-%% In no event shall the IEEE or any contributor to this code be liable for
+%% In no event shall the IEEE/IEEJ or any contributor to this code be liable for
 %% any damages or losses, including, but not limited to, incidental,
 %% consequential, or any other damages, resulting from the use or misuse
 %% of any information contained here.
 %%
 %% All comments are the opinions of their respective authors and are not
-%% necessarily endorsed by the IEEE.
+%% necessarily endorsed by the IEEE/IEEJ.
 %%
-%% This work is distributed under the LaTeX Project Public License (LPPL)
+%% The original version of this code, i.e. IEEEtran.bst by, Michael Shell
+%% was distributed under the LaTeX Project Public License (LPPL)
 %% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
 %% distributed and modified. A copy of the LPPL, version 1.3, is included
 %% in the base LaTeX documentation of all distributions of LaTeX released
@@ -49,36 +50,40 @@
 %% ** Modified files should be clearly indicated as such, including  **
 %% ** renaming them and changing author support contact information. **
 %%*************************************************************************
+%%
+%% 日本人の電気系LaTeXユーザのためのBibTeXスタイルファイルです。本ファイル
+%% はIEEE形式での引用スタイルで、オプションを変更することで電気学会形式へ
+%% と変更することが可能です。
+%% 電気学会形式のIEEJtran.bst/IEEE形式のjIEEEtran.bstともに非公式です。
+%% ファイルの破損、データの損失、本コードを使用したことによるリジェクトなど
+%% いかなる問題が生じた場合でも作者らは責任を負うことができません。
+%% コードはGitHub上で開発していますので、問題がありましたらIssueを立て、
+%% コミットをし、プルリクエストを投げてくださると嬉しいです。
+%%
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% DEFAULTS FOR THE CONTROLS OF THE BST STYLE %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% These are the defaults for the user adjustable controls. The values used
-% here can be overridden by the user via IEEEtranBSTCTL entry type.
-
-% NOTE: The recommended LaTeX command to invoke a control entry type is:
-% 
-%\makeatletter
-%\def\bstctlcite{\@ifnextchar[{\@bstctlcite}{\@bstctlcite[@auxout]}}
-%\def\@bstctlcite[#1]#2{\@bsphack
-%  \@for\@citeb:=#2\do{%
-%    \edef\@citeb{\expandafter\@firstofone\@citeb}%
-%    \if@filesw\immediate\write\csname #1\endcsname{\string\citation{\@citeb}}\fi}%
-%  \@esphack}
-%\makeatother
 %
-% It is called at the start of the document, before the first \cite, like:
-% \bstctlcite{IEEEexample:BSTcontrol}
+% Terminalに表示されるログメッセージのファイル名やURLの設定
 %
-% IEEEtran.cls V1.6 and later does provide this command.
 
+FUNCTION{bst.file.name} { "jIEEEtran.bst" }
+FUNCTION{bst.file.version} { "0.13" }
+FUNCTION{bst.file.date} { "2020/03/20" }
+FUNCTION{bst.file.website} { "https://github.com/ehki/jIEEEtran/" }
+FUNCTION{bst.file.author} { "Haruki Ejiri and Yoshi Ri" }
+
+
+%% オプション & 設定
 
 % 電気学会形式の引用フォーマットを使用するかの設定
-% #0 : isjapanese が True の場合、IEEEフォーマットでの日本語の不自然な扱いを解消
-% #1 : isjapanese に関係なく、全ての文献に電気学会形式を使用
-% default: { #1 }
+% #0 : IEEEフォーマットで引用する。
+%      日本語が含まれるエントリでは、日本語の不自然な扱いを解消する。
+%      日本語が含まれないエントリでは、Languageフィールドの取り扱いを除き
+%      オリジナルのIEEEtran.bst通りの出力となる。
+% #1 : 電気学会フォーマットで引用する。
+%      日本語が含まれるエントリも、日本語が含まれないエントリも、
+%      全ての文献に電気学会形式に合わせて引用する。
 FUNCTION {use.ieej.setting} { #0 }
 
 
@@ -227,20 +232,35 @@ FUNCTION {format.month.ieee} { #1 }
 FUNCTION { bbl.ieej.force.punct.aft.quote } { #1 }
 
 
-% languageにJapaneseやFrenchの指定がある場合に、(in Language)を表記するかの設定
+% languageにJapaneseやFrenchの指定がある場合に
+% (in Language)を表記するかの設定
 % #0 言語表記しない
 % #1 IEEE-Reference-Guideの通りに言語表記する
 %    https://ieeeauthorcenter.ieee.org/wp-content/uploads/IEEE-Reference-Guide.pdf
 % #2 文献末尾に言語表記する
-% default : { #1 } % for jIEEEtran.bst
-%           { #2 } % for IEEJtran.bst
-FUNCTION {bbl.format.language} { #1 }
+% default : {bbl.format.language.ieej} { #2 }
+%           {bbl.format.language.ieee} { #1 }
+FUNCTION {bbl.format.language.ieej} { #2 }
+FUNCTION {bbl.format.language.ieee} { #1 }
+FUNCTION {bbl.format.language}
+{ use.ieej.setting #1 =
+    { bbl.format.language.ieej }
+    { bbl.format.language.ieee }
+  if$
+}
 
 
 % language表記の後にピリオドを打つかの設定
 % default : { #1 } % for jIEEEtran.bst (デフォルト通りで強制しない)
 %           { #0 } % for IEEJtran.bst (ピリオドを強制的に打たせない)
-FUNCTION {bbl.format.language.punct} { #1 }
+FUNCTION {bbl.format.language.punct.ieej} { #0 }
+FUNCTION {bbl.format.language.punct.ieee} { #1 }
+FUNCTION {bbl.format.language.punct}
+{ use.ieej.setting #1 =
+    { bbl.format.language.punct.ieej }
+    { bbl.format.language.punct.ieee }
+  if$
+}
 
 
 % select.language関数を用いてタイトルジャーナル名に
@@ -250,6 +270,48 @@ FUNCTION {bbl.format.language.punct} { #1 }
 % { #0 } : hyphenation設定を行わない
 % default : { #0 }
 FUNCTION {bbl.use.select.language} { #0 }
+
+
+% URLの表記をするかどうかの設定
+% default : {default.is.use.url.ieej} {#0} 電気学会形式ではURLを書かない
+%           {default.is.use.url.ieee} {#1} IEEE形式ではURLがあれば書く
+FUNCTION {default.is.use.url.ieej} {#0}
+FUNCTION {default.is.use.url.ieee} {#1}
+
+
+% 同一著者の文献が連続した場合に著者名を長ダッシュで代用するかの設定
+% 電気学会形式では長ダッシュで代用はしない
+% IEEE形式では長ダッシュで代用する
+% default : { default.is.dash.repeated.names.ieej } { #0 }
+%           { default.is.dash.repeated.names.ieee } { #1 }
+FUNCTION { default.is.dash.repeated.names.ieej } { #0 }
+FUNCTION { default.is.dash.repeated.names.ieee } { #1 }
+
+
+% IEEEtran.bstに元からあるオプション群
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% DEFAULTS FOR THE CONTROLS OF THE BST STYLE %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% These are the defaults for the user adjustable controls. The values used
+% here can be overridden by the user via IEEEtranBSTCTL entry type.
+
+% NOTE: The recommended LaTeX command to invoke a control entry type is:
+% 
+%\makeatletter
+%\def\bstctlcite{\@ifnextchar[{\@bstctlcite}{\@bstctlcite[@auxout]}}
+%\def\@bstctlcite[#1]#2{\@bsphack
+%  \@for\@citeb:=#2\do{%
+%    \edef\@citeb{\expandafter\@firstofone\@citeb}%
+%    \if@filesw\immediate\write\csname #1\endcsname{\string\citation{\@citeb}}\fi}%
+%  \@esphack}
+%\makeatother
+%
+% It is called at the start of the document, before the first \cite, like:
+% \bstctlcite{IEEEexample:BSTcontrol}
+%
+% IEEEtran.cls V1.6 and later does provide this command.
 
 
 % #0 turns off the display of the number for articles.
@@ -264,7 +326,12 @@ FUNCTION {default.is.use.paper} { #1 }
 
 % #0 turns off the display of urls
 % #1 enables
-FUNCTION {default.is.use.url} { #1 }
+FUNCTION {default.is.use.url}
+{ use.ieej.setting #1 =
+    { default.is.use.url.ieej }
+    { default.is.use.url.ieee }
+  if$
+}
 
 
 % #0 turns off the forced use of "et al."
@@ -305,7 +372,12 @@ FUNCTION {default.ALTinterwordstretchfactor} { "4" }
 % #0 turns off the "dashification" of repeated (i.e., identical to those
 % of the previous entry) names. The IEEE normally does this.
 % #1 enables
-FUNCTION {default.is.dash.repeated.names} { #1 }
+FUNCTION {default.is.dash.repeated.names} {
+  use.ieej.setting #1 =
+    { default.is.dash.repeated.names.ieej }
+    { default.is.dash.repeated.names.ieee }
+  if$
+}
 
 
 % The default name format control string. %change based on japanese
@@ -331,23 +403,22 @@ FUNCTION {is.print.banners.to.terminal} { #1 }
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% FILE VERSION AND BANNER %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-FUNCTION{bst.file.name} { "jIEEEtran.bst" }
-FUNCTION{bst.file.version} { "0.13" }
-FUNCTION{bst.file.date} { "2020/03/20" }
-FUNCTION{bst.file.website} { "https://github.com/ehki/jIEEEtran/" }
+%%%%%%%%%%%%
+%% BANNER %%
+%%%%%%%%%%%%
 
 FUNCTION {banner.message}
 { is.print.banners.to.terminal
      { "-- " bst.file.name * " " * bst.file.version *
-       " (" * bst.file.date * ") " * "by Haruki Ejiri and Yoshi Ri." *
+       " (" * bst.file.date * ") " * "by " * bst.file.author * "." *
        top$
        "-- " bst.file.website *
        top$
-       "-- See the " quote$ * "IEEEtran_bst_HOWTO.pdf" * quote$ * " manual for usage information." *
+       "-- See the " quote$ * "IEEEtran_bst_HOWTO.pdf" * quote$ *
+       " manual for usage information for IEEEtran.bst." *
+       top$
+       "-- See aloso " quote$ * "howtouse.pdf" * quote$ *
+       " manual for usase information for jIEEEtran.bst and IEEJtran.bst." *
        top$
      }
      { skip$ }
@@ -439,9 +510,7 @@ MACRO {dec} {"Dec."}
 %%%%%%%%%%%%%%%%%%
 
 ENTRY
-  { 
-    %isjapanese
-    address
+  { address
     assignee
     author
     booktitle
@@ -1309,15 +1378,20 @@ FUNCTION {convert.edition}
 %% JAPANESE HANDLER %%
 %%%%%%%%%%%%%%%%%%%%%%
 
-FUNCTION {chk.jp.kanji.str} {
-  duplicate$ empty$
-    { pop$ #0 }
+FUNCTION {chk.jp.kanji.str}
+% pbibtexで用意されている is.kanji.str$ 関数を使用して日本語エントリか確認
+{ duplicate$ empty$
+    { pop$ #0 } % フィールドが空ならチェックせず #0 を返す
     { is.kanji.str$ #1 = { #1 } { #0 } if$ }
   if$
 }
 
-FUNCTION {chk.jp.entry.pbibtex} {
-  author chk.jp.kanji.str #1 =
+
+FUNCTION {chk.jp.entry.pbibtex}
+% author, title, journal, publisher のフィールドについて
+% 日本語文字を探索し、どれか一つでも日本語が含まれていたら
+% japanese.flag に #1 を代入、名前フォーマットも上書き
+{ author chk.jp.kanji.str #1 =
   title chk.jp.kanji.str #1 = or
   journal chk.jp.kanji.str #1 = or
   publisher chk.jp.kanji.str #1 = or
@@ -1327,15 +1401,21 @@ FUNCTION {chk.jp.entry.pbibtex} {
   if$
 }
 
+
 FUNCTION {emphasize.title}
+% タイトルの強調表示設定、emphasize すると \emph{} 内に入れるため、英語では斜体になる。
+% 日本語ではゴシック体となるが、不自然なためデフォルトでは \emph{} に入れる処理をスキップ。
 { 's := 
   use.ieej.setting #0 =
     { japanese.flag #1 =
+        % IEEE/JP は 設定により emphasize (斜体ではなく太字になり不自然なため)
         { ieee.jp.setting.emph.title #1 = { emphasize } { skip$ } if$ }
-        { emphasize } % IEEE/EN は emphasize
+        % IEEE/EN は emphasize
+        { emphasize }
       if$
     }
     { japanese.flag #1 =
+        % 電気学会では、日本語も英語も設定で変更。
         { ieej.jp.setting.emph.journal #1 = s "journal" = and { #1 } { #0 } if$
           ieej.jp.setting.emph.booktitle #1 = s "booktitle" = and { #1 } { #0 } if$
           or { emphasize } { skip$ } if$
@@ -1349,55 +1429,68 @@ FUNCTION {emphasize.title}
   if$
 }
 
+
 FUNCTION {format.jp.edition}
+% 版情報の整形
+% 日本語では 第n版 と、第と版で挟む。第1版は初版へと変更する。
+% 英語では 1st ed. 2nd ed. 等へと整形する。
 { use.ieej.setting #1 = japanese.flag #1 = and
     { duplicate$ "1" = { pop$ "初版" * } { "第" swap$ * * "版" * } if$ }
     { convert.edition "l" change.case$ * "~" * bbl.edition * }
   if$
 }
 
+
 FUNCTION {bbl.title.edition.sep}
+% 本のタイトルと版情報の間の区切り文字を制御。
 { japanese.flag #1 = { "，" * } { ", " * } if$ }
 
+
 FUNCTION {format.jp.year}
+% 電気学会形式では、出版社は ( と ) で挟む
+% ただしオプションで変更可
 { use.ieej.setting #1 = 
     { bbl.ieej.year.aft * bbl.ieej.year.pre swap$ * * }
     { * }
   if$
 }
 
+
 FUNCTION {format.jp.title}
+% 電気学会形式かつ日本語文献のときは、タイトルを 「 と 」 で挟む
+% ただしオプションで変更可
 { use.ieej.setting #1 = japanese.flag #1 = and
     { bbl.ieej.title.pre swap$ * bbl.ieej.title.aft * }
     { skip$ }
   if$
 }
 
+
 FUNCTION {author.sep}
-{ use.ieej.setting #0 = 
+% IEEEでも電気学会でも、最後の著者以外は
+% 所定文字を場合分けして挿入する
+{ use.ieej.setting #0 =
     { japanese.flag #1 = { "，" } { ", " } if$ }
-    { japanese.flag #1 =
-        { bbl.ieej.jp.author.sep }
+    { japanese.flag #1 = { bbl.ieej.jp.author.sep } { bbl.ieej.en.author.sep } if$ }
+  if$
+}
+
+
+FUNCTION {author.sep.last}
+{ use.ieej.setting #0 = 
+    { japanese.flag #0 =              % IEEE 形式の場合、and の取り扱いに注意
+        { ", " * bbl.and space.word } % 英語ではカンマの後 and を挿入
+        { "，" }                      % 日本語では他と同様に全角カンマのみ
+      if$
+    }
+    { japanese.flag #0 =              % 電気学会形式の場合、and を使用せず、予め設定したものを返す
         { bbl.ieej.en.author.sep }
+        { bbl.ieej.jp.author.sep }
       if$
     }
   if$
 }
 
-FUNCTION {author.sep.last}
-{ use.ieej.setting #0 = 
-    { japanese.flag #1 =
-        { "，" }
-        { ", " * bbl.and space.word }
-      if$
-    }
-    { japanese.flag #1 =
-        { bbl.ieej.jp.author.sep }
-        { bbl.ieej.en.author.sep }
-      if$
-    }
-  if$
-}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% LATEX BIBLIOGRAPHY CODE %%
@@ -1411,7 +1504,6 @@ FUNCTION {start.entry}
   newline$
   ""
   initialize.prev.this.status
-  %chk.jp.entry
   chk.jp.entry.pbibtex
 }
 
@@ -2025,8 +2117,7 @@ FUNCTION {format.volume}
       this.status.std
       use.ieej.setting #1 =
         { bbl.ieej.vol swap$ "volume" bibinfo.check *}
-        {
-          bbl.volume 
+        { bbl.volume 
           status.cap
             { capitalize }
             { skip$ }
@@ -2048,8 +2139,7 @@ FUNCTION {format.number}
       this.status.std
       use.ieej.setting #1 =
         { bbl.ieej.no swap$ "number" bibinfo.check * }
-        {
-          status.cap
+        { status.cap
             { bbl.number capitalize }
             { bbl.number }
           if$
@@ -2170,15 +2260,13 @@ FUNCTION {format.pages}
     { this.to.prev.status
       this.status.std
       duplicate$ is.multiple.pages
-        {
-          use.ieej.setting #1 = 
+        { use.ieej.setting #1 = 
             { bbl.ieej.pages swap$ }
             { bbl.pages swap$ }
           if$
           n.dashify
         }
-        {
-          use.ieej.setting #1 = 
+        { use.ieej.setting #1 = 
             { bbl.ieej.page swap$ }
             { bbl.page swap$ }
           if$
@@ -2600,7 +2688,6 @@ FUNCTION {inproceedings}
       if$
       format.paper output
       format.pages output
-
     }
   if$
   format.note output
