@@ -2,7 +2,7 @@
 %% jIEEEtran.bst
 %% BibTeX Bibliography Style file for IEEE Journals and Conferences (unsorted) for Japanese users
 %% 
-%% Version 0.13 (2020/03/20)
+%% Version 0.14 (2020/04/03)
 %% 
 %% Copyright (c) 2020 Haruki Ejiri and Yoshi Ri 
 %% 
@@ -68,8 +68,8 @@
 %
 
 FUNCTION{bst.file.name} { "jIEEEtran.bst" }
-FUNCTION{bst.file.version} { "0.13" }
-FUNCTION{bst.file.date} { "2020/03/20" }
+FUNCTION{bst.file.version} { "0.14" }
+FUNCTION{bst.file.date} { "2020/04/03" }
 FUNCTION{bst.file.website} { "https://github.com/ehki/jIEEEtran/" }
 FUNCTION{bst.file.author} { "Haruki Ejiri and Yoshi Ri" }
 
