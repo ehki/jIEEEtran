@@ -82,7 +82,7 @@
   author = {{山田 八郎} and {山田 六郎}},
   year = {2010},
   journal = {日本語の学会名},
-  title = {手法1と手法2、どちらが正しいのか?},
+  title = {手法1と手法2，どちらが正しいのか?},
   number = {1},
   pages = {15},
   volume = {5}
@@ -241,7 +241,7 @@
   pages = {100--200},
   edition = {2},
   year = {2012},
-}  
+}
 \end{filecontents}
 \begin{filecontents}[overwrite]{book.bib}
 @book{Book,
@@ -345,13 +345,13 @@
 \section{概要}
 \begin{bibunit}[jIEEEtran]
 
-電気系の論文を執筆する日本人ユーザ向けに、IEEEと電気学会の引用スタイルを保ったまま日本語の取り扱いを自然にした\BibTeX スタイル(\texttt{.bst})ファイルです。
-電気学会原稿の下書きや卒業論文、修士論文など、\LaTeX を使用した文献管理の一助になることを目的としています。
-Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi氏が日本語の自然な表記を実装し、現在は著者らがリポジトリを譲渡していただきGitHub上\cite{jIEEEtran}で継続して開発しています。
-オプションの追記方法や日本語の判別方法については、武田氏らによる\texttt{jecon.bst}\cite{jeconbst}を参考にしています。
-間違いがあった場合でも大きな被害が出るレポジトリではありませんので、ご要望や問題があればお気軽にIssueやPull Requestを飛ばしてください。
-なお、電気学会公認ではありませんし、全ての環境で動作を保証するものではありません。不具合が生じても責任を負うことはできませんのでご容赦ください。
-なお、\TeX Live 2019の使用を想定しています。\texttt{w32tex}や古い\TeX Liveでの動作は確認していません。pbibtexは\texttt{0.99d-j0.33}、pythonは\texttt{3.7.6}および\texttt{3.8.1}での動作を確認しています。
+電気系の論文を執筆する日本人ユーザ向けに，IEEEと電気学会の引用スタイルを保ったまま日本語の取り扱いを自然にした\BibTeX スタイル(\texttt{.bst})ファイルです。
+電気学会原稿の下書きや卒業論文，修士論文など，\LaTeX を使用した文献管理の一助になることを目的としています。
+Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi氏が日本語の自然な表記を実装し，現在は著者らがリポジトリを譲渡していただきGitHub上\cite{jIEEEtran}で継続して開発しています。
+オプションの追記方法や日本語の判別方法については，武田氏らによる\texttt{jecon.bst}\cite{jeconbst}を参考にしています。
+間違いがあった場合でも大きな被害が出るレポジトリではありませんので，ご要望や問題があればお気軽にIssueやPull Requestを飛ばしてください。
+なお，電気学会公認ではありませんし，全ての環境で動作を保証するものではありません。不具合が生じても責任を負うことはできませんのでご容赦ください。
+なお，\TeX Live 2019の使用を想定しています。\texttt{w32tex}や古い\TeX Liveでの動作は確認していません。pbibtexは\texttt{0.99d-j0.33}，pythonは\texttt{3.7.6}および\texttt{3.8.1}での動作を確認しています。
 
 {\small \putbib[./ref]}
 \end{bibunit}
@@ -366,11 +366,11 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 \begin{center}
 \textbf{author}, \textbf{title}, \textsl{language}, \textbf{journal}, volume, number, pages, month, year, note, \textsl{url}.
 \end{center}
-このうち\textbf{textbf}で示したフィールドは必須、レギュラーフォントで示したフィールドはオプションです。
-\textsl{textsl}で示したフィールドは拡張用のフィールドで、標準的な\BibTeX ではサポートされていない可能性があります。
-\texttt{article}タイプのエントリでは、\texttt{language}フィールドに例えば``Japanese''を書くと、\texttt{IEEJtran.bst}では各エントリの最後に``(in Japanese)''を追記し、\texttt{jIEEEtran.bst}では\texttt{title}と\texttt{journal}の間に``(in Japanese)''を記載します。
+このうち\textbf{textbf}で示したフィールドは必須，レギュラーフォントで示したフィールドはオプションです。
+\textsl{textsl}で示したフィールドは拡張用のフィールドで，標準的な\BibTeX ではサポートされていない可能性があります。
+\texttt{article}タイプのエントリでは，\texttt{language}フィールドに例えば``Japanese''を書くと，\texttt{IEEJtran.bst}では各エントリの最後に``(in Japanese)''を追記し，\texttt{jIEEEtran.bst}では\texttt{title}と\texttt{journal}の間に``(in Japanese)''を記載します。
 
-\texttt{.bib}ファイルの例と、\texttt{IEEJtran.bst}および\texttt{jIEEEtran.bst}を使用して引用した際の出力例を次に示します。
+\texttt{.bib}ファイルの例と，\texttt{IEEJtran.bst}および\texttt{jIEEEtran.bst}を使用して引用した際の出力例を次に示します。
 
 \putlst{article.bib}
 
@@ -386,12 +386,12 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 \end{bibunit}
 
 \vspace{2em}
-電気学会の引用スタイルで求められているように英語と日本語を併記する場合、例えば
+電気学会の引用スタイルで求められているように英語と日本語を併記する場合，例えば
 \begin{center}
   \verb*|\cite{enArticle1/ej/jpArticle1}|
 \end{center}
-と記載すれば\texttt{enArticle1}と\texttt{jpArticle1}を一つのエントリとして扱えます。これには外部pythonファイルの\texttt{mixej.py}が必要ですので、\ref{sec:compile_procedure}節と\ref{sec:compile_config}節において後述します。英語と日本語の併記は\texttt{IEEJtran.bst}だけでなく\texttt{jIEEEtran.bst}でも使用することができます。
-例えば\texttt{enArticle1}と\texttt{jpArticle1}、\texttt{enArticle2}と\texttt{jpArticle2}を一つの文献としてまとめると、次のように出力されます。
+と記載すれば\texttt{enArticle1}と\texttt{jpArticle1}を一つのエントリとして扱えます。これには外部pythonファイルの\texttt{mixej.py}が必要ですので，\ref{sec:compile_procedure}節と\ref{sec:compile_config}節において後述します。英語と日本語の併記は\texttt{IEEJtran.bst}だけでなく\texttt{jIEEEtran.bst}でも使用することができます。
+例えば\texttt{enArticle1}と\texttt{jpArticle1}，\texttt{enArticle2}と\texttt{jpArticle2}を一つの文献としてまとめると，次のように出力されます。
 
 \begin{bibunit}[IEEJtran]
   \nocite{enArticle1/ej/jpArticle1,enArticle2/ej/jpArticle2}
@@ -443,12 +443,12 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 
 \subsection{inproceedings/conference}
 
-\texttt{inproceedings}タイプのエントリや\texttt{conference}タイプのエントリでは次のフィールドをサポートします。なお、どちらのタイプが指定されても\texttt{bst}内部ではエイリアスにより\texttt{inproceedings}タイプとして処理されます。
+\texttt{inproceedings}タイプのエントリや\texttt{conference}タイプのエントリでは次のフィールドをサポートします。なお，どちらのタイプが指定されても\texttt{bst}内部ではエイリアスにより\texttt{inproceedings}タイプとして処理されます。
 \begin{center}
   \textbf{author}, \textbf{title}, \textsl{intype}, \textbf{booktitle}, \textsl{language}, series, editor, volume, number, \\
   organization, address, publisher, month, \textbf{year}, \textsl{paper}, \textsl{type}, pages, note, \textsl{url}.
 \end{center}
-このうち、\textsl{intype}フィールドや\textsl{paper}フィールド、\textsl{type}フィールドについては本家の\texttt{IEEEtran.bst}のマニュアルを参照ください。\texttt{.bib}ファイルの例とそれぞれの\texttt{bst}ファイルの出力例を以下に示します。
+このうち，\textsl{intype}フィールドや\textsl{paper}フィールド，\textsl{type}フィールドについては本家の\texttt{IEEEtran.bst}のマニュアルを参照ください。\texttt{.bib}ファイルの例とそれぞれの\texttt{bst}ファイルの出力例を以下に示します。
 
 \putlst{inproceedings.bib}
 
@@ -477,7 +477,7 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 
 \subsection{incollection}
 
-\texttt{incollection}タイプのエントリは、書籍のうちタイトルのある一部分を引用したい場合に使用されます。次のフィールドをサポートします。
+\texttt{incollection}タイプのエントリは，書籍のうちタイトルのある一部分を引用したい場合に使用されます。次のフィールドをサポートします。
 
 \begin{center}
   \textbf{author}, \textbf{title}, \textbf{booktitle}, \textsl{language}, edition, series, editor, address, publisher, \\
@@ -516,40 +516,40 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 
 \subsection{必要環境}
 
-\texttt{jIEEEtran.bst}や\texttt{IEEJtran.bst}は\BibTeX 用のスタイルファイルですので、当然\BibTeX を利用できる環境と使用する\texttt{.bib}ファイルが必要です。
+\texttt{jIEEEtran.bst}や\texttt{IEEJtran.bst}は\BibTeX 用のスタイルファイルですので，当然\BibTeX を利用できる環境と使用する\texttt{.bib}ファイルが必要です。
 \BibTeX の環境構築方法については本マニュアルの範囲外とします。
-また、日本人ユーザを想定していますので、\texttt{platex}や\texttt{pbibtex}は既に使用可能であるものとします。
-\texttt{jIEEEtran.bst}、\texttt{IEEJtran.bst}いずれも\texttt{pbibtex}に用意されている\texttt{is.kanji.str\$} 関数を使用しているため、\BibTeX コンパイラとして\texttt{bibtex}ではなく必ず\texttt{pbibtex}を使用してください。
-なお、\texttt{is.kanji.str\$} 関数による日本語の判定は、\texttt{author}、\texttt{title}、\texttt{journal}、\texttt{publisher}の4つのフィールドに限定しています。
+また，日本人ユーザを想定していますので，\texttt{platex}や\texttt{pbibtex}は既に使用可能であるものとします。
+\texttt{jIEEEtran.bst}，\texttt{IEEJtran.bst}いずれも\texttt{pbibtex}に用意されている\texttt{is.kanji.str\$} 関数を使用しているため，\BibTeX コンパイラとして\texttt{bibtex}ではなく必ず\texttt{pbibtex}を使用してください。
+なお，\texttt{is.kanji.str\$} 関数による日本語の判定は，\texttt{author}，\texttt{title}，\texttt{journal}，\texttt{publisher}の4つのフィールドに限定しています。
 
 
 
 \subsection{\texttt{jIEEEtran.bst}/\texttt{IEEJtran.bst}の置き場所}
 
 \texttt{jIEEEtran.bst}と\texttt{IEEJtran.bst}は\LaTeX のコンパイラが認識できる場所に置いてください。
-すなわち、コンパイル対象の\texttt{.tex}ファイルと同一のディレクトリに置いてもよいですし、パスの通った場所に置いても動作します。
+すなわち，コンパイル対象の\texttt{.tex}ファイルと同一のディレクトリに置いてもよいですし，パスの通った場所に置いても動作します。
 例えば\texttt{ieeetr.bst}が置かれている\texttt{texmf-dist/bibtex/bst/base}に置いてもよいでしょう。
-この場合、ファイル一覧表の更新コマンドである\texttt{mktexlsr}を実行するのを忘れないでください。
-英語と日本語の併記を実現する\texttt{mixej.py}はコンパイル対象の\texttt{.tex}ファイルから相対パスで参照できる場所であれば実行可能ですが、\texttt{.tex}ファイルと同一のディレクトリに置くことを推奨します。
+この場合，ファイル一覧表の更新コマンドである\texttt{mktexlsr}を実行するのを忘れないでください。
+英語と日本語の併記を実現する\texttt{mixej.py}はコンパイル対象の\texttt{.tex}ファイルから相対パスで参照できる場所であれば実行可能ですが，\texttt{.tex}ファイルと同一のディレクトリに置くことを推奨します。
 
 
 
 \subsection{\texttt{bib}ファイルの書き方}
 
 \texttt{.bib}ファイルの書き方は通常通りで構いません。
-日本人著者の取り扱いは、\texttt{author = \{\{}\textgt{姓姓 名名}\texttt{\} and \{}\textgt{姓姓 名名}\texttt{\}\}}と、\texttt{\{\}}で挟んでもいいですし、\texttt{author = \{姓姓, 名名 and 姓姓, 名名\}}と、\texttt{\{\}}で挟まず半角カンマを挿入しても大丈夫です。
+日本人著者の取り扱いは，\texttt{author = \{\{}\textgt{姓姓 名名}\texttt{\} and \{}\textgt{姓姓 名名}\texttt{\}\}}と，\texttt{\{\}}で挟んでもいいですし，\texttt{author = \{姓姓, 名名 and 姓姓, 名名\}}と，\texttt{\{\}}で挟まず半角カンマを挿入しても大丈夫です。
 \texttt{.bst}内部では\texttt{\{\}}は消去して処理しています。
-Mendeleyでは、前者はAuthorをInstitutoin/Organizationとして記載した場合、後者は通常のLastname, Firstnameとして記載した場合に相当します。
+Mendeleyでは，前者はAuthorをInstitutoin/Organizationとして記載した場合，後者は通常のLastname, Firstnameとして記載した場合に相当します。
 
-タイトルの後、出版社の後、文献の最後など、適切な箇所に(in Japanese)と言語表記をする場合にはlanguageフィールドが必要です。
+タイトルの後，出版社の後，文献の最後など，適切な箇所に(in Japanese)と言語表記をする場合にはlanguageフィールドが必要です。
 MendeleyではPreferenceからDocument Detailsへと進めば常に表示させることが可能です。
 
 
 
 \subsection{\texttt{tex}ファイルの書き方}
 
-\texttt{jIEEEtran.bst}や\texttt{IEEJtran.bst}へのパスが通っている、もしくはコンパイルする\texttt{.tex}ファイルと同一ディレクトリにこれらの\texttt{.bst}ファイルが置かれていれば、\BibTeX スタイルファイルとして\texttt{jIEEEtran.bst}や\texttt{IEEJtran.bst}を指定するのは簡単です。
-他の\texttt{bst}ファイルを指定するのと同様に、\texttt{tex}ファイル中で
+\texttt{jIEEEtran.bst}や\texttt{IEEJtran.bst}へのパスが通っている，もしくはコンパイルする\texttt{.tex}ファイルと同一ディレクトリにこれらの\texttt{.bst}ファイルが置かれていれば，\BibTeX スタイルファイルとして\texttt{jIEEEtran.bst}や\texttt{IEEJtran.bst}を指定するのは簡単です。
+他の\texttt{bst}ファイルを指定するのと同様に，\texttt{tex}ファイル中で
 
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
 \begin{lstlisting}[style=onecol]
@@ -578,24 +578,24 @@ SHIFT-JISやEUC-JPは非対応です。
 \subsection{コンパイル手順}
 \label{sec:compile_procedure}
 
-英語と日本語の併記を行わない場合、通常通りのコンパイル手順で\texttt{.pdf}を生成することができます。
-例えば\texttt{platex}で\texttt{.dvi}を生成し、\texttt{.dvi}から\texttt{.pdf}を生成、\BibTeX コマンドには\texttt{pbibtex}を使う場合、
+英語と日本語の併記を行わない場合，通常通りのコンパイル手順で\texttt{.pdf}を生成することができます。
+例えば\texttt{platex}で\texttt{.dvi}を生成し，\texttt{.dvi}から\texttt{.pdf}を生成，\BibTeX コマンドには\texttt{pbibtex}を使う場合，
 \begin{center}
 \texttt{platex → pbibtex → platex → platex → dvipdfmx}
 \end{center}
 という手順です。
 
-英語と日本語の併記を行う場合、通常のコンパイル手順での\texttt{pbibtex}前後に\texttt{python}による\texttt{mixej.py}の処理を一回ずつ挟みます。
-前と同様に、\texttt{platex}で\texttt{.dvi}を生成し、\texttt{.dvi}から\texttt{.pdf}を生成、\BibTeX コマンドには\texttt{pbibtex}を使う場合、
+英語と日本語の併記を行う場合，通常のコンパイル手順での\texttt{pbibtex}前後に\texttt{python}による\texttt{mixej.py}の処理を一回ずつ挟みます。
+前と同様に，\texttt{platex}で\texttt{.dvi}を生成し，\texttt{.dvi}から\texttt{.pdf}を生成，\BibTeX コマンドには\texttt{pbibtex}を使う場合，
 \begin{center}
 \texttt{platex → python mixej.py → pbibtex → python mixej.py → platex → platex → dvipdfmx}
 \end{center}
 という手順に変更されます。
 
-論文誌や学内資料の原稿のように\texttt{.tex}ファイル中に文献リストを1つしか出力しない場合、上の処理を1ステップずつ実行しても問題ありません。
-しかし、このマニュアルや学位論文、書籍などで文献リストを複数出力するために\texttt{bibunits}パッケージを使用して文献リストを複数出力する場合には、Latexmkの使用を推奨します。
-これは、\texttt{bu1.aux, bu1.bbl, bu5.aux, bu5.bbl}のように、\texttt{bibunits}パッケージが何個の\texttt{bu}ファイルを出力するかが不明で、1ステップずつの実行では\texttt{bu}ファイルの個数をユーザが把握する必要があり面倒だからです。
-Latexmkを使用していれば、各\texttt{bu}ファイルをそれぞれ必要な回数だけ処理してくれます。
+論文誌や学内資料の原稿のように\texttt{.tex}ファイル中に文献リストを1つしか出力しない場合，上の処理を1ステップずつ実行しても問題ありません。
+しかし，このマニュアルや学位論文，書籍などで文献リストを複数出力するために\texttt{bibunits}パッケージを使用して文献リストを複数出力する場合には，Latexmkの使用を推奨します。
+これは，\texttt{bu1.aux, bu1.bbl, bu5.aux, bu5.bbl}のように，\texttt{bibunits}パッケージが何個の\texttt{bu}ファイルを出力するかが不明で，1ステップずつの実行では\texttt{bu}ファイルの個数をユーザが把握する必要があり面倒だからです。
+Latexmkを使用していれば，各\texttt{bu}ファイルをそれぞれ必要な回数だけ処理してくれます。
 
 
 
@@ -603,11 +603,11 @@ Latexmkを使用していれば、各\texttt{bu}ファイルをそれぞれ必�
 \label{sec:compile_config}
 
 % 英語と日本語の併記を実現するためには\texttt{pbibtex}の前後にpythonでの処理を挟む必要があります。
-% そのため、コンパイラではBibTeXコマンドの設定方法に注意が必要です。
-\ref{sec:compile_procedure}節においても触れましたが、本マニュアルのように英語と日本語の併記を実現するために\texttt{/ej/}のコマンドが含まれているものを適切に扱うためには、\texttt{python mixej.py}のコマンドを\BibTeX コマンドの前後に1回ずつ実行する必要があります。
-そのため、コンパイラでは\BibTeX コマンドの設定方法に注意が必要です。
+% そのため，コンパイラではBibTeXコマンドの設定方法に注意が必要です。
+\ref{sec:compile_procedure}節においても触れましたが，本マニュアルのように英語と日本語の併記を実現するために\texttt{/ej/}のコマンドが含まれているものを適切に扱うためには，\texttt{python mixej.py}のコマンドを\BibTeX コマンドの前後に1回ずつ実行する必要があります。
+そのため，コンパイラでは\BibTeX コマンドの設定方法に注意が必要です。
 
-Latexmkを使用している場合、MacやLinuxなどのUNIX系列では\texttt{latexmkrc}に対して次のように設定することで実現可能です。
+Latexmkを使用している場合，MacやLinuxなどのUNIX系列では\texttt{latexmkrc}に対して次のように設定することで実現可能です。
 
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
 \begin{lstlisting}[style=onecol]
@@ -621,7 +621,7 @@ $pdf_previewer = "open -ga /Applications/Skim.app";
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
 
 \noindent
-Windowsでは、cmd, powershellともに\texttt{bibtex}の設定を次のようにすれば動きます。ただし、\texttt{\&}前後の半角スペースを忘れずに記入してください。
+Windowsでは，cmd, powershellともに\texttt{bibtex}の設定を次のようにすれば動きます。ただし，\texttt{\&}前後の半角スペースを忘れずに記入してください。
 
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
 \begin{lstlisting}[style=onecol]
@@ -630,7 +630,7 @@ $bibtex = '@cd & python mixej.py %B & pbibtex %B & python mixej.py %B';
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
 
 
-最近ではVisual Studio Codeを使用している方が多いと思いますが、MacやLinuxでのVSCodeのLaTeX Workshop Extension用の設定は次のように書けます。Windowsの場合は\texttt{.latexmkrc}の場合と同様に\texttt{bibtex}コマンドを書き換えてください。
+最近ではVisual Studio Codeを使用している方が多いと思いますが，MacやLinuxでのVSCodeのLaTeX Workshop Extension用の設定は次のように書けます。Windowsの場合は\texttt{.latexmkrc}の場合と同様に\texttt{bibtex}コマンドを書き換えてください。
 
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
 \begin{lstlisting}[style=onecol]
