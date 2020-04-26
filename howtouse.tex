@@ -9,6 +9,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[dvipdfmx]{hyperref}
 \usepackage{pxjahyper}
+\usepackage{IEEEtrantools}
 \hypersetup{
 	colorlinks=false,
   bookmarksnumbered=true,
@@ -123,6 +124,66 @@
   title = {Article with language field},
   month = {march},
   language = {japanese}
+}
+\end{filecontents}
+\begin{filecontents}[overwrite]{articleabbrev.bib}
+@IEEEtranBSTCTL{BSTctl_abbrev,
+  CTLuse_ieej_abbrev = "yes",
+  CTLmax_names_forced_etal = "2",
+}
+@article{jpArticle1,
+  author = {山田 一郎},
+  year = {2019},
+  journal = {日本語学会},
+  title = {省略形ではタイトルは非表示},
+  number = {10},
+  pages = {20--30},
+  volume = {15},
+}
+@article{jpArticle2,
+  author = {{山田 二郎} and {佐藤 三郎}},
+  year = {2019},
+  journal = {日本語学会},
+  title = {省略形ではタイトルは非表示},
+  number = {10},
+  pages = {21},
+  volume = {15},
+  month = {12}
+}
+@article{jpArticle3,
+  author = {林 四郎 and 田中 五郎 and 小林 六郎},
+  year = {2010},
+  journal = {学会誌},
+  title = {省略形ではタイトルは非表示},
+  number = {1},
+  pages = {15},
+  volume = {5}
+}
+@article{enArticle1,
+  author = {Ichiro Yamada},
+  year = {2019},
+  journal = {JP Journal},
+  title = {Title1},
+  number = {10},
+  pages = {20--30},
+  volume = {15},
+  month = {march},
+}
+@article{enArticle2,
+  author = {Jiro Yamada and Saburo Yamada},
+  year = {2019},
+  journal = {IEEE TCAS},
+  title = {Title not shown},
+  volume = {15},
+  number = {10},
+  pages = {21},
+  month = {dec.},
+}
+@article{enArticle3,
+  author = {Shiro Tanaka and Goro Yamada and Rokuro},
+  year = {2010},
+  journal = {IEEJ Trans. Sample.},
+  title = {Not shown},
 }
 \end{filecontents}
 \begin{filecontents}[overwrite]{inproceedings.bib}
@@ -351,7 +412,7 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 オプションの追記方法や日本語の判別方法については，武田氏らによる\texttt{jecon.bst}\cite{jeconbst}を参考にしています。
 間違いがあった場合でも大きな被害が出るレポジトリではありませんので，ご要望や問題があればお気軽にIssueやPull Requestを飛ばしてください。
 なお，電気学会公認ではありませんし，全ての環境で動作を保証するものではありません。不具合が生じても責任を負うことはできませんのでご容赦ください。
-なお，\TeX Live 2019の使用を想定しています。\texttt{w32tex}や古い\TeX Liveでの動作は確認していません。pbibtexは\texttt{0.99d-j0.33}，pythonは\texttt{3.7.6}および\texttt{3.8.1}での動作を確認しています。
+なお，\TeX Live 2019および\TeX Live 2020の使用を想定しています。\texttt{w32tex}や古い\TeX Liveでの動作は確認していません。pbibtexは\texttt{0.99d-j0.33}，pythonは\texttt{3.7.6}および\texttt{3.8.1}での動作を確認しています。
 
 {\small \putbib[./ref]}
 \end{bibunit}
@@ -377,6 +438,11 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 \begin{bibunit}[IEEJtran]
   \nocite{Article,jpArticle1,jpArticle2,jpArticle3,enArticle1,enArticle2,enArticle3,enArticle4}
   \renewcommand{\refname}{\small 参考文献(IEEJtran.bst)}
+  {\small \putbib[./article]}
+\end{bibunit}
+\begin{bibunit}[IEEJtranA]
+  \nocite{Article,jpArticle1,jpArticle2,jpArticle3,enArticle1,enArticle2,enArticle3,enArticle4}
+  \renewcommand{\refname}{\small 参考文献(IEEJtranA.bst)}
   {\small \putbib[./article]}
 \end{bibunit}
 \begin{bibunit}[jIEEEtran]
@@ -652,5 +718,28 @@ $bibtex = '@cd & python mixej.py %B & pbibtex %B & python mixej.py %B';
 \end{lstlisting}\vspace{-1.8zw}
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
 
+
+\subsection{カスタマイズの例：電気学会の省略形式}
+
+電気学会の研究会や大会の原稿では，タイトルやVol.等の文字を表記せずに，「著者・他，電学論A，\textbf{10}(15)，20--25（2020）」と省略して一行形式とすることがあります。
+IEEJtran.bstのオプションとして省略形での出力を可能としています。
+なお，現状では\texttt{article}タイプのエントリのみに対応しています。
+省略形式への変更は\texttt{.bst}ファイルを変更することでも実現可能ですが，元としている\texttt{IEEEtran.bst}に習い，\texttt{IEEEtranBSTCTL}で操作できるようにしました。
+\texttt{IEEEtranBSTCTL}の使用方法は本マニュアルの範囲外としますが，\texttt{\textbackslash bstctlcite}を使用して\texttt{IEEEtranBSTCTL}エントリを一番はじめに引用してください。
+なお，本マニュアルでは\texttt{bibunit.sty}を使用しており，相性問題で\texttt{\textbackslash bstctlcite}が動きません。
+そのため，Warningが出てしまいますが\texttt{\textbackslash nocite\{IEEEtranBSTCTL\}}として引用しています。
+なお，雑誌名を省略するには\texttt{.bib}ファイルに記載する情報を省略形としておく必要があります。
+\texttt{.bst}ファイルは\texttt{.bib}ファイルの\texttt{journal}フィールドの情報をそのまま出力するためです。
+従って，文献管理ソフトで省略形を予め定義しておく必要があります。
+\texttt{.bib}ファイルと出力の例を下記に示します。
+
+\putlst{articleabbrev.bib}
+
+\begin{bibunit}[IEEJtran]
+  \nocite{BSTctl_abbrev}
+  \nocite{jpArticle1,jpArticle2,jpArticle3,enArticle1,enArticle2,enArticle3}
+  \renewcommand{\refname}{\small 参考文献(IEEJtran.bst)}
+  {\small \putbib[./articleabbrev]}
+\end{bibunit}
 
 \end{document}
