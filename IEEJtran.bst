@@ -1943,7 +1943,15 @@ FUNCTION {format.date}
       this.status.std
       cap.status.std
       use.ieej.setting #1 =
-        { swap$ 'skip$ { bbl.ieej.year.month.sep * swap$ } if$ * }
+        { swap$
+            { * }
+            { use.ieej.abbrev #1 =
+                { swap$ pop$ }
+                { bbl.ieej.year.month.sep * swap$ * }
+              if$
+             }
+          if$ duplicate$ top$
+        }
         { swap$ 'skip$ { swap$ " " * swap$ } if$ * }
       if$
       use.ieej.setting #1 =
