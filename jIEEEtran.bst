@@ -2809,7 +2809,10 @@ FUNCTION {inproceedings}
   if.url.alt.interword.spacing
   format.authors "author" output.warn
   name.or.dash
-  format.article.title "title" output.warn
+  use.ieej.abbrev #1 =
+    { skip$ }
+    { format.article.title "title" output.warn }
+  if$
   format.in.booktitle "booktitle" output.warn
   format.series output
   format.editors output
@@ -2818,7 +2821,10 @@ FUNCTION {inproceedings}
   use.ieej.setting #1 = 
     { format.paper output
       format.pages output
-      format.address output
+      use.ieej.abbrev #1 =
+        { skip$ }
+        { format.address output }
+      if$
     }
     { publisher empty$
         { format.address.organization.date output }

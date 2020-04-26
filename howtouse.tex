@@ -185,6 +185,45 @@
   journal = {IEEJ Trans. Sample.},
   title = {Not shown},
 }
+@inproceedings{jpInproceedings1,
+  author = {山田, 一郎 and 山田, 次郎},
+  title = {文献タイトル},
+  booktitle = {令和2年日本語大会},
+  address = {大阪},
+  year = {2010},
+  month = {3},
+  number = {10},
+  pages = {20--30}
+}
+@inproceedings{jpInproceedings2,
+  author = {山田, 三郎 and 佐藤, 四郎},
+  title = {タイトル},
+  booktitle = {第30回部門大会},
+  address = {東京},
+  year = {2005},
+  month = {2},
+  number = {2},
+  pages = {15--19}
+}
+@inproceedings{enInproceedings1,
+  author = {Hayashi, Shinji and Ogura, Yasuhiro},
+  title = {Sample Conference Article Title},
+  booktitle = {Proc. 5th ISC},
+  address = {Tokyo, Japan},
+  month = {jan},
+  year = {1997},
+  pages = {S01-5},
+}
+@inproceedings{enInproceedings2,
+  author = {Yamada, Sabuso and Sato, Shiro and Sato, Nishida},
+  title = {Title},
+  booktitle = {Proc. 30th CNOF},
+  address = {Tokyo},
+  year = {2005},
+  month = {2},
+  pages = {O1-15},
+  language = {Japanese}
+}
 \end{filecontents}
 \begin{filecontents}[overwrite]{inproceedings.bib}
 @inproceedings{Inproceedings,
@@ -723,7 +762,7 @@ $bibtex = '@cd & python mixej.py %B & pbibtex %B & python mixej.py %B';
 
 電気学会の研究会や大会の原稿では，タイトルやVol.等の文字を表記せずに，「著者・他，電学論A，\textbf{10}(15)，20--25（2020）」と省略して一行形式とすることがあります。
 IEEJtran.bstのオプションとして省略形での出力を可能としています。
-なお，現状では\texttt{article}タイプのエントリのみに対応しています。
+なお，現状では\texttt{article}タイプと\texttt{inproceedings}のエントリのみに対応しています。
 省略形式への変更は\texttt{.bst}ファイルを変更することでも実現可能ですが，元としている\texttt{IEEEtran.bst}に習い，\texttt{IEEEtranBSTCTL}で操作できるようにしました。
 \texttt{IEEEtranBSTCTL}の使用方法は本マニュアルの範囲外としますが，\texttt{\textbackslash bstctlcite}を使用して\texttt{IEEEtranBSTCTL}エントリを一番はじめに引用してください。
 なお，本マニュアルでは\texttt{bibunit.sty}を使用しており，相性問題で\texttt{\textbackslash bstctlcite}が動きません。
@@ -737,7 +776,7 @@ IEEJtran.bstのオプションとして省略形での出力を可能として�
 
 \begin{bibunit}[IEEJtran]
   \nocite{BSTctl_abbrev}
-  \nocite{jpArticle1,jpArticle2,jpArticle3,enArticle1,enArticle2,enArticle3}
+  \nocite{jpArticle1,jpArticle2,jpArticle3,enArticle1,enArticle2,enArticle3,jpInproceedings1,jpInproceedings2,enInproceedings1,enInproceedings2}
   \renewcommand{\refname}{\small 参考文献(IEEJtran.bst)}
   {\small \putbib[./articleabbrev]}
 \end{bibunit}
