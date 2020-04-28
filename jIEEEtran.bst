@@ -2,7 +2,7 @@
 %% jIEEEtran.bst
 %% BibTeX Bibliography Style file for IEEE Journals and Conferences (unsorted) for Japanese users
 %% 
-%% Version 0.14 (2020/04/03)
+%% Version 0.15 (2020/04/28)
 %% 
 %% Copyright (c) 2020 Haruki Ejiri and Yoshi Ri 
 %% 
@@ -68,8 +68,8 @@
 %
 
 FUNCTION{bst.file.name} { "jIEEEtran.bst" }
-FUNCTION{bst.file.version} { "0.14" }
-FUNCTION{bst.file.date} { "2020/04/03" }
+FUNCTION{bst.file.version} { "0.15" }
+FUNCTION{bst.file.date} { "2020/04/28" }
 FUNCTION{bst.file.website} { "https://github.com/ehki/jIEEEtran/" }
 FUNCTION{bst.file.author} { "Haruki Ejiri and Yoshi Ri" }
 
@@ -85,6 +85,12 @@ FUNCTION{bst.file.author} { "Haruki Ejiri and Yoshi Ri" }
 %      日本語が含まれるエントリも、日本語が含まれないエントリも、
 %      全ての文献に電気学会形式に合わせて引用する。
 FUNCTION {use.ieej.setting} { #0 }
+
+
+% 電気学会形式の場合に短縮表記をするかどうかの設定
+% #0 : 短縮しない
+% #1 : 短縮する
+FUNCTION {default.use.ieej.abbrev} { #0 }
 
 
 % 電気学会形式の発行年の指定
@@ -149,30 +155,71 @@ FUNCTION {bbl.ieej.en.title.aft} { "''" }
 
 
 % 電気学会形式形式において、著者とタイトルの間の文字の指定
-% default: {bbl.ieej.jp.author.title.sep} { "：" }
-%          {bbl.ieej.en.author.title.sep} { ": " }
-FUNCTION {bbl.ieej.jp.author.title.sep} { "：" }
-FUNCTION {bbl.ieej.en.author.title.sep} { ":" }
+% default: {bbl.ieej.jp.author.title.sep.F} { "：" }
+%          {bbl.ieej.en.author.title.sep.F} { ":" }
+%          {bbl.ieej.jp.author.title.sep.A} { "，" }
+%          {bbl.ieej.en.author.title.sep.A} { "," }
+FUNCTION {bbl.ieej.jp.author.title.sep.F} { "：" }
+FUNCTION {bbl.ieej.en.author.title.sep.F} { ":" }
+FUNCTION {bbl.ieej.jp.author.title.sep.A} { "，" }
+FUNCTION {bbl.ieej.en.author.title.sep.A} { "," }
 
 
 % 日本語文献において、vol. の表記法の設定
-% default: { "Vol." }
-FUNCTION {bbl.ieej.vol} { "Vol." }
+% .Fは非省略表記、.Aは省略表記
+% default: {bbl.ieej.vol.F} { "Vol." }
+%          {bbl.ieej.vol.A} { "\textbf{" }
+FUNCTION {bbl.ieej.vol.F} { "Vol." }
+FUNCTION {bbl.ieej.vol.A} { "\textbf{" }
+
+
+% 日本語文献において、vol. を記載した後、
+% カンマの前に記載する文字列の指定
+% .Fは非省略表記、.Aは省略表記
+% default: {bbl.ieej.vol.aft.F} { "" }
+%          {bbl.ieej.vol.aft.A} { "}" }
+FUNCTION {bbl.ieej.vol.aft.F} { "" }
+FUNCTION {bbl.ieej.vol.aft.A} { "}" }
 
 
 % 日本語文献において、no. の表記法の設定
-% default: { "no." }
-FUNCTION {bbl.ieej.no} { "No." }
+% .Fは非省略表記、.Aは省略表記
+% default: {bbl.ieej.no.F} { "No." }
+%          {bbl.ieej.no.A} { "(" }
+FUNCTION {bbl.ieej.no.F} { "No." }
+FUNCTION {bbl.ieej.no.A} { "(" }
 
 
-% 日本語文献において、pp. の表記法の設定
-% default: { "pp." }
-FUNCTION {bbl.ieej.pages} { "pp." }
+% 日本語文献において、no. を記載した後、
+% カンマの前に記載する文字列の指定
+% .Fは非省略表記、.Aは省略表記
+% default: {bbl.ieej.no.aft.F} { "" }
+%          {bbl.ieej.no.aft.A} { ")" }
+FUNCTION {bbl.ieej.no.aft.F} { "" }
+FUNCTION {bbl.ieej.no.aft.A} { ")" }
 
 
-% 日本語文献において、pp. の表記法の設定
-% default: { "p." }
-FUNCTION {bbl.ieej.page} { "p." }
+% 日本語文献における、pp. の表記法の設定。
+% .Fは非省略表記、.Aは省略表記
+% default: {bbl.ieej.pages.F} { "pp." }
+%          {bbl.ieej.pages.A} { "" }
+FUNCTION {bbl.ieej.pages.F} { "pp." }
+FUNCTION {bbl.ieej.pages.A} { "" }
+
+
+% 日本語文献における、p. の表記法の設定。
+% .Fは非省略表記、.Aは省略表記
+% default: {bbl.ieej.page.F} { "p." }
+%          {bbl.ieej.page.A} { "" }
+FUNCTION {bbl.ieej.page.F} { "p." }
+FUNCTION {bbl.ieej.page.A} { "" }
+
+
+% 日本語と英語の etal の表記の設定
+% default: {bbl.etal.jp} { "他" }
+%          {bbl.etal.en} { "et~al." }
+FUNCTION {bbl.etal.jp} { "他" }
+FUNCTION {bbl.etal.en} { "et~al." }
 
 
 % 電気学会形式において、日本語/英語文献の章番号前後文字、チルダ(~)を使用するかの設定
@@ -336,7 +383,17 @@ FUNCTION {default.is.use.url}
 
 % #0 turns off the forced use of "et al."
 % #1 enables
-FUNCTION {default.is.forced.et.al} { #0 }
+FUNCTION {default.is.forced.et.al}
+{ % Note: "and" function is not declared yet
+  use.ieej.setting #1 =
+    { default.use.ieej.abbrev #1 =
+        { #1 }
+        { #0 }
+      if$
+    }
+    { #0 }
+  if$
+}
 
 
 % The maximum number of names that can be present beyond which an "et al."
@@ -345,7 +402,17 @@ FUNCTION {default.is.forced.et.al} { #0 }
 % Note: There are many instances of references in IEEE journals which have
 % a very large number of authors as well as instances in which "et al." is
 % used profusely.
-FUNCTION {default.max.num.names.before.forced.et.al} { #10 }
+FUNCTION {default.max.num.names.before.forced.et.al}
+{ % Note: "and" function is not declared yet
+  use.ieej.setting #1 = 
+    { default.use.ieej.abbrev #1 =
+        { #2 } % two authors are shown without et al.
+        { #10 }
+      if$
+    }
+    { #10 }
+  if$
+}
 
 
 % The number of names that will be shown with a forced "et al.".
@@ -445,7 +512,7 @@ FUNCTION {completed.message}
 FUNCTION {bbl.a}{ "A" }
 FUNCTION {bbl.an}{ "An" }
 FUNCTION {bbl.and}{ "and" }
-FUNCTION {bbl.etal}{ "et~al." }
+%FUNCTION {bbl.etal}{ "et~al." }
 FUNCTION {bbl.editors}{ "eds." }
 FUNCTION {bbl.editor}{ "ed." }
 FUNCTION {bbl.edition}{ "ed." }
@@ -555,6 +622,7 @@ ENTRY
     CTLname_format_string
     CTLname_latex_cmd
     CTLname_url_prefix
+    CTLuse_ieej_abbrev
   }
   {}
   { label }
@@ -587,7 +655,8 @@ INTEGERS { is.use.number.for.article
            max.num.names.before.forced.et.al
            num.names.shown.with.forced.et.al
            is.use.alt.interword.spacing
-           is.dash.repeated.names}
+           is.dash.repeated.names
+           use.ieej.abbrev}
 
 
 %%%%%%%%%%%%%%%%%%%%%%
@@ -624,6 +693,7 @@ FUNCTION {initialize.controls}
   default.name.format.en.string 'name.format.string :=
   default.name.latex.cmd 'name.latex.cmd :=
   default.name.url.prefix 'name.url.prefix :=
+  default.use.ieej.abbrev 'use.ieej.abbrev :=
 }
 
 
@@ -876,12 +946,6 @@ FUNCTION {bbl.ieej.title.aft}
     { bbl.ieej.en.title.aft }
   if$
 }
-FUNCTION {bbl.ieej.author.title.sep}
-{ japanese.flag #1 =
-    { bbl.ieej.jp.author.title.sep }
-    { bbl.ieej.en.author.title.sep }
-  if$
-}
 FUNCTION {bbl.ieej.chapter.pre}
 { japanese.flag #1 =
     { bbl.ieej.jp.chapter.pre }
@@ -906,6 +970,68 @@ FUNCTION {bbl.ieej.chapter.tie.aft}
     { bbl.ieej.en.chapter.tie.aft }
   if$
 }
+FUNCTION {bbl.etal}
+{ japanese.flag #1 =
+    { bbl.etal.jp }
+    { bbl.etal.en }
+  if$
+}
+FUNCTION {bbl.ieej.jp.author.title.sep}
+{ use.ieej.abbrev #0 = 
+    { bbl.ieej.jp.author.title.sep.F }
+    { bbl.ieej.jp.author.title.sep.A }
+  if$
+}
+FUNCTION {bbl.ieej.en.author.title.sep}
+{ use.ieej.abbrev #0 = 
+    { bbl.ieej.en.author.title.sep.F }
+    { bbl.ieej.en.author.title.sep.A }
+  if$
+}
+FUNCTION {bbl.ieej.author.title.sep}
+{ japanese.flag #1 =
+    { bbl.ieej.jp.author.title.sep }
+    { bbl.ieej.en.author.title.sep }
+  if$
+}
+FUNCTION {bbl.ieej.vol}
+{ use.ieej.abbrev #0 =
+    { bbl.ieej.vol.F }
+    { bbl.ieej.vol.A }
+  if$
+}
+FUNCTION {bbl.ieej.vol.aft}
+{ use.ieej.abbrev #0 =
+    { bbl.ieej.vol.aft.F }
+    { bbl.ieej.vol.aft.A }
+  if$
+}
+FUNCTION {bbl.ieej.no}
+{ use.ieej.abbrev #0 =
+    { bbl.ieej.no.F }
+    { bbl.ieej.no.A }
+  if$
+}
+FUNCTION {bbl.ieej.no.aft}
+{ use.ieej.abbrev #0 =
+    { bbl.ieej.no.aft.F }
+    { bbl.ieej.no.aft.A }
+  if$
+}
+FUNCTION {bbl.ieej.pages}
+{ use.ieej.abbrev #0 =
+    { bbl.ieej.pages.F }
+    { bbl.ieej.pages.A }
+  if$
+}
+FUNCTION {bbl.ieej.page}
+{ use.ieej.abbrev #0 =
+    { bbl.ieej.page.F }
+    { bbl.ieej.page.A }
+  if$
+}
+
+
 
 % The output routines write out the *next* to the top (previous) item on the
 % stack, adding punctuation and such as needed. Since IEEEtran.bst maintains
@@ -1734,7 +1860,11 @@ FUNCTION {format.names}
                 { pop$ }
               if$
               t "others" =
-                { " " * bbl.etal emphasize * }
+                { japanese.flag #1 =
+                    { "・" * bbl.etal }
+                    { " " * bbl.etal emphasize }
+                  if$ *
+                }
                 { author.sep.last * t do.name.latex.cmd * }
               if$
             }
@@ -1813,7 +1943,15 @@ FUNCTION {format.date}
       this.status.std
       cap.status.std
       use.ieej.setting #1 =
-        { swap$ 'skip$ { bbl.ieej.year.month.sep * swap$ } if$ * }
+                { swap$
+            { * }
+            { use.ieej.abbrev #1 =
+                { swap$ pop$ }
+                { bbl.ieej.year.month.sep * swap$ * }
+              if$
+             }
+          if$ duplicate$ top$
+        }
         { swap$ 'skip$ { swap$ " " * swap$ } if$ * }
       if$
       use.ieej.setting #1 =
@@ -2116,7 +2254,14 @@ FUNCTION {format.volume}
     { this.to.prev.status
       this.status.std
       use.ieej.setting #1 =
-        { bbl.ieej.vol swap$ "volume" bibinfo.check *}
+        { bbl.ieej.vol swap$ "volume" bibinfo.check * bbl.ieej.vol.aft *
+          use.ieej.abbrev #1 =
+            { punct.no 'this.status.punct :=
+              space.no 'this.status.space :=
+            }
+            { skip$ }
+          if$
+        }
         { bbl.volume 
           status.cap
             { capitalize }
@@ -2138,7 +2283,7 @@ FUNCTION {format.number}
     { this.to.prev.status
       this.status.std
       use.ieej.setting #1 =
-        { bbl.ieej.no swap$ "number" bibinfo.check * }
+        { bbl.ieej.no swap$ "number" bibinfo.check * bbl.ieej.no.aft * }
         { status.cap
             { bbl.number capitalize }
             { bbl.number }
@@ -2534,7 +2679,10 @@ FUNCTION {article}
   if.url.alt.interword.spacing
   format.authors "author" output.warn
   name.or.dash
-  format.article.title "title" output.warn
+  use.ieej.abbrev #1 =
+    { skip$ }
+    { format.article.title "title" output.warn }
+  if$
   bbl.format.language #1 = { format.language output } 'skip$ if$
   format.journal "journal" bibinfo.check "journal" output.warn
   format.volume output
@@ -2669,7 +2817,10 @@ FUNCTION {inproceedings}
   if.url.alt.interword.spacing
   format.authors "author" output.warn
   name.or.dash
-  format.article.title "title" output.warn
+  use.ieej.abbrev #1 =
+    { skip$ }
+    { format.article.title "title" output.warn }
+  if$
   format.in.booktitle "booktitle" output.warn
   format.series output
   format.editors output
@@ -2678,7 +2829,10 @@ FUNCTION {inproceedings}
   use.ieej.setting #1 = 
     { format.paper output
       format.pages output
-      format.address output
+      use.ieej.abbrev #1 =
+        { skip$ }
+        { format.address output }
+      if$
     }
     { publisher empty$
         { format.address.organization.date output }
@@ -2977,7 +3131,18 @@ FUNCTION {IEEEtranBSTCTL}
       'name.url.prefix :=
     }
   if$
-
+  CTLuse_ieej_abbrev
+  empty$
+    { skip$ }
+    { CTLuse_ieej_abbrev
+      yes.no.to.int
+      'use.ieej.abbrev :=
+      use.ieej.setting #1 =
+        { use.ieej.abbrev 'is.forced.et.al := }
+        { skip$ }
+      if$
+    }
+  if$
 
   num.names.shown.with.forced.et.al max.num.names.before.forced.et.al >
     { "CTLnames_show_etal cannot be greater than CTLmax_names_forced_etal in " cite$ * warning$ 

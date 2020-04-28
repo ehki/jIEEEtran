@@ -16,6 +16,7 @@
 *.out
 
 article.bib
+articleabbrev.bib
 book.bib
 incollection.bib
 inproceedings.bib
