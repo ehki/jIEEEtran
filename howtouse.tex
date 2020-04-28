@@ -127,7 +127,7 @@
 }
 \end{filecontents}
 \begin{filecontents}[overwrite]{articleabbrev.bib}
-@IEEEtranBSTCTL{BSTctl_abbrev,
+@IEEEtranBSTCTL{BSTctlabbrev,
   CTLuse_ieej_abbrev = "yes",
   CTLmax_names_forced_etal = "2",
 }
@@ -430,7 +430,7 @@
 }
 \end{filecontents}
 
-\title{\texttt{jIEEEtran.bst}/\texttt{IEEJtran.bst}:\\電気系日本人ユーザ向け\BibTeX スタイルファイル\\(ver. 0.14)}
+\title{\texttt{jIEEEtran.bst}/\texttt{IEEJtran.bst}:\\電気系日本人ユーザ向け\BibTeX スタイルファイル\\(ver. 0.15)}
 \author{江尻 開}
 
 
@@ -477,11 +477,6 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 \begin{bibunit}[IEEJtran]
   \nocite{Article,jpArticle1,jpArticle2,jpArticle3,enArticle1,enArticle2,enArticle3,enArticle4}
   \renewcommand{\refname}{\small 参考文献(IEEJtran.bst)}
-  {\small \putbib[./article]}
-\end{bibunit}
-\begin{bibunit}[IEEJtranA]
-  \nocite{Article,jpArticle1,jpArticle2,jpArticle3,enArticle1,enArticle2,enArticle3,enArticle4}
-  \renewcommand{\refname}{\small 参考文献(IEEJtranA.bst)}
   {\small \putbib[./article]}
 \end{bibunit}
 \begin{bibunit}[jIEEEtran]
@@ -766,7 +761,7 @@ IEEJtran.bstのオプションとして省略形での出力を可能として�
 省略形式への変更は\texttt{.bst}ファイルを変更することでも実現可能ですが，元としている\texttt{IEEEtran.bst}に習い，\texttt{IEEEtranBSTCTL}で操作できるようにしました。
 \texttt{IEEEtranBSTCTL}の使用方法は本マニュアルの範囲外としますが，\texttt{\textbackslash bstctlcite}を使用して\texttt{IEEEtranBSTCTL}エントリを一番はじめに引用してください。
 なお，本マニュアルでは\texttt{bibunit.sty}を使用しており，相性問題で\texttt{\textbackslash bstctlcite}が動きません。
-そのため，Warningが出てしまいますが\texttt{\textbackslash nocite\{BSTctl_abbrev\}}として引用しています。
+そのため，Warningが出てしまいますが\texttt{\textbackslash nocite\{BSTctlabbrev\}}として引用しています。
 なお，雑誌名を省略するには\texttt{.bib}ファイルに記載する情報を省略形としておく必要があります。
 \texttt{.bst}ファイルは\texttt{.bib}ファイルの\texttt{journal}フィールドの情報をそのまま出力するためです。
 従って，文献管理ソフトで省略形を予め定義しておく必要があります。
@@ -775,7 +770,7 @@ IEEJtran.bstのオプションとして省略形での出力を可能として�
 \putlst{articleabbrev.bib}
 
 \begin{bibunit}[IEEJtran]
-  \nocite{BSTctl_abbrev}
+  \nocite{BSTctlabbrev}
   \nocite{jpArticle1,jpArticle2,jpArticle3,enArticle1,enArticle2,enArticle3,jpInproceedings1,jpInproceedings2,enInproceedings1,enInproceedings2}
   \renewcommand{\refname}{\small 参考文献(IEEJtran.bst)}
   {\small \putbib[./articleabbrev]}
