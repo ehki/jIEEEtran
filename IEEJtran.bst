@@ -1954,7 +1954,7 @@ FUNCTION {format.date}
                 { bbl.ieej.year.month.sep * swap$ * }
               if$
              }
-          if$ duplicate$ top$
+          if$
         }
         { swap$ 'skip$ { swap$ " " * swap$ } if$ * }
       if$
