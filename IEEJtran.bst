@@ -2,7 +2,7 @@
 %% IEEJtran.bst
 %% BibTeX Bibliography Style file for IEEJ Journals and Conferences (unsorted)
 %%
-%% Version 0.15 (2020/04/28)
+%% Version 0.16 (2020/09/09)
 %% 
 %% Copyright (c) 2020 Haruki Ejiri and Yoshi Ri 
 %% 
@@ -68,8 +68,8 @@
 %
 
 FUNCTION{bst.file.name} { "IEEJtran.bst" }
-FUNCTION{bst.file.version} { "0.15" }
-FUNCTION{bst.file.date} { "2020/04/28" }
+FUNCTION{bst.file.version} { "0.16" }
+FUNCTION{bst.file.date} { "2020/09/09" }
 FUNCTION{bst.file.website} { "https://github.com/ehki/jIEEEtran/" }
 FUNCTION{bst.file.author} { "Haruki Ejiri and Yoshi Ri" }
 
@@ -1844,6 +1844,10 @@ FUNCTION {format.names}
   numnames 'namesleft :=
     { namesleft #0 > }
     { s nameptr name.format.string format.name$
+      s nameptr "~{ll}" format.name$ = % check for insititution(s) without space
+        { s nameptr "{ll}" format.name$ } % for institution(s) without space
+        { s nameptr name.format.string format.name$ } % for usual author(s)
+      if$
       bibinfo bibinfo.check
       't :=
       nameptr #1 >
@@ -1950,7 +1954,7 @@ FUNCTION {format.date}
                 { bbl.ieej.year.month.sep * swap$ * }
               if$
              }
-          if$ duplicate$ top$
+          if$
         }
         { swap$ 'skip$ { swap$ " " * swap$ } if$ * }
       if$

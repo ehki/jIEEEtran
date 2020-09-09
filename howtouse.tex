@@ -377,6 +377,13 @@
   edition = {2},
   pages = {100--200}
 }
+@book{jpBook3,
+  author = {学会委員会},
+  year = {2020},
+  publisher = {学会出版},
+  title = {学会本},
+  edition = {1}
+}
 @book{enBook1,
   address = {City, Country},
   publisher = {Publisher},
@@ -430,7 +437,7 @@
 }
 \end{filecontents}
 
-\title{\texttt{jIEEEtran.bst}/\texttt{IEEJtran.bst}:\\電気系日本人ユーザ向け\BibTeX スタイルファイル\\(ver. 0.15)}
+\title{\texttt{jIEEEtran.bst}/\texttt{IEEJtran.bst}:\\電気系日本人ユーザ向け\BibTeX スタイルファイル\\(ver. 0.16)}
 \author{江尻 開}
 
 
@@ -520,12 +527,12 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 \putlst{book.bib}
 
 \begin{bibunit}[IEEJtran]
-  \nocite{Book,jpBook1,jpBook2,enBook1}
+  \nocite{Book,jpBook1,jpBook2,jpBook3,enBook1}
   \renewcommand{\refname}{\small 参考文献(IEEJtran.bst)}
   {\small \putbib[./book]}
 \end{bibunit}
 \begin{bibunit}[jIEEEtran]
-  \nocite{Book,jpBook1,jpBook2,enBook1}
+  \nocite{Book,jpBook1,jpBook2,jpBook3,enBook1}
   \renewcommand{\refname}{\small 参考文献(jIEEEtran.bst)}
   {\small \putbib[./book]}
 \end{bibunit}
