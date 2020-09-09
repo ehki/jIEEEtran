@@ -1844,6 +1844,10 @@ FUNCTION {format.names}
   numnames 'namesleft :=
     { namesleft #0 > }
     { s nameptr name.format.string format.name$
+      s nameptr "~{ll}" format.name$ = % check for insititution(s) without space
+        { s nameptr "{ll}" format.name$ } % for institution(s) without space
+        { s nameptr name.format.string format.name$ } % for usual author(s)
+      if$
       bibinfo bibinfo.check
       't :=
       nameptr #1 >
