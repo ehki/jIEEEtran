@@ -171,19 +171,19 @@ FUNCTION {bbl.ieej.page} { "p." }
 
 
 % 電気学会形式において、日本語/英語文献の章番号前後文字、チルダ(~)を使用するかの設定
-% default: {bbl.ieej.jp.chapter.pre} { "" }
+% default: {bbl.ieej.jp.chapter.pre} { "第" }
 %          {bbl.ieej.jp.chapter.aft} { "章" }
 %          {bbl.ieej.jp.chapter.tie.pre} { #0 }
 %          {bbl.ieej.jp.chapter.tie.aft} { #0 }
-%          {bbl.ieej.en.chapter.pre} { "ch." }
+%          {bbl.ieej.en.chapter.pre} { "Chap." }
 %          {bbl.ieej.en.chapter.aft} { "" }
 %          {bbl.ieej.en.chapter.tie.pre} { #0 }
 %          {bbl.ieej.en.chapter.tie.aft} { #0 }
-FUNCTION {bbl.ieej.jp.chapter.pre} { "" }
+FUNCTION {bbl.ieej.jp.chapter.pre} { "第" }
 FUNCTION {bbl.ieej.jp.chapter.aft} { "章" }
 FUNCTION {bbl.ieej.jp.chapter.tie.pre} { #0 } % 章番号前文字と章番号の間にチルダを挿入しない
 FUNCTION {bbl.ieej.jp.chapter.tie.aft} { #0 } % 章番号と章番号後文字との間にチルダを挿入しない
-FUNCTION {bbl.ieej.en.chapter.pre} { "ch." }
+FUNCTION {bbl.ieej.en.chapter.pre} { "Chap." }
 FUNCTION {bbl.ieej.en.chapter.aft} { "" }
 FUNCTION {bbl.ieej.en.chapter.tie.pre} { #0 } % 章番号前文字と章番号の間にチルダを挿入する
 FUNCTION {bbl.ieej.en.chapter.tie.aft} { #0 } % 章番号と章番号後文字との間にチルダを挿入しない
