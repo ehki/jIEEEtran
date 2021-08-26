@@ -627,8 +627,9 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 
 \texttt{jIEEEtran.bst}や\texttt{IEEJtran.bst}は\BibTeX 用のスタイルファイルですので，当然\BibTeX を利用できる環境と使用する\texttt{.bib}ファイルが必要です。
 \BibTeX の環境構築方法については本マニュアルの範囲外とします。
-また，日本人ユーザを想定していますので，\texttt{platex}や\texttt{pbibtex}は既に使用可能であるものとします。
-\texttt{jIEEEtran.bst}，\texttt{IEEJtran.bst}いずれも\texttt{pbibtex}に用意されている\texttt{is.kanji.str\$} 関数を使用しているため，\BibTeX コンパイラとして\texttt{bibtex}ではなく必ず\texttt{pbibtex}を使用してください。
+また，日本人ユーザを想定していますので，\texttt{platex}/\texttt{pbibtex}または\texttt{uplatex}/\texttt{upbibtex}は既に使用可能であるものとします。
+\texttt{jIEEEtran.bst}，\texttt{IEEJtran.bst}いずれも\texttt{pbibtex}と\texttt{upbibtex}に用意されている\texttt{is.kanji.str\$} 関数を使用しています。
+そのため，\BibTeX コンパイラとして\texttt{bibtex}ではなく必ず\texttt{pbibtex}もしくは\texttt{upbibtex}を使用してください。
 なお，\texttt{is.kanji.str\$} 関数による日本語の判定は，\texttt{author}，\texttt{title}，\texttt{journal}，\texttt{publisher}の4つのフィールドに限定しています。
 
 
@@ -688,16 +689,16 @@ SHIFT-JISやEUC-JPは非対応です。
 \label{sec:compile_procedure}
 
 英語と日本語の併記を行わない場合，通常通りのコンパイル手順で\texttt{.pdf}を生成することができます。
-例えば\texttt{platex}で\texttt{.dvi}を生成し，\texttt{.dvi}から\texttt{.pdf}を生成，\BibTeX コマンドには\texttt{pbibtex}を使う場合，
+例えば\texttt{uplatex}で\texttt{.dvi}を生成し，\texttt{.dvi}から\texttt{.pdf}を生成，\BibTeX コマンドには\texttt{upbibtex}を使う場合，
 \begin{center}
-\texttt{platex → pbibtex → platex → platex → dvipdfmx}
+\texttt{uplatex → upbibtex → uplatex → uplatex → dvipdfmx}
 \end{center}
 という手順です。
 
-英語と日本語の併記を行う場合，通常のコンパイル手順での\texttt{pbibtex}前後に\texttt{python}による\texttt{mixej.py}の処理を一回ずつ挟みます。
-前と同様に，\texttt{platex}で\texttt{.dvi}を生成し，\texttt{.dvi}から\texttt{.pdf}を生成，\BibTeX コマンドには\texttt{pbibtex}を使う場合，
+英語と日本語の併記を行う場合，通常のコンパイル手順での\texttt{upbibtex}前後に\texttt{python}による\texttt{mixej.py}の処理を一回ずつ挟みます。
+前と同様に，\texttt{uplatex}で\texttt{.dvi}を生成し，\texttt{.dvi}から\texttt{.pdf}を生成，\BibTeX コマンドには\texttt{upbibtex}を使う場合，
 \begin{center}
-\texttt{platex → python mixej.py → pbibtex → python mixej.py → platex → platex → dvipdfmx}
+\texttt{uplatex → python mixej.py → upbibtex → python mixej.py\\→ uplatex → uplatex → dvipdfmx}
 \end{center}
 という手順に変更されます。
 
@@ -722,8 +723,8 @@ Latexmkを使用している場合，MacやLinuxなどのUNIX系列では\texttt
 \begin{lstlisting}[style=onecol]
 #!/usr/bin/perl
 
-$latex = 'platex %O -synctex=1 -interaction=nonstopmode -kanji=utf8 -file-line-error %S';
-$bibtex = 'python mixej.py %B; pbibtex %O %B; python mixej.py %B';
+$latex = 'uplatex %O -synctex=1 -interaction=nonstopmode -kanji=utf8 -file-line-error %S';
+$bibtex = 'python mixej.py %B; upbibtex %O %B; python mixej.py %B';
 $dvipdf = 'dvipdfmx -V 7 %O -o %D %S';
 $pdf_previewer = "open -ga /Applications/Skim.app";
 \end{lstlisting}\vspace{-1.8zw}
@@ -734,7 +735,7 @@ Windowsでは，cmd, powershellともに\texttt{bibtex}の設定を次のよう�
 
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
 \begin{lstlisting}[style=onecol]
-$bibtex = '@cd & python mixej.py %B & pbibtex %B & python mixej.py %B';
+$bibtex = '@cd & python mixej.py %B & upbibtex %B & python mixej.py %B';
 \end{lstlisting}\vspace{-1.8zw}
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
 
@@ -746,17 +747,17 @@ $bibtex = '@cd & python mixej.py %B & pbibtex %B & python mixej.py %B';
 "latex-workshop.latex.tools": [
   {
     "command": "latexmk",
-    "name": "latexmk python mixej.py",
+    "name": "latexmk uplatex/upbibtex/mixej",
     "args": [
-      "-e", "$latex='platex %O -synctex=1 -interaction=nonstopmode -kanji=utf8 -file-line-error %S'",
-      "-e", "$bibtex='python mixej.py %B; pbibtex %O %B; python mixej.py %B'",
+      "-e", "$latex='uplatex %O -synctex=1 -interaction=nonstopmode -kanji=utf8 -file-line-error %S'",
+      "-e", "$bibtex='python mixej.py %B; upbibtex %O %B; python mixej.py %B'",
       "-e", "$dvipdf='dvipdfmx -V 7 %O -o %D %S'",
       "-norc", "-pdfdvi", "%DOC%"
       ],
   }
 ],
 "latex-workshop.latex.recipes": [
-  { "name": "latexmk, mixej.py", "tools": [ "latexmk python mixej.py" ] }
+  { "name": "latexmk uplatex/upbibtex/mixej", "tools": [ "latexmk uplatex/upbibtex/mixej" ] }
 ],
 \end{lstlisting}\vspace{-1.8zw}
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
