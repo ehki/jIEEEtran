@@ -1,6 +1,6 @@
 \RequirePackage{plautopatch}
-\documentclass[10pt, a4paper, dvipdfmx, platex]{jsarticle} % for platex
-% \documentclass[10pt, a4paper, dvipdfmx, uplatex]{jsarticle} % for uplatex
+% \documentclass[10pt, a4paper, dvipdfmx, platex]{jsarticle} % for platex
+\documentclass[10pt, a4paper, dvipdfmx, uplatex]{jsarticle} % for uplatex
 \usepackage[top=20truemm, bottom=20truemm, left=25truemm, right=25truemm]{geometry}
 \setlength{\columnsep}{3zw}
 \usepackage{listings, jlisting}
@@ -460,7 +460,7 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 オプションの追記方法や日本語の判別方法については，武田氏らによる\texttt{jecon.bst}\cite{jeconbst}を参考にしています。
 間違いがあった場合でも大きな被害が出るレポジトリではありませんので，ご要望や問題があればお気軽にIssueやPull Requestを飛ばしてください。
 なお，電気学会公認ではありませんし，全ての環境で動作を保証するものではありません。不具合が生じても責任を負うことはできませんのでご容赦ください。
-なお，\TeX Live 2019以降の使用を想定しています。\texttt{w32tex}や古い\TeX Liveでの動作は確認していません。pbibtexは\texttt{0.99d-j0.33}，pythonは\texttt{3.7}以降での動作を確認しています。
+なお，\TeX Live 2019以降の使用を想定しています。\texttt{w32tex}や古い\TeX Liveでの動作は確認していません。\TeX エンジンとしてplatex/pbibtexもしくはuplatex/upbibtexを推奨し，本マニュアルはuplatexでコンパイルしています。\TeX エンジンが出力する中間ファイルの改変にPythonを使用します。Pythonは\texttt{3.7}以降での動作を確認しています。
 
 {\small \putbib[./ref]}
 \end{bibunit}
