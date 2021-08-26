@@ -6,8 +6,8 @@ import json
 SPLIT_KEY = '/ej/'
 ITEM_SEP = '\\hspace{0mm}\\\\'
 
-FILE_VERSION = '0.16'
-FILE_DATE = '2020/09/09'
+FILE_VERSION = '0.17'
+FILE_DATE = '2021/08/26'
 FILE_AUTHOR = 'Haruki Ejiri'
 FILE_URL = 'https://github.com/ehki/jIEEEtran/'
 
