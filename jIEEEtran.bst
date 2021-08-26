@@ -4,7 +4,7 @@
 %% 
 %% Version 0.17 (2021/08/26)
 %% 
-%% Copyright (c) 2020 Haruki Ejiri and Yoshi Ri 
+%% Copyright (c) 2020-2021 Haruki Ejiri and Yoshi Ri 
 %% 
 %% Original starting code base and algorithms obtained from the output of
 %% Patrick W. Daly's makebst package as well as from prior versions of
