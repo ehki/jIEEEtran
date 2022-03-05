@@ -1,8 +1,8 @@
 # 電気学会/IEEE, 日英両対応bstファイル
 日本語と英語文献を同時に扱えるように調整を加えたbstファイルです。IEEEtranとjIEEJtranの2形式を用意しています。
 
-- IEEJtran.bst：電気学会の日英両対応版
-- jIEEEtran.bst：IEEEtranの日本語対応版
+- ieejtran：電気学会の日英両対応版
+- jieeetran：IEEEtranの日本語対応版
 - mixej.py：同一文献で日本語と英語を併記するためのスクリプト
 - howtouse.pdf：使い方と実際の引用例
 
