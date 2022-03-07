@@ -1,5 +1,5 @@
 \documentclass[11pt, a4paper, dvipdfmx]{article}
-
+\usepackage{lmodern}
 \usepackage{bxtexlogo}
 
 \title{\texttt{jIEEEtran.bst}:\\Unofficial IEEE \BibTeX\ style for Japanese\\(ver. 0.17)}
@@ -14,5 +14,23 @@ The jIEEEtran \BibTeX\ style is an unofficial IEEE style citation format for Jap
 It is a customization of Michael Shell's IEEEtran.bst, and provides natural Japanese name handling.
 A Python script named mixej.py enables one content with both English and Japanese format to be handled properly.
 \end{abstract}
+
+
+\section{Combine English and Japanese entries}
+
+Japanese users are sometimes required to write both English and Japanese citation formats as one bibliography entry.
+A python script named \texttt{mixej.py} included in the \texttt{jieeetran} package enables combining English and Japanese entries.
+To combine two entries of enkey and jpkey, users have to cite as \texttt{\string\cite\string{enkye/ej/jpkey\string}}, where enkey and jpkey are English and Japanese citation keys, respectively.
+Then compile by the following seven steps:
+\begin{center}
+    \texttt{uplatex → python mixej.py → upbibtex → python mixej.py\\→ uplatex → uplatex → dvipdfmx}
+\end{center}
+instead of the typical five steps:
+\begin{center}
+    \texttt{uplatex → upbibtex → uplatex → uplatex → dvipdfmx}.
+\end{center}
+Note that the uplatex command is Unicode and Japanese compatible latex command.
+
+The Japanese version of this document, \texttt{jieeetran.pdf}, shows English and Japanese combined citation examples.
 
 \end{document}
