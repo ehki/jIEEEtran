@@ -13,4 +13,21 @@ Michael Shell氏のIEEEtran.bstを基に、日本語著者の自然な姓名処�
 一つのエントリに英語と日本語を併記可能とするPythonスクリプトmixej.pyも提供します。
 \end{abstract}
 
+
+\section{はじめに}
+
+\texttt{jIEEEtran.bst}はIEEEの引用スタイルを保ったまま日本語の取り扱いを自然にした\BibTeX スタイル(\texttt{.bst})ファイルです。
+卒業論文や修士論文など，\LaTeX を使用した文献管理の一助になることを目的としています。
+Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi氏が日本語の自然な表記を実装し，現在は著者がリポジトリを譲渡していただきGitHub上\cite{jIEEEtran}で継続して開発しています。
+同レポジトリでは電気学会形式の非公式\BibTeX スタイルである\texttt{IEEJtran.bst}も取り扱っています。
+オプションの追記方法や日本語の判別方法については，武田氏らによる\texttt{jecon.bst}\cite{jeconbst}を参考にしています。
+間違いがあった場合でも大きな被害が出るレポジトリではありませんので，ご要望や問題があればお気軽にIssueやPull Requestを飛ばしてください。
+なお，IEEE公認ではありませんし，全ての環境で動作を保証するものではありません。
+不具合が生じても責任を負うことはできませんのでご容赦ください。
+なお，\TeX Live 2019以降の使用を想定しています。
+\texttt{w32tex}や古い\TeX Liveでの動作は確認していません。
+\TeX エンジンとしてplatex/pbibtexもしくはuplatex/upbibtexを推奨し，本マニュアルはuplatexでコンパイルしています。
+\TeX エンジンが出力する中間ファイルの改変にPythonを使用します。
+Pythonは\texttt{3.7}以降での動作を確認しています。
+
 \end{document}
