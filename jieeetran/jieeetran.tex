@@ -30,4 +30,13 @@ Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi
 \TeX エンジンが出力する中間ファイルの改変にPythonを使用します。
 Pythonは\texttt{3.7}以降での動作を確認しています。
 
+
+\section{使用方法}
+
+\texttt{jIEEEtran.bst}が\TeX Liveのパッケージマネージャ等でインストールされ，PATHの通った場所に配置されている場合，プリアンブルに\texttt{\string\bibliographystyle\string{jIEEEtran\string}}と記載すれば設定は完了です。
+後述のカスタマイズ等の目的で\texttt{jIEEEtran.bst}を個別にダウンロードして配置する場合，メインの\TeX ファイルと同じディレクトリに格納し，同様にプリアンブルに\texttt{\string\bibliographystyle\string{jIEEEtran\string}}と記載すれば設定は完了です。
+
+文献情報が記載される\texttt{.bib}ファイル上では，日本人著者は
+\texttt{author = \string{\string{\textgt{姓姓 名名}\string} and \string{\textgt{姓姓 名名}\string}\string}}と，\texttt{\string{\string}}で挟むか，\texttt{author = \string{姓姓, 名名 and 姓姓, 名名\string}}と，\texttt{\string{\string}}で挟まず半角カンマを挿入して記入してください。
+
 \end{document}
