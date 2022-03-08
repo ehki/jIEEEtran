@@ -1,5 +1,17 @@
 \documentclass[11pt, a4paper, dvipdfmx, uplatex]{jsarticle}
 
+\usepackage{listings, jlisting}
+\lstdefinestyle{onecol}{
+  basicstyle={\scriptsize\ttfamily},
+  identifierstyle={\footnotesize},
+  commentstyle={\footnotesizeitshape},
+  keywordstyle={\footnotesize\bfseries},
+  ndkeywordstyle={\footnotesize},
+  stringstyle={\footnotesize\ttfamily},
+  breaklines=true,
+  columns=[l]{fullflexible}
+}
+
 \title{\texttt{jIEEEtran.bst}:\\日本語対応IEEE非公式\BibTeX スタイル\\(ver. 0.17)}
 \author{江尻 開}
 
@@ -48,6 +60,71 @@ Pythonは\texttt{3.7}以降での動作を確認しています。
 \end{center}
 加えて，外部pythonファイルの\texttt{mixej.py}を用いて\texttt{.aux}ファイルと\texttt{.bbl}ファイルを改変する必要があります。
 具体的には，\BibTeX コマンドの実行前に\texttt{\string\cite\string{enArticle1/ej/jpArticle1\string}}を\texttt{enArticle1}と\texttt{jpArticle1}の2つのエントリに分け，\BibTeX コマンドが文献情報を書した後に再度結合させる操作を行います。
+
+
+\subsection{コンパイル手順}
+
+英語と日本語の併記を行わない場合，通常通りのコンパイル手順で\texttt{.pdf}を生成することができます。
+例えば\texttt{uplatex}で\texttt{.dvi}を生成し，\texttt{.dvi}から\texttt{.pdf}を生成，\BibTeX コマンドには\texttt{upbibtex}を使う場合，
+\begin{center}
+\texttt{uplatex → upbibtex → uplatex → uplatex → dvipdfmx}
+\end{center}
+という手順です。
+
+英語と日本語の併記を行う場合，通常のコンパイル手順での\texttt{upbibtex}前後に\texttt{python}による\texttt{mixej.py}の処理を一回ずつ挟みます。
+前と同様に，\texttt{uplatex}で\texttt{.dvi}を生成し，\texttt{.dvi}から\texttt{.pdf}を生成，\BibTeX コマンドには\texttt{upbibtex}を使う場合，
+\begin{center}
+\texttt{uplatex → python mixej.py → upbibtex → python mixej.py\\→ uplatex → uplatex → dvipdfmx}
+\end{center}
+という手順に変更されます。
+
+
+\subsection{コンパイラの設定の例}
+
+Latexmkを使用している場合，MacやLinuxなどのUNIX系列では\texttt{latexmkrc}に対して次のように設定することで実現可能です。
+
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
+\begin{lstlisting}[style=onecol]
+#!/usr/bin/perl
+
+$latex = 'uplatex %O -synctex=1 -interaction=nonstopmode -kanji=utf8 -file-line-error %S';
+$bibtex = 'python mixej.py %B; upbibtex %O %B; python mixej.py %B';
+$dvipdf = 'dvipdfmx -V 7 %O -o %D %S';
+$pdf_previewer = "open -ga /Applications/Skim.app";
+\end{lstlisting}\vspace{-1.8zw}
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
+
+\noindent
+Windowsでは，cmd, powershellともに\texttt{bibtex}の設定を次のようにすれば動きます。ただし，\texttt{\&}前後の半角スペースを忘れずに記入してください。
+
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
+\begin{lstlisting}[style=onecol]
+$bibtex = '@cd & python mixej.py %B & upbibtex %B & python mixej.py %B';
+\end{lstlisting}\vspace{-1.8zw}
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
+
+
+最近ではVisual Studio Codeを使用している方が多いと思いますが，MacやLinuxでのVSCodeのLaTeX Workshop Extension用の設定は次のように書けます。Windowsの場合は\texttt{.latexmkrc}の場合と同様に\texttt{bibtex}コマンドを書き換えてください。
+
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
+\begin{lstlisting}[style=onecol]
+"latex-workshop.latex.tools": [
+  {
+    "command": "latexmk",
+    "name": "latexmk uplatex/upbibtex/mixej",
+    "args": [
+      "-e", "$latex='uplatex %O -synctex=1 -interaction=nonstopmode -kanji=utf8 -file-line-error %S'",
+      "-e", "$bibtex='python mixej.py %B; upbibtex %O %B; python mixej.py %B'",
+      "-e", "$dvipdf='dvipdfmx -V 7 %O -o %D %S'",
+      "-norc", "-pdfdvi", "%DOC%"
+      ],
+  }
+],
+"latex-workshop.latex.recipes": [
+  { "name": "latexmk uplatex/upbibtex/mixej", "tools": [ "latexmk uplatex/upbibtex/mixej" ] }
+],
+\end{lstlisting}\vspace{-1.8zw}
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
 
 
 \end{document}
