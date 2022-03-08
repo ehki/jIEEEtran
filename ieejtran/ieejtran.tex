@@ -39,4 +39,15 @@ Pythonは\texttt{3.7}以降での動作を確認しています。
 文献情報が記載される\texttt{.bib}ファイル上では，日本人著者は
 \texttt{author = \string{\string{\textgt{姓姓 名名}\string} and \string{\textgt{姓姓 名名}\string}\string}}と，\texttt{\string{\string}}で挟むか，\texttt{author = \string{姓姓, 名名 and 姓姓, 名名\string}}と，\texttt{\string{\string}}で挟まず半角カンマを挿入して記入してください。
 
+
+\section{英語と日本語の併記方法}
+
+電気学会の引用スタイルで求められているように，一つの文献エントリに英語と日本語の情報を併記する場合，\texttt{.tex}ファイルには次のように記載してください。
+\begin{center}
+  \texttt{\string\cite\string{enArticle1/ej/jpArticle1\string}}
+\end{center}
+加えて，外部pythonファイルの\texttt{mixej.py}を用いて\texttt{.aux}ファイルと\texttt{.bbl}ファイルを改変する必要があります。
+具体的には，\BibTeX コマンドの実行前に\texttt{\string\cite\string{enArticle1/ej/jpArticle1\string}}を\texttt{enArticle1}と\texttt{jpArticle1}の2つのエントリに分け，\BibTeX コマンドが文献情報を書した後に再度結合させる操作を行います。
+
+
 \end{document}
