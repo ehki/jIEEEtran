@@ -27,6 +27,21 @@ We cannot be held responsible for any problems that may occur.
 We recommend platex/pbibtex or uplatex/upbibtex as \TeX\ engines, and this manual is compiled with uplatex.
 
 
+\section{Configuration}
+
+If jIEEEtran.bst has been installed by \TeX\ Live package manager, etc., and placed under PATH, write \bibliographystyle{jIEEEtran} in the preamble to complete the setup.
+In the case that jIEEEtran.bst is individually downloaded and placed in the same directory as the main \TeX\ file for customization, etc., state \bibliographystyle{jIEEEtran} in the preamble in the same way to complete the setting.
+In the .bib file containing bibliographic information, Japanese authors' names should be written as:
+\begin{center}
+\texttt{author = \string{\string{Yamada Taro\string} and \string{Sato Jiro\string}\string}},
+\end{center}
+separated by \texttt{\string{\string}}, or:
+\begin{center}
+\texttt{author = \string{Yamada, Taro and  Sato, Jiro\string}},
+\end{center}
+separated by a comma and not by \texttt{\string{\string}}.
+
+
 \section{Combine English and Japanese entries}
 
 Japanese users are sometimes required to write both English and Japanese citation formats as one bibliography entry.
