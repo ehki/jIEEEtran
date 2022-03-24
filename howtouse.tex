@@ -84,8 +84,8 @@
 @article{jpArticle3,
   author = {{山田 八郎} and {山田 六郎}},
   year = {2010},
-  journal = {日本語の学会名},
-  title = {手法1と手法2，どちらが正しいのか?},
+  journal = {日本語学会},
+  title = {手法1と手法2の比較検討},
   number = {1},
   pages = {15},
   volume = {5}
@@ -113,11 +113,13 @@
   language = {Japanese}
 }
 @article{enArticle3,
-  author = {Goro Yamada and Rokuro Yamada},
-  year = {2018},
-  journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
-  title = {Title2 is true?},
-  month = {nov}
+  author = {Hachiro Yamada and Rokuro Yamada},
+  year = {2010},
+  journal = {Japanese Journal},
+  title = {Comparison Between Method 1 and Method 2},
+  number = {1},
+  pages = {15},
+  volume = {5}
 }
 @article{enArticle4,
   author = {Hiroshi Sato and Jiro Sasaki},
@@ -717,7 +719,7 @@ Latexmkを使用していれば，各\texttt{bu}ファイルをそれぞれ必�
 \ref{sec:compile_procedure}節においても触れましたが，本マニュアルのように英語と日本語の併記を実現するために\texttt{/ej/}のコマンドが含まれているものを適切に扱うためには，\texttt{python mixej.py}のコマンドを\BibTeX コマンドの前後に1回ずつ実行する必要があります。
 そのため，コンパイラでは\BibTeX コマンドの設定方法に注意が必要です。
 
-Latexmkを使用している場合，MacやLinuxなどのUNIX系列では\texttt{latexmkrc}に対して次のように設定することで実現可能です。
+Latexmkを使用している場合，MacやLinuxなどのUNIX系列では\texttt{.latexmkrc}に対して次のように設定することで実現可能です。
 
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
 \begin{lstlisting}[style=onecol]
