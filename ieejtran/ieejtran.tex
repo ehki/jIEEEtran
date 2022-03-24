@@ -267,6 +267,22 @@ Pythonは\texttt{3.7}以降での動作を確認しています。
 と，\texttt{\string{\string}}で挟まず半角カンマを挿入して記入してください。
 
 
+\section{カスタマイズ}
+\texttt{IEEJtran}はテキストファイルである\texttt{IEEJtran.bst}を直接変更することでカスタマイズが可能です。
+例えば、著者とタイトルの間に挿入される文字を「かぎ括弧」から『二重かぎ括弧』に変更する場合、\texttt{IEEJtran.bst}の
+\begin{center}
+  \texttt{FUNCTION \string{bbl.ieej.jp.title.pre\string} \string{ \string"「\string" \string}}\par
+  \texttt{FUNCTION \string{bbl.ieej.jp.title.aft\string} \string{ \string"」\string" \string}}
+\end{center}
+を
+\begin{center}
+  \texttt{FUNCTION \string{bbl.ieej.jp.title.pre\string} \string{ \string"『\string" \string}}\par
+  \texttt{FUNCTION \string{bbl.ieej.jp.title.aft\string} \string{ \string"』\string" \string}}
+\end{center}
+に変更します。
+他の設定項目は\texttt{IEEJtran.bst}を直接ご確認ください。
+
+
 \section{英語と日本語の併記方法}
 
 電気学会の引用スタイルで求められているように，一つの文献エントリに英語と日本語の情報を併記する場合，\texttt{.tex}ファイルには次のように記載してください。

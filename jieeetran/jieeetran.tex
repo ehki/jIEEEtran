@@ -267,6 +267,20 @@ Pythonは\texttt{3.7}以降での動作を確認しています。
 と，\texttt{\string{\string}}で挟まず半角カンマを挿入して記入してください。
 
 
+\section{カスタマイズ}
+\texttt{jIEEEtran}はテキストファイルである\texttt{jIEEEtran.bst}を直接変更することでカスタマイズが可能です。
+例えば、IEEE形式では同一著者の文献が連続した場合に著者名を長ダッシュで代用しますが、この処理を行いたくない場合、\texttt{jIEEEtran.bst}の
+\begin{center}
+  \texttt{FUNCTION \string{default.is.dash.repeated.names.ieee\string} \string{ \#1 \string}}
+\end{center}
+を
+\begin{center}
+  \texttt{FUNCTION \string{default.is.dash.repeated.names.ieee\string} \string{ \#0 \string}}
+\end{center}
+に変更します。
+他の設定項目は\texttt{jIEEEtran.bst}を直接ご確認ください。
+
+
 \section{英語と日本語の併記方法}
 
 電気学会の引用スタイルで求められているように，一つの文献エントリに英語と日本語の情報を併記する場合，\texttt{.tex}ファイルには次のように記載してください。
