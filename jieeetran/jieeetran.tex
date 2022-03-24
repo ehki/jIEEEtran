@@ -223,10 +223,7 @@ Michael Shell氏のIEEEtran.bstを基に、日本語著者の自然な姓名処�
 Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi氏が日本語の自然な表記を実装し，現在は著者がリポジトリを譲渡していただきGitHub上\cite{jIEEEtran}で継続して開発しています。
 同レポジトリでは電気学会形式の非公式\BibTeX スタイルである\texttt{IEEJtran.bst}も取り扱っています。
 オプションの追記方法や日本語の判別方法については，武田氏らによる\texttt{jecon.bst}\cite{jeconbst}を参考にしています。
-間違いがあった場合でも大きな被害が出るレポジトリではありませんので，ご要望や問題があればお気軽にIssueやPull Requestを飛ばしてください。
-なお，IEEE公認ではありませんし，全ての環境で動作を保証するものではありません。
-不具合が生じても責任を負うことはできませんのでご容赦ください。
-なお，\TeX Live 2019以降の使用を想定しています。
+\TeX Live 2019以降の使用を想定しています。
 \texttt{w32tex}や古い\TeX Liveでの動作は確認していません。
 \TeX エンジンとしてplatex/pbibtexもしくはuplatex/upbibtexを推奨し，本マニュアルはuplatexでコンパイルしています。
 \TeX エンジンが出力する中間ファイルの改変にPythonを使用します。
@@ -239,7 +236,14 @@ Pythonは\texttt{3.7}以降での動作を確認しています。
 後述のカスタマイズ等の目的で\texttt{jIEEEtran.bst}を個別にダウンロードして配置する場合，メインの\TeX ファイルと同じディレクトリに格納し，同様にプリアンブルに\texttt{\string\bibliographystyle\string{jIEEEtran\string}}と記載すれば設定は完了です。
 
 文献情報が記載される\texttt{.bib}ファイル上では，日本人著者は
-\texttt{author = \string{\string{\textgt{姓姓 名名}\string} and \string{\textgt{姓姓 名名}\string}\string}}と，\texttt{\string{\string}}で挟むか，\texttt{author = \string{姓姓, 名名 and 姓姓, 名名\string}}と，\texttt{\string{\string}}で挟まず半角カンマを挿入して記入してください。
+\begin{center}
+  \texttt{author = \string{\string{\textgt{姓姓 名名}\string} and \string{\textgt{姓姓 名名}\string}\string}}
+\end{center}
+と，\texttt{\string{\string}}で挟むか，
+\begin{center}
+  \texttt{author = \string{姓姓, 名名 and 姓姓, 名名\string}}
+\end{center}
+と，\texttt{\string{\string}}で挟まず半角カンマを挿入して記入してください。
 
 
 \section{英語と日本語の併記方法}
@@ -249,7 +253,7 @@ Pythonは\texttt{3.7}以降での動作を確認しています。
   \texttt{\string\cite\string{enArticle1/ej/jpArticle1\string}}
 \end{center}
 加えて，外部pythonファイルの\texttt{mixej.py}を用いて\texttt{.aux}ファイルと\texttt{.bbl}ファイルを改変する必要があります。
-具体的には，\BibTeX コマンドの実行前に\texttt{\string\cite\string{enArticle1/ej/jpArticle1\string}}を\texttt{enArticle1}と\texttt{jpArticle1}の2つのエントリに分け，\BibTeX コマンドが文献情報を書した後に再度結合させる操作を行います。
+具体的には，\BibTeX コマンドの実行前に\texttt{enArticle1/ej/jpArticle1\string}を\texttt{enArticle1}と\texttt{jpArticle1}の2つのエントリに分け，\BibTeX コマンドが文献情報を書き出した後に再度結合させる操作を行います。
 
 
 \subsection{コンパイル手順}
@@ -271,7 +275,7 @@ Pythonは\texttt{3.7}以降での動作を確認しています。
 
 \subsection{コンパイラの設定の例}
 
-Latexmkを使用している場合，MacやLinuxなどのUNIX系列では\texttt{latexmkrc}に対して次のように設定することで実現可能です。
+Latexmkを使用している場合，MacやLinuxなどのUNIX系列では\texttt{.latexmkrc}に対して次のように設定することで実現可能です。
 
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
 \begin{lstlisting}[style=onecol]
