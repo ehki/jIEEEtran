@@ -1,6 +1,8 @@
 import sys
 import platform
 import json
+import logging
+
 
 SPLIT_KEY = '/ej/'
 ITEM_SEP = '\\hspace{0mm}\\\\'
@@ -9,6 +11,8 @@ FILE_VERSION = '0.17'
 FILE_DATE = '2021/08/26'
 FILE_AUTHOR = 'Haruki Ejiri'
 FILE_URL = 'https://github.com/ehki/jIEEEtran/'
+
+logger = logging.getLogger(__name__)
 
 
 def check_load_file(fn, asjson=False):
@@ -442,23 +446,30 @@ def combine_ej_key(bn):
 
 
 if __name__ == '__main__':
-    sys.stdout.write(
+
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+
+    sh = logging.StreamHandler()
+    logger.addHandler(sh)
+
+    logger.info(
         'This is python version %s ' % platform.python_version())
-    sys.stdout.write(
-        'mixje.py version %s (%s) by %s.\n' %
+    logger.info(
+        'mixje.py version %s (%s) by %s.' %
         (FILE_VERSION, FILE_DATE, FILE_AUTHOR)
     )
-    sys.stdout.write('See web site: %s\n' % FILE_URL)
+    logger.info('See web site: %s' % FILE_URL)
     try:
         fname = sys.argv[1]
-        sys.stdout.write('Target: %s\n' % fname)
+        logger.info('Target: %s' % fname)
     except IndexError:
-        sys.stdout.write('Fatal error: You must assign target.')
+        logger.info('Fatal error: You must assign target.')
         sys.exit(0)
 
     sk = divide_ej_key(fname)
     if sk > 0:  # combined keys existed
-        sys.stdout.write('-- Fin, %d keys were divided.\n' % sk)
+        logger.info('-- Fin, %d keys were divided.' % sk)
         sys.exit(0)
     elif sk < 0:  # Abort
         sys.exit(0)
@@ -466,10 +477,10 @@ if __name__ == '__main__':
     ck = combine_ej_key(fname)
     if ck != 0:
         # print('-- %d divided citation keys were successfully combined' % ck)
-        sys.stdout.write('-- Fin, %d keys were combined.\n' % ck)
+        logger.info('-- Fin, %d keys were combined.' % ck)
         sys.exit(0)
     with open(sys.argv[1] + '.ejp', 'w', encoding='utf-8') as f:
         json.dump([], f)
-    sys.stdout.write(
-        '-- No cmobined nor divided citation key in the aux file\n')
+    logger.info(
+        '-- No cmobined nor divided citation key in the aux file')
     sys.exit(0)
