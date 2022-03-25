@@ -1,6 +1,5 @@
 import sys
 import platform
-import os
 import json
 
 SPLIT_KEY = '/ej/'
@@ -100,8 +99,8 @@ def divide_aux(fn, pairs):
     """
 
     aux = check_load_file(fn)
-    if aux == -1: # file not found
-        return -1 # failed
+    if aux == -1:  # file not found
+        return -1  # failed
     for k1, k2 in pairs:
         combi = SPLIT_KEY.join([k1, k2])
         # for example, combi is "engkey/ej/jpkey", wehere SPLIT_KEY is "/ej/"
@@ -130,7 +129,7 @@ def divide_bbl(fn, pairs):
     \\bibitem{englishTest5}
     I.~Yamada, J.~Sato, S.~Tanaka, S.~Suzuki: ``Article title'', Japanese
     Transaction, Vol.10, No.5, pp.45--60 (2016-3)
-    
+
     \\bibitem{japaneseTest5}
     山田~一郎・佐藤~次郎・田中~三郎・鈴木~四郎：「文献タイトル」，
     日本語学会，Vol.10，No.5，pp.45--60（2016-3）
@@ -150,8 +149,8 @@ def divide_bbl(fn, pairs):
     """
 
     bbl = check_load_file(fn)
-    if bbl == -1: # file not found
-        return -1 # failed
+    if bbl == -1:  # file not found
+        return -1  # failed
     for k1, k2 in pairs:
         combi = SPLIT_KEY.join([k1, k2])
         # for example, combi is "engkey/ej/jpkey", wehere SPLIT_KEY is "/ej/"
@@ -162,7 +161,7 @@ def divide_bbl(fn, pairs):
     with open(fn, 'w', encoding='utf-8') as f:
         f.write(bbl)
     sys.stdout.write('done.\n')
-    return 0 # successfully finished
+    return 0  # successfully finished
 
 
 def find_pairs(fn, aux):
@@ -194,10 +193,10 @@ def find_pairs(fn, aux):
         if SPLIT_KEY not in line or '\\citation' not in line:
             continue
         # the line contains \citation and /ej/
-        for l in line.replace('\\citation{', '').replace('}', '').split(','):
+        for ln in line.replace('\\citation{', '').replace('}', '').split(','):
             # convert '\citation{hoge1/ej/hoge2}' to 'hoge1/ej/hoge2'
-            if len(l.split(SPLIT_KEY)) == 2:
-                pairs.append(l.split(SPLIT_KEY))
+            if len(ln.split(SPLIT_KEY)) == 2:
+                pairs.append(ln.split(SPLIT_KEY))
                 # store as ['hoge1', 'hoge2'] pairs
                 sys.stdout.write('.')
     if len(pairs) == 0:
@@ -214,7 +213,8 @@ def combine_aux(fn, pairs):
     """combine divided citation(s) and bibcite(s) in aux file.
 
     This code combine the divided key(s) in aux file.
-    For example, the following two divided citation(s) and bibcite(s) in aux file
+    For example, the following two divided citation(s) and bibcite(s)
+    in aux file
     --
     \\citation{englishTest7,japaneseTest7}
 
@@ -241,14 +241,13 @@ def combine_aux(fn, pairs):
     """
 
     aux = check_load_file(fn)
-    if aux == -1: # file not found
-        return -1 # failed
+    if aux == -1:  # file not found
+        return -1  # failed
     for k1, k2 in pairs:
         combi = SPLIT_KEY.join([k1, k2])
         # for example, combi is "engkey/ej/jpkey", wehere SPLIT_KEY is "/ej/"
         sys.stdout.write('-- Combining %s and %s to %s\n' % (k1, k2, combi))
-        aux = aux.replace('%s,%s' % (k1, k2),\
-                          '%s' % combi)
+        aux = aux.replace('%s,%s' % (k1, k2), '%s' % combi)
     sys.stdout.write('-- Saving combined aux to %s, ' % fn)
     with open(fn, 'w', encoding='utf-8') as f:
         f.write(aux)
@@ -264,7 +263,7 @@ def combine_bbl(fn, pairs):
     \\bibitem{englishTest5}
     I.~Yamada, J.~Sato, S.~Tanaka, S.~Suzuki: ``Article title'', Japanese
     Transaction, Vol.10, No.5, pp.45--60 (2016-3)
-    
+
     \\bibitem{japaneseTest5}
     山田~一郎・佐藤~次郎・田中~三郎・鈴木~四郎：「文献タイトル」，
     日本語学会，Vol.10，No.5，pp.45--60（2016-3）
@@ -292,8 +291,8 @@ def combine_bbl(fn, pairs):
     """
 
     bbl = check_load_file(fn)
-    if bbl == -1: # file not found
-        return -1 # failed
+    if bbl == -1:  # file not found
+        return -1  # failed
     for k1, k2 in pairs:
         combi = SPLIT_KEY.join([k1, k2])
         # for example, combi is "engkey/ej/jpkey", wehere SPLIT_KEY is "/ej/"
@@ -324,7 +323,7 @@ def divide_ej_key(bn):
     \\bibitem{englishTest5}
     I.~Yamada, J.~Sato, S.~Tanaka, S.~Suzuki: ``Article title'', Japanese
     Transaction, Vol.10, No.5, pp.45--60 (2016-3)
-    
+
     \\bibitem{japaneseTest5}
     山田~一郎・佐藤~次郎・田中~三郎・鈴木~四郎：「文献タイトル」，
     日本語学会，Vol.10，No.5，pp.45--60（2016-3）
@@ -346,13 +345,15 @@ def divide_ej_key(bn):
     The first process during LaTeX compile, there would no bbl file.
     If the bbl file not exist, the dividing process would be skipped.
     A list of english/japanese pairs will be extracted from aux file,
-    and if will be saved in the JSON file with ".ejp" (english-japanese-pair) extension
+    and if will be saved in the JSON file with
+    ".ejp" (english-japanese-pair) extension
 
     Parameters
     ----------
     bn : str
         Target file to process without extension.
-        if your target tex file is '/DIRNAME/main.tex' the bn would be '/DIRNAME/main'
+        if your target tex file is '/DIRNAME/main.tex'
+        the bn would be '/DIRNAME/main'
 
     Returns
     -------
@@ -363,14 +364,14 @@ def divide_ej_key(bn):
     """
 
     sys.stdout.write('--\n')
-    sys.stdout.write('-- Dividing combinecd keys.\n')  
+    sys.stdout.write('-- Dividing combinecd keys.\n')
     aux = check_load_file(bn + '.aux')
-    if aux == -1: # aux file not found
-        return -1 # abort
+    if aux == -1:  # aux file not found
+        return -1  # abort
     sys.stdout.write('-- Search combined keys from %s.aux.\n' % bn)
     pairs = find_pairs(bn + '.ejp', aux)
-    if pairs == 0: # no combined keys
-        return 0 # probably already divided
+    if pairs == 0:  # no combined keys
+        return 0  # probably already divided
     divide_aux(bn + '.aux', pairs)
     divide_bbl(bn + '.bbl', pairs)
     return len(pairs)
@@ -385,7 +386,7 @@ def combine_ej_key(bn):
     \\bibitem{englishTest5}
     I.~Yamada, J.~Sato, S.~Tanaka, S.~Suzuki: ``Article title'', Japanese
     Transaction, Vol.10, No.5, pp.45--60 (2016-3)
-    
+
     \\bibitem{japaneseTest5}
     山田~一郎・佐藤~次郎・田中~三郎・鈴木~四郎：「文献タイトル」，
     日本語学会，Vol.10，No.5，pp.45--60（2016-3）
@@ -417,7 +418,8 @@ def combine_ej_key(bn):
     ----------
     bn : str
         Target file to process without extension.
-        if your target tex file is '/DIRNAME/main.tex' the bn would be '/DIRNAME/main'
+        if your target tex file is '/DIRNAME/main.tex'
+        the bn would be '/DIRNAME/main'
 
     Returns
     -------
@@ -428,11 +430,11 @@ def combine_ej_key(bn):
     """
 
     sys.stdout.write('--\n')
-    sys.stdout.write('-- Combining divided keys.\n')  
+    sys.stdout.write('-- Combining divided keys.\n')
     pairs = check_load_file(bn + '.ejp', asjson=True)
-    if pairs == -1: # file not found
+    if pairs == -1:  # file not found
         return -1
-    if len(pairs) == 0: # no combined keys
+    if len(pairs) == 0:  # no combined keys
         return 0
     combine_aux(bn + '.aux', pairs)
     combine_bbl(bn + '.bbl', pairs)
@@ -443,8 +445,9 @@ if __name__ == '__main__':
     sys.stdout.write(
         'This is python version %s ' % platform.python_version())
     sys.stdout.write(
-        'mixje.py version %s (%s) by %s.\n' % \
-        (FILE_VERSION, FILE_DATE, FILE_AUTHOR))
+        'mixje.py version %s (%s) by %s.\n' %
+        (FILE_VERSION, FILE_DATE, FILE_AUTHOR)
+    )
     sys.stdout.write('See web site: %s\n' % FILE_URL)
     try:
         fname = sys.argv[1]
@@ -453,11 +456,11 @@ if __name__ == '__main__':
         sys.stdout.write('Fatal error: You must assign target.')
         sys.exit(0)
 
-    sk = divide_ej_key(fname) 
-    if sk > 0: # combined keys existed
+    sk = divide_ej_key(fname)
+    if sk > 0:  # combined keys existed
         sys.stdout.write('-- Fin, %d keys were divided.\n' % sk)
         sys.exit(0)
-    elif sk < 0: # Abort
+    elif sk < 0:  # Abort
         sys.exit(0)
 
     ck = combine_ej_key(fname)
@@ -465,7 +468,7 @@ if __name__ == '__main__':
         # print('-- %d divided citation keys were successfully combined' % ck)
         sys.stdout.write('-- Fin, %d keys were combined.\n' % ck)
         sys.exit(0)
-    with open(sys.argv[1]+ '.ejp', 'w', encoding='utf-8') as f:
+    with open(sys.argv[1] + '.ejp', 'w', encoding='utf-8') as f:
         json.dump([], f)
     sys.stdout.write(
         '-- No cmobined nor divided citation key in the aux file\n')
