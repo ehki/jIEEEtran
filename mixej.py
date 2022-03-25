@@ -34,16 +34,16 @@ def check_load_file(fn, asjson=False):
         0 if success
     """
 
-    sys.stdout.write('-- Checking file %s, ' % fn)
+    logger.info('-- Checking file %s, ' % fn)
     try:
         with open(fn, 'r', encoding='utf-8') as f:
-            sys.stdout.write('exist, load.\n')
+            logger.info('exist, load.')
             if asjson:
                 return json.load(f)
             else:
                 return f.read()
     except FileNotFoundError:
-        sys.stdout.write('not found.\n')
+        logger.info('not found.')
         return -1
 
 
@@ -65,10 +65,10 @@ def save_pairs(fn, pairs):
         0 if success
     """
 
-    sys.stdout.write('-- Saving found pairs to %s, ' % fn)
+    logger.info('-- Saving found pairs to %s, ' % fn)
     with open(fn, 'w', encoding='utf-8') as f:
         json.dump(pairs, f)
-    sys.stdout.write('done.\n')
+    logger.info('done.')
     return 0
 
 
@@ -108,7 +108,7 @@ def divide_aux(fn, pairs):
     for k1, k2 in pairs:
         combi = SPLIT_KEY.join([k1, k2])
         # for example, combi is "engkey/ej/jpkey", wehere SPLIT_KEY is "/ej/"
-        sys.stdout.write('-- Dividing %s into %s and %s\n' % (combi, k1, k2))
+        logger.info('-- Dividing %s into %s and %s' % (combi, k1, k2))
         aux = aux.replace('%s' % combi,
                           '%s,%s' % (k1, k2))
     with open(fn, 'w', encoding='utf-8') as f:
@@ -158,13 +158,13 @@ def divide_bbl(fn, pairs):
     for k1, k2 in pairs:
         combi = SPLIT_KEY.join([k1, k2])
         # for example, combi is "engkey/ej/jpkey", wehere SPLIT_KEY is "/ej/"
-        sys.stdout.write('-- Dividing %s into %s and %s\n' % (combi, k1, k2))
+        logger.info('-- Dividing %s into %s and %s' % (combi, k1, k2))
         bbl = bbl.replace(ITEM_SEP, '\n\n\\bibitem{%s}' % k2)
         bbl = bbl.replace('\\bibitem{%s}' % combi, '\\bibitem{%s}' % k1)
-    sys.stdout.write('-- Saving divided bbl to %s, ' % fn)
+    logger.info('-- Saving divided bbl to %s, ' % fn)
     with open(fn, 'w', encoding='utf-8') as f:
         f.write(bbl)
-    sys.stdout.write('done.\n')
+    logger.info('done.')
     return 0  # successfully finished
 
 
@@ -192,7 +192,7 @@ def find_pairs(fn, aux):
     """
 
     pairs = []
-    sys.stdout.write('-- ')
+    logger.info('-- ')
     for line in aux.split('\n'):
         if SPLIT_KEY not in line or '\\citation' not in line:
             continue
@@ -202,12 +202,12 @@ def find_pairs(fn, aux):
             if len(ln.split(SPLIT_KEY)) == 2:
                 pairs.append(ln.split(SPLIT_KEY))
                 # store as ['hoge1', 'hoge2'] pairs
-                sys.stdout.write('.')
+                logger.info('%s' % str(ln.split(SPLIT_KEY)))
     if len(pairs) == 0:
-        sys.stdout.write('No combined keys found.\n')
+        logger.info('No combined keys found.')
         ret = 0
     if len(pairs) > 0:
-        sys.stdout.write(' %d combined keys found.\n' % len(pairs))
+        logger.info(' %d combined keys found.' % len(pairs))
         ret = pairs
         save_pairs(fn, pairs)
     return ret
@@ -250,12 +250,12 @@ def combine_aux(fn, pairs):
     for k1, k2 in pairs:
         combi = SPLIT_KEY.join([k1, k2])
         # for example, combi is "engkey/ej/jpkey", wehere SPLIT_KEY is "/ej/"
-        sys.stdout.write('-- Combining %s and %s to %s\n' % (k1, k2, combi))
+        logger.info('-- Combining %s and %s to %s' % (k1, k2, combi))
         aux = aux.replace('%s,%s' % (k1, k2), '%s' % combi)
-    sys.stdout.write('-- Saving combined aux to %s, ' % fn)
+    logger.info('-- Saving combined aux to %s, ' % fn)
     with open(fn, 'w', encoding='utf-8') as f:
         f.write(aux)
-    sys.stdout.write('done.\n')
+    logger.info('done.')
 
 
 def combine_bbl(fn, pairs):
@@ -300,14 +300,14 @@ def combine_bbl(fn, pairs):
     for k1, k2 in pairs:
         combi = SPLIT_KEY.join([k1, k2])
         # for example, combi is "engkey/ej/jpkey", wehere SPLIT_KEY is "/ej/"
-        sys.stdout.write('-- Combining %s and %s to %s\n' % (k1, k2, combi))
+        logger.info('-- Combining %s and %s to %s' % (k1, k2, combi))
         bbl = bbl.replace('\n\n\\bibitem{%s}' % k2, ITEM_SEP)
         bbl = bbl.replace('\\bibitem{%s}' % k1,
                           '\\bibitem{%s}' % combi)
-    sys.stdout.write('-- Saving combined bbl to %s, ' % fn)
+    logger.info('-- Saving combined bbl to %s, ' % fn)
     with open(fn, 'w', encoding='utf-8') as f:
         f.write(bbl)
-    sys.stdout.write('done.\n')
+    logger.info('done.')
 
 
 def divide_ej_key(bn):
@@ -367,12 +367,12 @@ def divide_ej_key(bn):
         num-of-pairs if successfully processed
     """
 
-    sys.stdout.write('--\n')
-    sys.stdout.write('-- Dividing combinecd keys.\n')
+    logger.info('--')
+    logger.info('-- Dividing combinecd keys.')
     aux = check_load_file(bn + '.aux')
     if aux == -1:  # aux file not found
         return -1  # abort
-    sys.stdout.write('-- Search combined keys from %s.aux.\n' % bn)
+    logger.info('-- Search combined keys from %s.aux.' % bn)
     pairs = find_pairs(bn + '.ejp', aux)
     if pairs == 0:  # no combined keys
         return 0  # probably already divided
@@ -433,8 +433,8 @@ def combine_ej_key(bn):
         num-of-pairs if successfully processed
     """
 
-    sys.stdout.write('--\n')
-    sys.stdout.write('-- Combining divided keys.\n')
+    logger.info('--')
+    logger.info('-- Combining divided keys.')
     pairs = check_load_file(bn + '.ejp', asjson=True)
     if pairs == -1:  # file not found
         return -1
