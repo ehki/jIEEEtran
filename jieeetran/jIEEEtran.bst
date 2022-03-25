@@ -484,7 +484,7 @@ FUNCTION {banner.message}
        "-- See the " quote$ * "IEEEtran_bst_HOWTO.pdf" * quote$ *
        " manual for usage information for IEEEtran.bst." *
        top$
-       "-- See aloso " quote$ * "howtouse.pdf" * quote$ *
+       "-- See also " quote$ * "howtouse.pdf" * quote$ *
        " manual for usase information for jIEEEtran.bst and IEEJtran.bst." *
        top$
      }
