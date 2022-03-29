@@ -54,5 +54,5 @@ mv jieeetran-en.pdf jieeetran/
 cp mixej.py jieeetran/
 cp jIEEEtran.bst jieeetran/
 
-# git add ieejtran jieeetran .
-# git commit -m "v0.17"
+git add ieejtran jieeetran .
+git commit -m "v0.18"
