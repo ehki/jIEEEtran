@@ -1,0 +1,22 @@
+March 26, 2021
+
+
+IEEJtran is an UNOFFICIAL BibTeX style for authors of the Institute of
+Electrical Engineers of Japan (IEEJ) transactions journals and conferences.
+IEEJtran is an expansion package of Michael Shell's IEEEtran package.
+The latest version of the IEEJtran package can be found at CTAN:
+
+http://www.ctan.org/pkg/ieejtran
+
+Problems, requests, tips, beta releases, and other support, can be seen
+in IEEJtran's GitHub page:
+
+https://github.com/ehki/jIEEEtran
+
+NOTE: The author also developing jIEEEtran.bst in the same repository.
+
+IEEJtran may be distributed and/or modified under the terms of MIT license.
+
+Best wishes for all your publication endeavors,
+
+Haruki Ejiri

@@ -1,0 +1,376 @@
+\documentclass[11pt, a4paper, dvipdfmx, uplatex]{jsarticle}
+\bibliographystyle{jIEEEtran}
+
+\usepackage{listings, jlisting}
+\lstdefinestyle{onecol}{
+  basicstyle={\scriptsize\ttfamily},
+  identifierstyle={\footnotesize},
+  commentstyle={\footnotesizeitshape},
+  keywordstyle={\footnotesize\bfseries},
+  ndkeywordstyle={\footnotesize},
+  stringstyle={\footnotesize\ttfamily},
+  breaklines=true,
+  columns=[l]{fullflexible}
+}
+
+\begin{filecontents}[overwrite]{library.bib}
+@misc{IEEEtran,
+  author = {Michael Shell},
+  url = {https://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/bibtex},
+  title = {{IEEEtran}},
+  month = {August},
+  year = {2015}
+}
+@misc{jIEEEtran,
+  author = {ehki},
+  url = {https://github.com/ehki/jIEEEtran},
+  title = {{jIEEEtran}},
+  month = {March},
+  year = {2020}
+}
+@misc{jeconbst,
+  author = {ShiroTakeda},
+  url = {http://shirotakeda.org/ja/tex-ja/jecon-ja.html},
+  title = {{jecon.bst}},
+  month = {August},
+  year = {2019}
+}
+@article{jpArticle1,
+  author = {山田 一郎 and 山田 次郎 and 山田 三郎 and 山田 四郎},
+  year = {2019},
+  journal = {日本語学会},
+  title = {文献1},
+  number = {10},
+  pages = {20--30},
+  volume = {15},
+  month = {3}
+}
+@article{jpArticle2,
+  author = {{山田 五郎} and {山田 六郎}},
+  year = {2019},
+  journal = {日本語学会},
+  title = {文献2},
+  number = {10},
+  pages = {21},
+  volume = {15},
+  month = {12}
+}
+@article{jpArticle3,
+  author = {{山田 八郎} and {山田 六郎}},
+  year = {2010},
+  journal = {日本語学会},
+  title = {手法1と手法2の比較検討},
+  number = {1},
+  pages = {15},
+  volume = {5}
+}
+@article{enArticle1,
+  author = {Ichiro Yamada and Jiro Yamada and Saburo Yamada and Shiro Yamada},
+  year = {2019},
+  journal = {Japanese Journal},
+  title = {Title1},
+  number = {10},
+  pages = {20--30},
+  volume = {15},
+  month = {march},
+  language = {Japanese}
+}
+@article{enArticle2,
+  author = {Goro Yamada and Rokuro Yamada},
+  year = {2019},
+  journal = {Japanese Journal},
+  title = {Title2},
+  volume = {15},
+  number = {10},
+  pages = {21},
+  month = {dec.},
+  language = {Japanese}
+}
+@article{enArticle3,
+  author = {Hachiro Yamada and Rokuro Yamada},
+  year = {2010},
+  journal = {Japanese Journal},
+  title = {Comparison Between Method 1 and Method 2},
+  number = {1},
+  pages = {15},
+  volume = {5}
+}
+@inproceedings{jpInproceedings1,
+  author = {山田, 一郎 and 山田, 次郎},
+  title = {文献タイトル},
+  booktitle = {令和2年日本語大会},
+  address = {大阪},
+  year = {2010},
+  month = {3},
+  number = {10},
+  pages = {20--30}
+}
+@inproceedings{jpInproceedings2,
+  author = {山田, 三郎 and 佐藤, 四郎},
+  title = {タイトル},
+  booktitle = {第30回部門大会},
+  address = {東京},
+  year = {2005},
+  month = {2},
+  number = {2},
+  pages = {15--19}
+}
+@inproceedings{enInproceedings1,
+  author = {Hayashi, Shinji and Ogura, Yasuhiro},
+  title = {Sample Conference Article Title},
+  booktitle = {Proc. 5th Internatinoal Sample Conference (ISC)},
+  address = {Tokyo, Japan},
+  month = {jan},
+  year = {1997},
+  pages = {290-294},
+  number = {2}
+}
+@inproceedings{enInproceedings2,
+  author = {Yamada, Sabuso and Sato, Shiro},
+  title = {Title},
+  booktitle = {Proc. 30th Society Conference},
+  address = {Tokyo},
+  year = {2005},
+  month = {2},
+  number = {2},
+  pages = {15--19},
+  language = {Japanese}
+}
+@incollection{jpIncollection1,
+  author = {{佐藤 二郎} and {林 三郎}},
+  year = {2012},
+  publisher = {日本語出版},
+  address = {東京},
+  title = {日本語本2の中の抜粋},
+  booktitle = {日本語本2},
+  edition = {2},
+  pages = {100--200}
+}
+@incollection{jpIncollection2,
+  author = {山田, 一郎},
+  year = {1900},
+  publisher = {出版会社},
+  address = {東京},
+  title = {タイトル},
+  booktitle = {日本語本3},
+  chapter = {3},
+  edition = {1},
+  pages = {100--150},
+}
+@incollection{enIncollection1,
+  address = {Tokyo, Japan},
+  publisher = {JP Press},
+  author = {Sato, Jiro and Hayashi, Saburo},
+  booktitle = {Jpbook2},
+  title = {Part of Jpbook2},
+  pages = {100--200},
+  edition = {2},
+  year = {2012},
+}
+@book{jpBook1,
+  author = {佐藤, 一郎},
+  year = {2010},
+  publisher = {日本語出版},
+  address = {東京},
+  title = {日本語本},
+  edition = {1},
+  pages = {100--200}
+}
+@book{jpBook2,
+  author = {佐藤, 二郎 and 佐藤, 三郎},
+  year = {2012},
+  publisher = {日本語出版},
+  address = {東京},
+  title = {日本語本2},
+  edition = {2},
+  pages = {100--200}
+}
+@book{jpBook3,
+  author = {学会委員会},
+  year = {2020},
+  publisher = {学会出版},
+  title = {学会本},
+  edition = {1}
+}
+@book{enBook1,
+  address = {City, Country},
+  publisher = {Publisher},
+  author = {Sato, Jiro and Hayashi, Saburo},
+  year = {2000},
+  title = {Title, not booktitle},
+  edition = {3},
+  pages = {1-10},
+}
+@book{enjBook1,
+  author = {Ichiro Sato},
+  year = {2010},
+  publisher = {Japanese Publisher},
+  address = {Tokyo},
+  title = {Japanese Book title},
+  edition = {1},
+  pages = {100--200},
+  language = {japaneese}
+}
+@book{jpjBook1,
+  author = {佐藤 一郎},
+  year = {2010},
+  publisher = {日本語出版},
+  address = {東京},
+  title = {日本語本},
+  edition = {1},
+  pages = {100--200}
+}
+\end{filecontents}
+
+
+\title{\texttt{jIEEEtran.bst}:\\日本語対応IEEE非公式\BibTeX スタイル\\(ver. 0.18)}
+\author{江尻 開}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+jIEEEtranは日本人ユーザ向けに調整されたIEEE形式の非公式\BibTeX スタイルです。
+Michael Shell氏のIEEEtran.bstを基に、日本語著者の自然な姓名処理を実現します。
+一つのエントリに英語と日本語を併記可能とするPythonスクリプトmixej.pyも提供します。
+\end{abstract}
+
+
+\section{はじめに}
+
+\texttt{jIEEEtran.bst}はIEEEの引用スタイルを保ったまま日本語の取り扱いを自然にした\BibTeX スタイル(\texttt{.bst})ファイルです。
+卒業論文や修士論文など，\LaTeX を使用した文献管理の一助になることを目的としています。
+Michael Shell氏による\texttt{IEEEtran.bst}\cite{IEEEtran}をもとにYoshiRi氏が日本語の自然な表記を実装し，現在は著者がリポジトリを譲渡していただきGitHub上\cite{jIEEEtran}で継続して開発しています。
+同レポジトリでは電気学会形式の非公式\BibTeX スタイルである\texttt{IEEJtran.bst}も取り扱っています。
+オプションの追記方法や日本語の判別方法については，武田氏らによる\texttt{jecon.bst}\cite{jeconbst}を参考にしています。
+\TeX Live 2019以降の使用を想定しています。
+\texttt{w32tex}や古い\TeX Liveでの動作は確認していません。
+\TeX エンジンとしてplatex/pbibtexもしくはuplatex/upbibtexを推奨し，本マニュアルはuplatexでコンパイルしています。
+\TeX エンジンが出力する中間ファイルの改変にPythonを使用します。
+Pythonは\texttt{3.7}以降での動作を確認しています。
+
+
+\section{使用方法}
+
+\texttt{jIEEEtran.bst}が\TeX Liveのパッケージマネージャ等でインストールされ，PATHの通った場所に配置されている場合，プリアンブルに\texttt{\string\bibliographystyle\string{jIEEEtran\string}}と記載すれば設定は完了です。
+後述のカスタマイズ等の目的で\texttt{jIEEEtran.bst}を個別にダウンロードして配置する場合，メインの\TeX ファイルと同じディレクトリに格納し，同様にプリアンブルに\texttt{\string\bibliographystyle\string{jIEEEtran\string}}と記載すれば設定は完了です。
+
+文献情報が記載される\texttt{.bib}ファイル上では，日本人著者は
+\begin{center}
+  \texttt{author = \string{\string{\textgt{姓姓 名名}\string} and \string{\textgt{姓姓 名名}\string}\string}}
+\end{center}
+と，\texttt{\string{\string}}で挟むか，
+\begin{center}
+  \texttt{author = \string{姓姓, 名名 and 姓姓, 名名\string}}
+\end{center}
+と，\texttt{\string{\string}}で挟まず半角カンマを挿入して記入してください。
+
+
+\section{カスタマイズ}
+\texttt{jIEEEtran}はテキストファイルである\texttt{jIEEEtran.bst}を直接変更することでカスタマイズが可能です。
+例えば、IEEE形式では同一著者の文献が連続した場合に著者名を長ダッシュで代用しますが、この処理を行いたくない場合、\texttt{jIEEEtran.bst}の
+\begin{center}
+  \texttt{FUNCTION \string{default.is.dash.repeated.names.ieee\string} \string{ \#1 \string}}
+\end{center}
+を
+\begin{center}
+  \texttt{FUNCTION \string{default.is.dash.repeated.names.ieee\string} \string{ \#0 \string}}
+\end{center}
+に変更します。
+他の設定項目は\texttt{jIEEEtran.bst}を直接ご確認ください。
+
+
+\section{英語と日本語の併記方法}
+
+電気学会の引用スタイルで求められているように，一つの文献エントリに英語と日本語の情報を併記する場合，\texttt{.tex}ファイルには次のように記載してください。
+\begin{center}
+  \texttt{\string\cite\string{enArticle1/ej/jpArticle1\string}}
+\end{center}
+加えて，外部pythonファイルの\texttt{mixej.py}を用いて\texttt{.aux}ファイルと\texttt{.bbl}ファイルを改変する必要があります。
+具体的には，\BibTeX コマンドの実行前に\texttt{enArticle1/ej/jpArticle1\string}を\texttt{enArticle1}と\texttt{jpArticle1}の2つのエントリに分け，\BibTeX コマンドが文献情報を書き出した後に再度結合させる操作を行います。
+
+
+\subsection{コンパイル手順}
+
+英語と日本語の併記を行わない場合，通常通りのコンパイル手順で\texttt{.pdf}を生成することができます。
+例えば\texttt{uplatex}で\texttt{.dvi}を生成し，\texttt{.dvi}から\texttt{.pdf}を生成，\BibTeX コマンドには\texttt{upbibtex}を使う場合，
+\begin{center}
+\texttt{uplatex → upbibtex → uplatex → uplatex → dvipdfmx}
+\end{center}
+という手順です。
+
+英語と日本語の併記を行う場合，通常のコンパイル手順での\texttt{upbibtex}前後に\texttt{python}による\texttt{mixej.py}の処理を一回ずつ挟みます。
+前と同様に，\texttt{uplatex}で\texttt{.dvi}を生成し，\texttt{.dvi}から\texttt{.pdf}を生成，\BibTeX コマンドには\texttt{upbibtex}を使う場合，
+\begin{center}
+\texttt{uplatex → python mixej.py → upbibtex → python mixej.py\\→ uplatex → uplatex → dvipdfmx}
+\end{center}
+という手順に変更されます。
+
+
+\subsection{コンパイラの設定の例}
+
+Latexmkを使用している場合，MacやLinuxなどのUNIX系列では\texttt{.latexmkrc}に対して次のように設定することで実現可能です。
+
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
+\begin{lstlisting}[style=onecol]
+#!/usr/bin/perl
+
+$latex = 'uplatex %O -synctex=1 -interaction=nonstopmode -kanji=utf8 -file-line-error %S';
+$bibtex = 'python mixej.py %B; upbibtex %O %B; python mixej.py %B';
+$dvipdf = 'dvipdfmx -V 7 %O -o %D %S';
+$pdf_previewer = "open -ga /Applications/Skim.app";
+\end{lstlisting}\vspace{-1.8zw}
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
+
+\noindent
+Windowsでは，cmd, powershellともに\texttt{bibtex}の設定を次のようにすれば動きます。ただし，\texttt{\&}前後の半角スペースを忘れずに記入してください。
+
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
+\begin{lstlisting}[style=onecol]
+$bibtex = '@cd & python mixej.py %B & upbibtex %B & python mixej.py %B';
+\end{lstlisting}\vspace{-1.8zw}
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
+
+
+最近ではVisual Studio Codeを使用している方が多いと思いますが，MacやLinuxでのVSCodeのLaTeX Workshop Extension用の設定は次のように書けます。Windowsの場合は\texttt{.latexmkrc}の場合と同様に\texttt{bibtex}コマンドを書き換えてください。
+
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{-0.5zw}
+\begin{lstlisting}[style=onecol]
+"latex-workshop.latex.tools": [
+  {
+    "command": "latexmk",
+    "name": "latexmk uplatex/upbibtex/mixej",
+    "args": [
+      "-e", "$latex='uplatex %O -synctex=1 -interaction=nonstopmode -kanji=utf8 -file-line-error %S'",
+      "-e", "$bibtex='python mixej.py %B; upbibtex %O %B; python mixej.py %B'",
+      "-e", "$dvipdf='dvipdfmx -V 7 %O -o %D %S'",
+      "-norc", "-pdfdvi", "%DOC%"
+      ],
+  }
+],
+"latex-workshop.latex.recipes": [
+  { "name": "latexmk uplatex/upbibtex/mixej", "tools": [ "latexmk uplatex/upbibtex/mixej" ] }
+],
+\end{lstlisting}\vspace{-1.8zw}
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}\vspace{0.5zw}\par
+
+
+\subsection{引用例}
+
+いくつかの引用例を示します。
+英語Articleの例\cite{enArticle1}。
+日本語Articleの例\cite{jpArticle1}。
+英語と日本語を併記したArticleの例\cite{enArticle2/ej/jpArticle2,enArticle3/ej/jpArticle3}。
+英語Inproceedingsの例\cite{enInproceedings1}。
+日本語Inproceedingsの例\cite{jpInproceedings1}。
+英語と日本語を併記したInproceedingsの例\cite{enInproceedings2/ej/jpInproceedings2}。
+英語Incollectionの例\cite{enIncollection1}。
+日本語Incollectionの例\cite{jpIncollection1,jpIncollection2}。
+英語Bookの例\cite{enBook1}。
+日本語Bookの例\cite{jpBook1,jpBook2,jpBook3}。
+英語と日本語を併記したBookの例\cite{enjBook1/ej/jpjBook1}。
+
+\bibliography{library.bib}
+
+\end{document}

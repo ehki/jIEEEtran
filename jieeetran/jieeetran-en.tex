@@ -1,0 +1,86 @@
+\documentclass[11pt, a4paper, dvipdfmx]{article}
+
+\usepackage{bxtexlogo}
+
+\begin{filecontents}[overwrite]{library.bib}
+@misc{IEEEtran,
+  author = {Michael Shell},
+  url = {https://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/bibtex},
+  title = {{IEEEtran}},
+  month = {August},
+  year = {2015}
+}
+@misc{jIEEEtran,
+  author = {ehki},
+  url = {https://github.com/ehki/jIEEEtran},
+  title = {{jIEEEtran}},
+  month = {March},
+  year = {2020}
+}
+@misc{jeconbst,
+  author = {ShiroTakeda},
+  url = {http://shirotakeda.org/ja/tex-ja/jecon-ja.html},
+  title = {{jecon.bst}},
+  month = {August},
+  year = {2019}
+}
+\end{filecontents}
+
+
+\title{\texttt{jIEEEtran.bst}:\\Unofficial IEEE \BibTeX\ style for Japanese\\(ver. 0.18)}
+\author{Haruki EJIRI}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+The jIEEEtran \BibTeX\ style is an unofficial IEEE style citation format for Japanese users.
+It is a customization of Michael Shell's IEEEtran.bst, and provides natural Japanese name handling.
+A Python script named mixej.py enables one content with both English and Japanese format to be handled properly.
+\end{abstract}
+
+
+\section{Introduction}
+
+IEEJtran.bst is an unofficial \BibTeX-style (.bst) file in IEEJ format developed for Japanese users engaging in electrical engineering.
+YoshiRi implemented natural Japanese notation based on Michael Shell's IEEEtran.bst[?].
+And now the author develops it in GitHub repository [?] after taking it over.
+Please note jIEEEtran.bst is unofficial.
+The author does not guarantee that it will work in all environments.
+We cannot be held responsible for any problems that may occur.
+We recommend platex/pbibtex or uplatex/upbibtex as \TeX\ engines.
+
+
+\section{Configuration}
+
+If jIEEEtran.bst has been installed by \TeX\ Live package manager, etc., and placed under PATH, write \texttt{\string\bibliographystyle\string{jIEEEtran\string}} in the preamble to complete the setup.
+In the case that jIEEEtran.bst is individually downloaded and placed in the same directory as the main \TeX\ file such a reason for customization, state \texttt{\string\bibliographystyle\string{jIEEEtran\string}} in the preamble in the same way to complete the setting.
+In the .bib file containing bibliographic information, Japanese authors' names should be written as:
+\begin{center}
+\texttt{author = \string{\string{Yamada Taro\string} and \string{Sato Jiro\string}\string}},
+\end{center}
+or
+\begin{center}
+\texttt{author = \string{Yamada, Taro and  Sato, Jiro\string}}.
+\end{center}
+
+
+\section{Combine English and Japanese entries}
+
+Japanese users are sometimes required to write both English and Japanese citation formats as one bibliography entry.
+A python script named \texttt{mixej.py} included in the \texttt{jieeetran} package enables combining English and Japanese entries.
+To combine two entries of enkey and jpkey, users have to cite as \texttt{\string\cite\string{enkye/ej/jpkey\string}}, where enkey and jpkey are English and Japanese citation keys, respectively.
+Then compile by the following seven steps:
+\begin{center}
+    \texttt{uplatex → python mixej.py → upbibtex → python mixej.py\\→ uplatex → uplatex → dvipdfmx}
+\end{center}
+instead of the typical five steps:
+\begin{center}
+    \texttt{uplatex → upbibtex → uplatex → uplatex → dvipdfmx}.
+\end{center}
+Note that the uplatex command is Unicode and Japanese compatible latex command.
+
+The Japanese version of this document, \texttt{jieeetran.pdf}, shows examples for English and Japanese combined citations.
+
+\end{document}
