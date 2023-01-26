@@ -646,7 +646,7 @@ INTEGERS { prev.status.punct this.status.punct punct.std
            cap.no cap.yes
            japanese.flag}
 
-INTEGERS { longest.label.width multiresult nameptr namesleft number.label numnames }
+INTEGERS { longest.label.width multiresult nameptr namesleft number.label numnames n}
 
 INTEGERS { is.use.number.for.article
            is.use.paper
@@ -1603,9 +1603,14 @@ FUNCTION {author.sep}
 
 
 FUNCTION {author.sep.last}
-{ use.ieej.setting #0 = 
-    { japanese.flag #0 =              % IEEE 形式の場合、and の取り扱いに注意
-        { ", " * bbl.and space.word } % 英語ではカンマの後 and を挿入
+{ 'n :=
+  use.ieej.setting #0 = 
+    { japanese.flag #0 =              % IEEE 形式の場合、andの取り扱いに注意
+        { n #2 >
+            { ", " * bbl.and space.word } % 英語で著者が2人より多い場合、カンマの後に and を挿入
+            { "" * bbl.and space.word } % 英語で著者が2人以下の場合、カンマなしで and を挿入
+          if$
+        }
         { "，" }                      % 日本語では他と同様に全角カンマのみ
       if$
     }
@@ -1869,7 +1874,7 @@ FUNCTION {format.names}
                     { " " * bbl.etal emphasize }
                   if$ *
                 }
-                { author.sep.last * t do.name.latex.cmd * }
+                { numnames author.sep.last * t do.name.latex.cmd * }
               if$
             }
           if$
