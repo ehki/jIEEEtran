@@ -2,9 +2,9 @@
 %% jIEEEtran.bst
 %% BibTeX Bibliography Style file for IEEE Journals and Conferences (unsorted) for Japanese users
 %% 
-%% Version 0.18 (2022/03/26)
+%% Version 0.19 (2023/01/26)
 %% 
-%% Copyright (c) 2020-2022 Haruki Ejiri and Yoshi Ri 
+%% Copyright (c) 2020-2023 Haruki Ejiri and Yoshi Ri 
 %% 
 %% Original starting code base and algorithms obtained from the output of
 %% Patrick W. Daly's makebst package as well as from prior versions of
@@ -68,8 +68,8 @@
 %
 
 FUNCTION{bst.file.name} { "jIEEEtran.bst" }
-FUNCTION{bst.file.version} { "0.18" }
-FUNCTION{bst.file.date} { "2022/03/26" }
+FUNCTION{bst.file.version} { "0.19" }
+FUNCTION{bst.file.date} { "2023/01/26" }
 FUNCTION{bst.file.website} { "https://github.com/ehki/jIEEEtran/" }
 FUNCTION{bst.file.author} { "Haruki Ejiri and Yoshi Ri" }
 
@@ -646,7 +646,7 @@ INTEGERS { prev.status.punct this.status.punct punct.std
            cap.no cap.yes
            japanese.flag}
 
-INTEGERS { longest.label.width multiresult nameptr namesleft number.label numnames }
+INTEGERS { longest.label.width multiresult nameptr namesleft number.label numnames n}
 
 INTEGERS { is.use.number.for.article
            is.use.paper
@@ -1603,9 +1603,14 @@ FUNCTION {author.sep}
 
 
 FUNCTION {author.sep.last}
-{ use.ieej.setting #0 = 
-    { japanese.flag #0 =              % IEEE 形式の場合、and の取り扱いに注意
-        { ", " * bbl.and space.word } % 英語ではカンマの後 and を挿入
+{ 'n :=
+  use.ieej.setting #0 = 
+    { japanese.flag #0 =              % IEEE 形式の場合、andの取り扱いに注意
+        { n #2 >
+            { ", " * bbl.and space.word } % 英語で著者が2人より多い場合、カンマの後に and を挿入
+            { "" * bbl.and space.word } % 英語で著者が2人以下の場合、カンマなしで and を挿入
+          if$
+        }
         { "，" }                      % 日本語では他と同様に全角カンマのみ
       if$
     }
@@ -1869,7 +1874,7 @@ FUNCTION {format.names}
                     { " " * bbl.etal emphasize }
                   if$ *
                 }
-                { author.sep.last * t do.name.latex.cmd * }
+                { numnames author.sep.last * t do.name.latex.cmd * }
               if$
             }
           if$
