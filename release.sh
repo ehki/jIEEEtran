@@ -55,4 +55,4 @@ cp mixej.py jieeetran/
 cp jIEEEtran.bst jieeetran/
 
 git add ieejtran jieeetran .
-git commit -m "v0.18"
+git commit -m "v0.19"
