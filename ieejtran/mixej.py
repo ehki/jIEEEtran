@@ -7,8 +7,8 @@ import logging
 SPLIT_KEY = '/ej/'
 ITEM_SEP = '\\hspace{0mm}\\\\'
 
-FILE_VERSION = '0.18'
-FILE_DATE = '2022/03/26'
+FILE_VERSION = '0.19'
+FILE_DATE = '2023/01/26'
 FILE_AUTHOR = 'Haruki Ejiri'
 FILE_URL = 'https://github.com/ehki/jIEEEtran/'
 
